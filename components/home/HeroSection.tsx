@@ -30,10 +30,16 @@ export default function HeroSection() {
               병원 준비 체크하기
             </a>
           </div>
+
+          {/* 모바일 전용 신뢰 배지 */}
+          <div style={{ marginTop: 24, display: "flex", gap: 8, flexWrap: "wrap" }} className="hero-badges-mobile">
+            <span style={{ background: "#E8F4FF", color: "#1B6FC8", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 회원가입 없이 바로 사용</span>
+            <span style={{ background: "#F0FDF4", color: "#059669", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 참고용 계산 · 쉬운 체크리스트</span>
+          </div>
         </div>
 
-        {/* 우측 — 서비스 미리보기 카드 */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {/* 우측 — 서비스 미리보기 카드 (데스크탑/태블릿만 표시) */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }} className="hero-right">
           {/* 노후자금 카드 미리보기 */}
           <div style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(27,111,200,0.10)", border: "1px solid #E8F0FE" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
@@ -73,7 +79,12 @@ export default function HeroSection() {
 
       <style>{`
         @media(max-width:768px){
-          .hero-grid{grid-template-columns:1fr!important;gap:32px!important;}
+          .hero-grid{grid-template-columns:1fr!important;gap:0!important;}
+          .hero-right{display:none!important;}
+          .hero-badges-mobile{display:flex!important;}
+        }
+        @media(min-width:769px){
+          .hero-badges-mobile{display:none!important;}
         }
       `}</style>
     </section>
