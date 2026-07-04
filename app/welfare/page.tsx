@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
+import BenefitFinder from "@/components/welfare/BenefitFinder";
 
 export const metadata: Metadata = {
-  title: "복지혜택 정보 — 기초연금·장기요양·돌봄 서비스",
-  description: "65세 이상 시니어를 위한 복지혜택 정보. 기초연금 수급자격과 신청방법, 장기요양보험 등급, 노인 맞춤 돌봄 서비스를 안내합니다.",
+  title: "내 혜택 찾아보기 — 기초연금·장기요양·복지혜택 안내",
+  description: "나이, 소득, 거동 상태를 선택하면 받을 수 있는 복지혜택을 바로 확인할 수 있습니다. 기초연금, 장기요양, 의료급여, 노인일자리 등 8가지 혜택을 안내합니다.",
 };
 
 const articles = [
@@ -16,8 +17,16 @@ export default function WelfarePage() {
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px" }}>
       <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "복지혜택" }]} />
-      <h1 style={{ fontSize: 24, fontWeight: 700, color: "#1A1A1A", marginBottom: 4, letterSpacing: "-0.4px" }}>복지혜택 정보</h1>
-      <p style={{ fontSize: 13, color: "#9B9890", marginBottom: 24 }}>기초연금·장기요양·정부지원금 안내</p>
+
+      {/* 혜택 찾기 도구 */}
+      <BenefitFinder />
+
+      {/* 구분선 */}
+      <div style={{ borderTop: "1px solid #EEECE6", margin: "8px 0 32px" }} />
+
+      {/* 복지혜택 정보 글 */}
+      <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A", marginBottom: 4, letterSpacing: "-0.3px" }}>복지혜택 자세히 알아보기</h2>
+      <p style={{ fontSize: 13, color: "#9B9890", marginBottom: 20 }}>기초연금·장기요양·정부지원금 상세 안내</p>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {articles.map((a) => (
           <Link key={a.href} href={a.href} style={{ display: "block", padding: "20px", border: "0.5px solid #EEECE6", borderRadius: 12, background: "#fff", textDecoration: "none" }}>
