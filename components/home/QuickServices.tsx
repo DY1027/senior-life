@@ -3,7 +3,7 @@ const services = [
   { icon: "💰", title: "노후자금 계산기", desc: "현재 자산과 월 생활비를 입력해 노후 준비 상태를 확인합니다.", href: "#calculator", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
   { icon: "🏥", title: "병원 방문 체크리스트", desc: "진료 전 챙길 것과 의사에게 물어볼 질문을 정리합니다.", href: "#checklist", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
   { icon: "🏛️", title: "내 혜택 찾아보기", desc: "나이·소득·거동 상태를 선택하면 받을 수 있는 복지혜택을 확인합니다.", href: "/welfare", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
-  { icon: "💊", title: "복용약 요약표", desc: "복용 중인 약을 정리해 병원에 보여줄 수 있습니다.", href: "/health", badge: "준비 중", badgeColor: "#9CA3AF", bg: "#F9FAFB" },
+  { icon: "💊", title: "복용약 요약표", desc: "복용 중인 약을 입력하면 병원·약국에 보여줄 요약표를 만들어드립니다.", href: "/health", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
   { icon: "👨‍👩‍👧", title: "부모님 생활 점검표", desc: "식사, 약, 병원, 안전 상태를 간단히 점검합니다.", href: "/life-tips/family-care", badge: "준비 중", badgeColor: "#9CA3AF", bg: "#F9FAFB" },
 ];
 
