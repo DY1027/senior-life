@@ -3,25 +3,27 @@ import HomeHeader from "@/components/home/HomeHeader";
 import HeroSection from "@/components/home/HeroSection";
 import QuickServices from "@/components/home/QuickServices";
 import RetirementCalculatorPreview from "@/components/home/RetirementCalculatorPreview";
-import HealthHospitalSection from "@/components/home/HealthHospitalSection";
-import LifeInfoSection from "@/components/home/LifeInfoSection";
+import HospitalChecklistPreview from "@/components/home/HospitalChecklistPreview";
+import CategorySections from "@/components/home/CategorySections";
 import GuideSteps from "@/components/home/GuideSteps";
-import Testimonials from "@/components/home/Testimonials";
+import UseCasesSection from "@/components/home/UseCasesSection";
 import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
 import HomeFooter from "@/components/home/HomeFooter";
 
 export const metadata: Metadata = {
-  title: "시니어 든든 — 더 쉽고 든든한 시니어 생활",
-  description: "노후자금부터 건강, 병원 방문, 복약 기록, 생활정보까지 시니어의 일상을 편리하고 안전하게 도와드립니다. 기초연금, 건강보험, 복지혜택을 한 번에.",
-  keywords: ["시니어", "노인복지", "기초연금", "노후자금 계산기", "건강보험", "복약 관리", "시니어든든"],
+  metadataBase: new URL("https://senior-life.kr"),
+  title: "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
+  description: "기초연금, 병원 방문 체크리스트, 노후자금 계산기까지. 어르신과 가족이 바로 활용할 수 있는 시니어 생활도구 서비스입니다. 회원가입 없이 바로 사용하세요.",
+  keywords: ["시니어든든", "노후자금 계산기", "병원 체크리스트", "기초연금", "시니어 복지혜택", "노인 건강보험"],
   openGraph: {
     type: "website",
     locale: "ko_KR",
     siteName: "시니어 든든",
-    title: "시니어 든든 — 더 쉽고 든든한 시니어 생활",
-    description: "노후자금부터 건강, 병원 방문, 복약 기록, 생활정보까지 한 번에",
+    title: "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
+    description: "어르신과 가족이 바로 활용할 수 있는 시니어 생활도구. 회원가입 없이 바로 사용하세요.",
   },
+  robots: { index: true, follow: true },
 };
 
 export default function HomePage() {
@@ -31,10 +33,10 @@ export default function HomePage() {
       <HeroSection />
       <QuickServices />
       <RetirementCalculatorPreview />
-      <HealthHospitalSection />
-      <LifeInfoSection />
+      <HospitalChecklistPreview />
+      <CategorySections />
       <GuideSteps />
-      <Testimonials />
+      <UseCasesSection />
       <FAQSection />
       <CTASection />
       <HomeFooter />

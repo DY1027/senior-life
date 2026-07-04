@@ -1,111 +1,165 @@
 "use client";
 import { useState } from "react";
 
-function CircleProgress({ pct }: { pct: number }) {
-  const r = 52, c = 2 * Math.PI * r;
-  const dash = (pct / 100) * c;
+const fmt = (n: number) => n.toLocaleString("ko-KR");
+
+function ProgressBar({ value, max }: { value: number; max: number }) {
+  const pct = Math.min((value / max) * 100, 100);
+  const color = pct >= 80 ? "#059669" : pct >= 50 ? "#1B6FC8" : "#F59E0B";
   return (
-    <svg width="128" height="128" viewBox="0 0 128 128">
-      <circle cx="64" cy="64" r={r} fill="none" stroke="#E8F0FE" strokeWidth="12" />
-      <circle cx="64" cy="64" r={r} fill="none" stroke="#1B6FC8" strokeWidth="12"
-        strokeDasharray={`${dash} ${c - dash}`} strokeDashoffset={c / 4} strokeLinecap="round" />
-      <text x="64" y="60" textAnchor="middle" fontSize="20" fontWeight="800" fill="#1B6FC8">{pct}%</text>
-      <text x="64" y="78" textAnchor="middle" fontSize="11" fill="#4A5568">준비 상태</text>
-    </svg>
+    <div style={{ height: 12, background: "#E8F0FE", borderRadius: 99, overflow: "hidden" }}>
+      <div style={{ height: "100%", width: `${pct}%`, background: color, borderRadius: 99, transition: "width 0.5s ease" }} />
+    </div>
   );
 }
 
 export default function RetirementCalculatorPreview() {
-  const [age, setAge] = useState(65);
-  const [retire, setRetire] = useState(65);
-  const [monthly, setMonthly] = useState(200);
-  const [lifeExp, setLifeExp] = useState(90);
+  const [savings, setSavings] = useState(50000000);
+  const [monthly, setMonthly] = useState(500000);
+  const [living, setLiving] = useState(2000000);
+  const [pension, setPension] = useState(600000);
+  const [goal, setGoal] = useState(500000000);
+  const [showResult, setShowResult] = useState(false);
 
-  const years = Math.max(lifeExp - retire, 0);
-  const total = Math.round(monthly * 12 * years * 10000);
-  const monthlyNeed = monthly * 10000;
-  const prep = Math.min(Math.round((retire - age) * 3.2), 100);
+  // 계산
+  const monthlyNet = monthly + pension;
+  const shortfall = Math.max(living - monthlyNet, 0);
+  const shortfallYearly = shortfall * 12;
+  const yearsNeeded = shortfall > 0 ? Math.ceil((goal - savings) / (monthly * 12)) : 0;
+  const readiness = Math.min(Math.round((savings / goal) * 100), 100);
+  const remaining = Math.max(goal - savings, 0);
 
-  const fmt = (n: number) => {
-    if (n >= 100000000) return `${(n / 100000000).toFixed(1)}억원`;
-    if (n >= 10000) return `${(n / 10000).toFixed(0)}만원`;
-    return `${n.toLocaleString()}원`;
+  const conclusion =
+    readiness >= 80
+      ? "현재 노후자금 준비가 비교적 잘 되어 있습니다."
+      : readiness >= 50
+      ? `현재 속도라면 목표 노후자금까지 약 ${yearsNeeded}년이 필요합니다.`
+      : `현재 준비율이 ${readiness}%입니다. 추가 저축 계획을 검토해볼 시점입니다.`;
+
+  const handleCopy = () => {
+    const text = `[노후자금 시뮬레이션 결과]\n현재 준비율: ${readiness}%\n목표금액: ${fmt(goal)}원\n현재 저축: ${fmt(savings)}원\n남은 금액: ${fmt(remaining)}원\n예상 준비 기간: 약 ${yearsNeeded}년\n\n※ 이 결과는 참고용 시뮬레이션입니다.`;
+    navigator.clipboard.writeText(text).then(() => alert("복사되었습니다."));
   };
 
+  const handlePrint = () => window.print();
+
   return (
-    <section style={{ background: "#fff", padding: "72px 24px" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 56, alignItems: "center" }}>
-        {/* 좌측 설명 */}
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#1B6FC8", marginBottom: 10, letterSpacing: "0.06em" }}>핵심 서비스</p>
-          <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.5px", marginBottom: 16 }}>노후자금 계산기</h2>
-          <p style={{ fontSize: 16, color: "#4A5568", lineHeight: 1.75, marginBottom: 28 }}>내 상황에 맞는 노후 자금을 쉽게 계산하고 준비하세요. 현재 나이와 목표 은퇴 나이만 입력하면 필요 자금을 바로 확인할 수 있습니다.</p>
-          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
-            {["맞춤형 노후 자금 계산","부족한 금액 및 준비 방법 안내","국민연금·퇴직연금 연동 예정"].map((t) => (
-              <li key={t} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "#4A5568" }}>
-                <span style={{ width: 20, height: 20, borderRadius: "50%", background: "#E8F4FF", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1B6FC8" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                {t}
-              </li>
+    <section id="calculator" style={{ background: "#fff", padding: "72px 20px" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "#1B6FC8", marginBottom: 6, letterSpacing: "0.05em" }}>노후자금 계산기</p>
+        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.5px", marginBottom: 8 }}>
+          노후자금 준비 상태를 확인해보세요
+        </h2>
+        <p style={{ fontSize: 15, color: "#4A5568", marginBottom: 32, lineHeight: 1.65 }}>
+          간단한 정보를 입력하면 현재 준비 상태와 다음에 확인할 것을 알려드립니다.<br />
+          회원가입 없이 바로 사용할 수 있습니다.
+        </p>
+
+        <div style={{ background: "#F0F7FF", borderRadius: 20, padding: "28px 24px", marginBottom: 24 }}>
+          <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 20 }}>기본 정보 입력</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="calc-grid">
+            {[
+              { label: "현재 모아둔 돈 (원)", val: savings, set: setSavings, step: 1000000, placeholder: "예: 50,000,000" },
+              { label: "매달 저축 가능한 금액 (원)", val: monthly, set: setMonthly, step: 100000, placeholder: "예: 500,000" },
+              { label: "예상 월 생활비 (원)", val: living, set: setLiving, step: 100000, placeholder: "예: 2,000,000" },
+              { label: "예상 연금 수령액 (월, 원)", val: pension, set: setPension, step: 100000, placeholder: "예: 600,000" },
+              { label: "목표 노후자금 (원)", val: goal, set: setGoal, step: 10000000, placeholder: "예: 500,000,000" },
+            ].map((f) => (
+              <div key={f.label} style={{ background: "#fff", borderRadius: 12, padding: "14px 16px" }}>
+                <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#4A5568", marginBottom: 6 }}>{f.label}</label>
+                <input
+                  type="number"
+                  value={f.val}
+                  step={f.step}
+                  placeholder={f.placeholder}
+                  onChange={(e) => f.set(Number(e.target.value))}
+                  style={{ width: "100%", fontSize: 17, fontWeight: 700, color: "#1A1A2E", border: "none", outline: "none", background: "transparent", boxSizing: "border-box" }}
+                />
+                <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>{fmt(f.val)}원</p>
+              </div>
             ))}
-          </ul>
-          <button style={{ height: 52, padding: "0 28px", fontSize: 16, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 12, cursor: "pointer" }}>
-            계산해 보기 →
+          </div>
+          <button
+            onClick={() => setShowResult(true)}
+            style={{ width: "100%", height: 56, marginTop: 20, fontSize: 17, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 14, cursor: "pointer" }}>
+            준비 상태 확인하기
           </button>
         </div>
 
-        {/* 우측 대시보드 */}
-        <div style={{ background: "#F0F7FF", borderRadius: 20, padding: "28px 24px", boxShadow: "0 8px 32px rgba(27,111,200,0.10)" }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#4A5568", marginBottom: 16 }}>기본 정보 입력</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
-            {[
-              { label: "현재 나이", val: age, set: setAge, unit: "세", min: 40, max: 80 },
-              { label: "은퇴 나이", val: retire, set: setRetire, unit: "세", min: 50, max: 80 },
-              { label: "월 생활비", val: monthly, set: setMonthly, unit: "만원", min: 50, max: 500 },
-              { label: "기대 수명", val: lifeExp, set: setLifeExp, unit: "세", min: 70, max: 100 },
-            ].map((f) => (
-              <div key={f.label} style={{ background: "#fff", borderRadius: 12, padding: "12px 14px" }}>
-                <p style={{ fontSize: 11, color: "#4A5568", marginBottom: 6 }}>{f.label}</p>
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                  <input type="number" value={f.val} min={f.min} max={f.max}
-                    onChange={(e) => f.set(Number(e.target.value))}
-                    style={{ width: "100%", fontSize: 18, fontWeight: 700, color: "#1A1A2E", border: "none", outline: "none", background: "transparent" }} />
-                  <span style={{ fontSize: 13, color: "#4A5568", flexShrink: 0 }}>{f.unit}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* 결과 */}
+        {showResult && (
+          <div style={{ background: "#1A1A2E", borderRadius: 20, padding: "32px 28px", marginBottom: 20 }} className="print-area">
+            <p style={{ fontSize: 13, fontWeight: 600, color: "#0EA5E9", marginBottom: 16 }}>노후자금 시뮬레이션 결과</p>
 
-          {/* 결과 패널 */}
-          <div style={{ background: "#fff", borderRadius: 14, padding: "20px" }}>
-            <p style={{ fontSize: 12, fontWeight: 600, color: "#4A5568", marginBottom: 16 }}>계산 결과 요약</p>
-            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 16, alignItems: "center" }}>
-              <CircleProgress pct={prep} />
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ background: "#F0F7FF", borderRadius: 10, padding: "10px 14px" }}>
-                  <p style={{ fontSize: 11, color: "#4A5568", marginBottom: 2 }}>필요 노후자금</p>
-                  <p style={{ fontSize: 18, fontWeight: 800, color: "#1B6FC8" }}>{fmt(total)}</p>
-                </div>
-                <div style={{ background: "#F0F7FF", borderRadius: 10, padding: "10px 14px" }}>
-                  <p style={{ fontSize: 11, color: "#4A5568", marginBottom: 2 }}>월 필요자금</p>
-                  <p style={{ fontSize: 18, fontWeight: 800, color: "#1B6FC8" }}>{fmt(monthlyNeed)}</p>
-                </div>
-              </div>
+            {/* 한 줄 결론 */}
+            <div style={{ background: "#0EA5E9", borderRadius: 12, padding: "16px 20px", marginBottom: 24 }}>
+              <p style={{ fontSize: 17, fontWeight: 700, color: "#fff", lineHeight: 1.55 }}>{conclusion}</p>
             </div>
-            {/* 파이 차트 더미 */}
-            <div style={{ marginTop: 14, display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {[["식비","#1B6FC8","58%"],["의료비","#0EA5E9","20%"],["여가","#38BDF8","12%"],["기타","#BAE6FD","10%"]].map(([l,c,v])=>(
-                <span key={l} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: "#4A5568" }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: c, display: "inline-block" }}/>
-                  {l} {v}
-                </span>
+
+            {/* 준비 상태 */}
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                <p style={{ fontSize: 14, color: "#9CA3AF" }}>현재 준비율</p>
+                <p style={{ fontSize: 20, fontWeight: 800, color: readiness >= 80 ? "#34D399" : readiness >= 50 ? "#38BDF8" : "#FBBF24" }}>{readiness}%</p>
+              </div>
+              <ProgressBar value={savings} max={goal} />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }} className="result-grid">
+              {[
+                { label: "목표까지 남은 금액", value: `${fmt(remaining)}원`, highlight: true },
+                { label: "예상 준비 기간", value: yearsNeeded > 0 ? `약 ${yearsNeeded}년` : "목표 달성", highlight: false },
+                { label: "월 생활비 대비 부족액", value: shortfall > 0 ? `${fmt(shortfall)}원` : "부족 없음", highlight: shortfall > 0 },
+                { label: "연간 부족 예상액", value: shortfallYearly > 0 ? `${fmt(shortfallYearly)}원` : "-", highlight: false },
+              ].map((item) => (
+                <div key={item.label} style={{ background: "#2A2A3E", borderRadius: 12, padding: "14px 16px" }}>
+                  <p style={{ fontSize: 11, color: "#9CA3AF", marginBottom: 4 }}>{item.label}</p>
+                  <p style={{ fontSize: 16, fontWeight: 700, color: item.highlight ? "#FBBF24" : "#fff" }}>{item.value}</p>
+                </div>
               ))}
             </div>
+
+            {/* 다음 행동 */}
+            <div style={{ background: "#2A2A3E", borderRadius: 14, padding: "18px 20px", marginBottom: 20 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 12 }}>📋 다음에 확인할 것</p>
+              {["국민연금 예상 수령액 조회 (내 연금 앱)", "기초연금 대상 여부 확인 (복지로)", "월 고정지출 항목 점검", "의료비 예비자금 별도 준비"].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < 3 ? "1px solid #3A3A4E" : "none" }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ fontSize: 14, color: "#D1D5DB" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* 버튼 */}
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={handleCopy} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 12, cursor: "pointer" }}>
+                📋 복사하기
+              </button>
+              <button onClick={handlePrint} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#1A1A2E", background: "#fff", border: "none", borderRadius: 12, cursor: "pointer" }}>
+                🖨️ 인쇄하기
+              </button>
+            </div>
           </div>
+        )}
+
+        {/* 면책 */}
+        <div style={{ padding: "14px 18px", background: "#FFF8F0", borderRadius: 12, border: "1px solid #FED7AA" }}>
+          <p style={{ fontSize: 12, color: "#92400E", lineHeight: 1.65 }}>
+            ⚠️ 이 결과는 입력값을 기준으로 한 <strong>참고용 시뮬레이션</strong>입니다. 실제 재무 판단은 개인 상황에 따라 달라질 수 있으며, 정확한 내용은 관련 전문가를 통해 확인하시기 바랍니다.
+          </p>
         </div>
       </div>
-      <style>{`@media(max-width:768px){section>div{grid-template-columns:1fr!important;}}`}</style>
+
+      <style>{`
+        @media(max-width:600px){
+          .calc-grid{grid-template-columns:1fr!important;}
+          .result-grid{grid-template-columns:1fr!important;}
+        }
+        @media print{
+          body > *:not(.print-area){display:none!important;}
+          .print-area{background:#fff!important;color:#000!important;box-shadow:none!important;}
+        }
+      `}</style>
     </section>
   );
 }

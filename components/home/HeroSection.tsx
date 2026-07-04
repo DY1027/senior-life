@@ -1,67 +1,81 @@
 export default function HeroSection() {
   return (
-    <section style={{ background: "linear-gradient(160deg,#F0F7FF 0%,#fff 60%)", padding: "72px 24px 64px" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
-        {/* 좌측 텍스트 */}
+    <section style={{ background: "linear-gradient(160deg,#F0F7FF 0%,#fff 65%)", padding: "60px 20px 56px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }} className="hero-grid">
+        {/* 좌측 */}
         <div>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#E8F4FF", color: "#1B6FC8", fontSize: 13, fontWeight: 600, padding: "6px 14px", borderRadius: 100, marginBottom: 24 }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            안전하고 신뢰할 수 있는 시니어 생활 서비스
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            회원가입 없이 바로 사용할 수 있습니다
           </div>
-          <h1 style={{ fontSize: "clamp(28px,4vw,48px)", fontWeight: 800, color: "#1A1A2E", lineHeight: 1.25, letterSpacing: "-1px", marginBottom: 20 }}>
-            시니어 생활을<br />더{" "}
-            <span style={{ color: "#1B6FC8" }}>쉽고 든든하게</span>
+
+          <h1 style={{ fontSize: "clamp(26px,4vw,44px)", fontWeight: 800, color: "#1A1A2E", lineHeight: 1.3, letterSpacing: "-0.8px", marginBottom: 20 }}>
+            시니어 생활을<br />
+            <span style={{ color: "#1B6FC8" }}>확인하고 계산하고</span><br />
+            기록하세요
           </h1>
-          <p style={{ fontSize: 17, color: "#4A5568", lineHeight: 1.75, marginBottom: 36, maxWidth: 480 }}>
-            노후자금부터 건강, 병원 방문, 복약 기록, 생활정보까지<br />
-            시니어의 일상을 편리하고 안전하게 도와드립니다.
+
+          <p style={{ fontSize: "clamp(15px,1.8vw,18px)", color: "#4A5568", lineHeight: 1.75, marginBottom: 32 }}>
+            기초연금, 병원 준비, 약 복용, 노후자금까지<br />
+            어르신과 가족이 바로 활용할 수 있게 정리했습니다.
           </p>
+
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            <button style={{ height: 52, padding: "0 28px", fontSize: 16, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
-              지금 시작하기
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-            <button style={{ height: 52, padding: "0 28px", fontSize: 16, fontWeight: 700, color: "#1B6FC8", background: "#fff", border: "2px solid #1B6FC8", borderRadius: 12, cursor: "pointer" }}>
-              서비스 둘러보기
-            </button>
-          </div>
-          {/* 신뢰 지표 */}
-          <div style={{ display: "flex", gap: 28, marginTop: 40 }}>
-            {[["5만+","가입 회원"],["4.9★","평균 만족도"],["24시","전문 상담"]].map(([v,l]) => (
-              <div key={l}>
-                <p style={{ fontSize: 22, fontWeight: 800, color: "#1B6FC8", lineHeight: 1 }}>{v}</p>
-                <p style={{ fontSize: 12, color: "#4A5568", marginTop: 3 }}>{l}</p>
-              </div>
-            ))}
+            <a href="#calculator" style={{ height: 56, padding: "0 28px", fontSize: 16, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 14, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/></svg>
+              노후자금 계산하기
+            </a>
+            <a href="#checklist" style={{ height: 56, padding: "0 28px", fontSize: 16, fontWeight: 700, color: "#1B6FC8", background: "#fff", border: "2px solid #1B6FC8", borderRadius: 14, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              병원 준비 체크하기
+            </a>
           </div>
         </div>
 
-        {/* 우측 이미지 영역 */}
-        <div style={{ position: "relative" }}>
-          <div style={{ background: "linear-gradient(145deg,#E8F4FF,#C5E0FF)", borderRadius: 24, padding: "40px 32px", minHeight: 360, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20 }}>
-            {/* 시니어 일러스트 placeholder */}
-            <div style={{ width: "100%", maxWidth: 280, aspectRatio: "4/3", background: "#BFD9F5", borderRadius: 16, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1B6FC8" strokeWidth="1.2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4"/><circle cx="17" cy="8" r="3"/><path d="M21 21v-1a3 3 0 0 0-3-3h-2"/></svg>
-              <p style={{ fontSize: 12, color: "#1B6FC8", fontWeight: 600 }}>시니어 부부 일러스트</p>
+        {/* 우측 — 서비스 미리보기 카드 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* 노후자금 카드 미리보기 */}
+          <div style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(27,111,200,0.10)", border: "1px solid #E8F0FE" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#1B6FC8" }}>💰 노후자금 준비 상태</p>
+              <span style={{ fontSize: 11, color: "#4A5568", background: "#F0F7FF", padding: "3px 8px", borderRadius: 6 }}>참고용 시뮬레이션</span>
             </div>
-            {/* 신뢰 배지 */}
-            <div style={{ background: "#fff", borderRadius: 14, padding: "12px 18px", boxShadow: "0 4px 16px rgba(27,111,200,0.12)", display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#E8F4FF", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B6FC8" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A2E" }}>내 정보는 안전하게</p>
-                <p style={{ fontSize: 11, color: "#4A5568" }}>개인정보를 안전하게 보호합니다</p>
-              </div>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 28, fontWeight: 800, color: "#1A1A2E" }}>58%</span>
+              <span style={{ fontSize: 14, color: "#4A5568" }}>준비됨</span>
             </div>
+            <div style={{ height: 8, background: "#E8F0FE", borderRadius: 99 }}>
+              <div style={{ height: "100%", width: "58%", background: "linear-gradient(90deg,#1B6FC8,#0EA5E9)", borderRadius: 99 }} />
+            </div>
+            <p style={{ fontSize: 12, color: "#4A5568", marginTop: 8 }}>목표까지 약 <strong>1억 2,000만원</strong> 더 필요합니다</p>
           </div>
-          {/* 플로팅 카드 */}
-          <div style={{ position: "absolute", top: 20, right: -16, background: "#fff", borderRadius: 12, padding: "10px 16px", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 13, fontWeight: 700, color: "#1A1A2E" }}>
-            🔔 복약 알림 설정 완료
+
+          {/* 병원 체크리스트 미리보기 */}
+          <div style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(27,111,200,0.10)", border: "1px solid #E8F0FE" }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", marginBottom: 12 }}>🏥 병원 방문 체크리스트</p>
+            {["신분증", "복용 중인 약 목록", "최근 검사 결과지", "증상 메모"].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: i < 3 ? "1px solid #F0F7FF" : "none" }}>
+                <div style={{ width: 18, height: 18, borderRadius: 4, border: "2px solid #1B6FC8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {i < 2 && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1B6FC8" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+                </div>
+                <span style={{ fontSize: 13, color: i < 2 ? "#4A5568" : "#1A1A2E", textDecoration: i < 2 ? "line-through" : "none" }}>{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* 배지 */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <span style={{ background: "#E8F4FF", color: "#1B6FC8", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 회원가입 없이 바로 사용</span>
+            <span style={{ background: "#F0FDF4", color: "#059669", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 참고용 계산 · 쉬운 체크리스트</span>
           </div>
         </div>
       </div>
-      <style>{`@media(max-width:768px){section>div{grid-template-columns:1fr!important;}}`}</style>
+
+      <style>{`
+        @media(max-width:768px){
+          .hero-grid{grid-template-columns:1fr!important;gap:32px!important;}
+        }
+      `}</style>
     </section>
   );
 }
