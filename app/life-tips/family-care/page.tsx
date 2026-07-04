@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import BreadcrumbNav from "@/components/BreadcrumbNav";
 import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
+import ParentChecklistTool from "@/components/life-tips/ParentChecklistTool";
 
 export const metadata: Metadata = {
   title: "부모님 돌봄 가족을 위한 체크리스트 — 재가 돌봄 가이드",
@@ -40,7 +41,13 @@ export default function FamilyCarePage() {
         </div>
       </div>
 
-      <article style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 48px" }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 0" }}>
+        <ParentChecklistTool />
+        <div style={{ borderTop: "1px solid #EEECE6", margin: "8px 0 32px" }} />
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A", marginBottom: 20, letterSpacing: "-0.3px" }}>돌봄 가이드 자세히 보기</h2>
+      </div>
+
+      <article style={{ maxWidth: 720, margin: "0 auto", padding: "0 24px 48px" }}>
         <div style={{ background: "#FEF3E8", border: "0.5px solid #FDDFC0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
           <p style={{ fontSize: 10, fontWeight: 600, color: "#C4621A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
           <p style={{ fontSize: 14, fontWeight: 500, color: "#7C3415", lineHeight: 1.65 }}>부모님을 안전하게 돌보려면 환경 안전 점검, 건강 관리, 정서 지원, 복지 서비스 연결 등 4가지 영역을 체계적으로 챙겨야 합니다. 혼자 다 하려 하지 말고 장기요양보험·돌봄 서비스를 적극 활용하세요.</p>
