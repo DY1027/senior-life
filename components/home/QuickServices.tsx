@@ -15,7 +15,7 @@ export default function QuickServices() {
         <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.5px", marginBottom: 8 }}>많이 쓰는 생활도구</h2>
         <p style={{ fontSize: 16, color: "#4A5568", marginBottom: 36, lineHeight: 1.6 }}>복잡한 정보를 읽기만 하는 것이 아니라, 직접 확인하고 바로 활용할 수 있습니다.</p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))", gap: 14 }}>
           {services.map((s) => (
             <a key={s.title} href={s.href}
               style={{ display: "flex", flexDirection: "column", gap: 12, padding: "22px 20px", background: s.bg, borderRadius: 16, border: "1.5px solid #E8F0FE", textDecoration: "none", transition: "border-color 0.15s" }}
