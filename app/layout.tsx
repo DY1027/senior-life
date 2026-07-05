@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://senior-life.kr"),
+  metadataBase: new URL("https://senior-life.vercel.app"),
   title: {
     default: "시니어 든든 — 노후자금, 병원 준비, 복지혜택을 한 번에",
     template: "%s | 시니어 든든",

@@ -51,10 +51,7 @@ export default function HeroSection() {
                 { icon: "🏛️", label: "내 혜택 찾기", sub: "복지혜택 조회", href: "/welfare" },
                 { icon: "💊", label: "복용약 요약표", sub: "약 정보 정리", href: "/health" },
               ].map((s) => (
-                <a key={s.label} href={s.href} style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(4px)", borderRadius: 14, padding: "14px 14px", textDecoration: "none", display: "flex", flexDirection: "column", gap: 6, border: "1px solid rgba(255,255,255,0.2)", transition: "background 0.15s" }}
-                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.25)")}
-                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.15)")}
-                >
+                <a key={s.label} href={s.href} style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(4px)", borderRadius: 14, padding: "14px 14px", textDecoration: "none", display: "flex", flexDirection: "column", gap: 6, border: "1px solid rgba(255,255,255,0.2)" }}>
                   <span style={{ fontSize: 22 }}>{s.icon}</span>
                   <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", lineHeight: 1.3 }}>{s.label}</span>
                   <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{s.sub}</span>

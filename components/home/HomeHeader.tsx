@@ -1,6 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase";
+import type { User } from "@supabase/supabase-js";
 
 const navLinks = [
   { label: "노후자금", href: "/finance" },
@@ -12,6 +14,22 @@ const navLinks = [
 
 export default function HomeHeader() {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    setUser(null);
+  }
+
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 100, background: "#fff", borderBottom: "1px solid #E8F0FE", boxShadow: "0 2px 8px rgba(27,111,200,0.06)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", display: "flex", alignItems: "center", height: 64, gap: 16 }}>
@@ -35,10 +53,28 @@ export default function HomeHeader() {
           ))}
         </nav>
 
-        {/* CTA */}
-        <Link href="#calculator" className="hh-cta" style={{ height: 44, padding: "0 20px", fontSize: 14, fontWeight: 700, color: "#fff", background: "#1B6FC8", borderRadius: 10, textDecoration: "none", display: "flex", alignItems: "center", whiteSpace: "nowrap", flexShrink: 0 }}>
-          노후자금 계산하기
-        </Link>
+        {/* 인증 버튼 */}
+        <div className="hh-auth" style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+          {user ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 13, color: "#4A5568", maxWidth: 120, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {user.email?.split("@")[0]}님
+              </span>
+              <button onClick={handleSignOut} style={{ height: 38, padding: "0 14px", fontSize: 12, fontWeight: 600, color: "#6B7280", background: "transparent", border: "1px solid #E5E7EB", borderRadius: 999, cursor: "pointer" }}>
+                로그아웃
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link href="/login" style={{ height: 40, padding: "0 16px", fontSize: 13, fontWeight: 600, color: "#1A1A2E", background: "transparent", border: "1px solid #EEECE6", borderRadius: 999, cursor: "pointer", display: "flex", alignItems: "center", textDecoration: "none", whiteSpace: "nowrap" }}>
+                로그인
+              </Link>
+              <Link href="/login" style={{ height: 40, padding: "0 16px", fontSize: 13, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 999, cursor: "pointer", display: "flex", alignItems: "center", textDecoration: "none", whiteSpace: "nowrap" }}>
+                무료 가입
+              </Link>
+            </>
+          )}
+        </div>
 
         {/* 햄버거 */}
         <button onClick={() => setOpen(!open)} className="hh-burger" aria-label="메뉴 열기" style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
@@ -58,17 +94,29 @@ export default function HomeHeader() {
               {l.label}
             </Link>
           ))}
-          <Link href="#calculator" onClick={() => setOpen(false)}
-            style={{ display: "block", marginTop: 16, padding: "14px 0", fontSize: 17, fontWeight: 700, color: "#1B6FC8", textDecoration: "none" }}>
-            → 노후자금 계산하기
-          </Link>
+          <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+            {user ? (
+              <button onClick={handleSignOut} style={{ flex: 1, padding: "13px 0", fontSize: 15, fontWeight: 600, color: "#6B7280", background: "transparent", border: "1px solid #E5E7EB", borderRadius: 999, cursor: "pointer" }}>
+                로그아웃
+              </button>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, padding: "13px 0", fontSize: 15, fontWeight: 600, color: "#1A1A2E", background: "transparent", border: "1px solid #EEECE6", borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+                  로그인
+                </Link>
+                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, padding: "13px 0", fontSize: 15, fontWeight: 700, color: "#fff", background: "#1B6FC8", border: "none", borderRadius: 999, display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}>
+                  무료 가입
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       )}
 
       <style>{`
         @media(max-width:768px){
           .hh-nav{display:none!important;}
-          .hh-cta{display:none!important;}
+          .hh-auth{display:none!important;}
           .hh-burger{display:block!important;}
         }
       `}</style>
