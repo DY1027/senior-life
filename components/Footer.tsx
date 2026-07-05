@@ -46,7 +46,7 @@ export default function Footer() {
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#E67E3F", display: "inline-block" }} />
           <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px" }}>
-            시니어라이프
+            시니어 든든
           </span>
         </div>
 
@@ -73,7 +73,7 @@ export default function Footer() {
         {/* 구분선 */}
         <div style={{ borderTop: "0.5px solid #EEECE6", paddingTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <p style={{ fontSize: 11, color: "#9B9890" }}>
-            © 2025 시니어라이프. 본 정보는 참고용이며 정확한 내용은 관련 기관에 문의하세요.
+            © 2025 시니어 든든. 본 정보는 참고용이며 정확한 내용은 관련 기관에 문의하세요.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {sources.map((src) => (

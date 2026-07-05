@@ -1,3 +1,4 @@
+"use client";
 export default function HeroSection() {
   return (
     <section style={{ background: "linear-gradient(160deg,#F0F7FF 0%,#fff 65%)", padding: "60px 20px 56px" }}>
@@ -38,41 +39,55 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* 우측 — 서비스 미리보기 카드 (데스크탑/태블릿만 표시) */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }} className="hero-right">
-          {/* 노후자금 카드 미리보기 */}
-          <div style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(27,111,200,0.10)", border: "1px solid #E8F0FE" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#1B6FC8" }}>💰 노후자금 준비 상태</p>
-              <span style={{ fontSize: 11, color: "#4A5568", background: "#F0F7FF", padding: "3px 8px", borderRadius: 6 }}>참고용 시뮬레이션</span>
+        {/* 우측 — 서비스 카드 패널 (데스크탑/태블릿만 표시) */}
+        <div className="hero-right" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {/* 상단: 주요 도구 4종 그리드 */}
+          <div style={{ background: "linear-gradient(135deg,#1B6FC8 0%,#0EA5E9 100%)", borderRadius: 20, padding: "22px 20px" }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.75)", marginBottom: 14, letterSpacing: "0.05em" }}>바로 사용할 수 있는 도구</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {[
+                { icon: "💰", label: "노후자금 계산기", sub: "준비 상태 확인", href: "#calculator" },
+                { icon: "🏥", label: "병원 체크리스트", sub: "진료 준비 도우미", href: "#checklist" },
+                { icon: "🏛️", label: "내 혜택 찾기", sub: "복지혜택 조회", href: "/welfare" },
+                { icon: "💊", label: "복용약 요약표", sub: "약 정보 정리", href: "/health" },
+              ].map((s) => (
+                <a key={s.label} href={s.href} style={{ background: "rgba(255,255,255,0.15)", backdropFilter: "blur(4px)", borderRadius: 14, padding: "14px 14px", textDecoration: "none", display: "flex", flexDirection: "column", gap: 6, border: "1px solid rgba(255,255,255,0.2)", transition: "background 0.15s" }}
+                  onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.25)")}
+                  onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.15)")}
+                >
+                  <span style={{ fontSize: 22 }}>{s.icon}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", lineHeight: 1.3 }}>{s.label}</span>
+                  <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{s.sub}</span>
+                </a>
+              ))}
             </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
-              <span style={{ fontSize: 28, fontWeight: 800, color: "#1A1A2E" }}>58%</span>
-              <span style={{ fontSize: 14, color: "#4A5568" }}>준비됨</span>
-            </div>
-            <div style={{ height: 8, background: "#E8F0FE", borderRadius: 99 }}>
-              <div style={{ height: "100%", width: "58%", background: "linear-gradient(90deg,#1B6FC8,#0EA5E9)", borderRadius: 99 }} />
-            </div>
-            <p style={{ fontSize: 12, color: "#4A5568", marginTop: 8 }}>목표까지 약 <strong>1억 2,000만원</strong> 더 필요합니다</p>
           </div>
 
-          {/* 병원 체크리스트 미리보기 */}
-          <div style={{ background: "#fff", borderRadius: 18, padding: "20px 22px", boxShadow: "0 4px 20px rgba(27,111,200,0.10)", border: "1px solid #E8F0FE" }}>
-            <p style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", marginBottom: 12 }}>🏥 병원 방문 체크리스트</p>
-            {["신분증", "복용 중인 약 목록", "최근 검사 결과지", "증상 메모"].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: i < 3 ? "1px solid #F0F7FF" : "none" }}>
-                <div style={{ width: 18, height: 18, borderRadius: 4, border: "2px solid #1B6FC8", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  {i < 2 && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1B6FC8" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+          {/* 하단: 부모님 생활 점검표 + 신뢰 배지 */}
+          <div style={{ background: "#fff", borderRadius: 18, padding: "18px 20px", boxShadow: "0 4px 20px rgba(27,111,200,0.08)", border: "1px solid #E8F0FE" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#7C3AED" }}>👨‍👩‍👧 부모님 생활 점검표</p>
+              <a href="/life-tips/family-care" style={{ fontSize: 11, fontWeight: 700, color: "#1B6FC8", textDecoration: "none" }}>바로가기 →</a>
+            </div>
+            {[
+              { label: "안전 환경 (미끄럼 방지·조명·손잡이)", done: true },
+              { label: "건강 관리 (복약·혈압·정기 검진)", done: true },
+              { label: "정서·사회 (전화·외출·취미 지원)", done: false },
+              { label: "복지 서비스 (장기요양·돌봄 신청)", done: false },
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 0", borderBottom: i < 3 ? "1px solid #F5F3FF" : "none" }}>
+                <div style={{ width: 20, height: 20, borderRadius: "50%", background: item.done ? "#7C3AED" : "#F3F4F6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {item.done && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
                 </div>
-                <span style={{ fontSize: 13, color: i < 2 ? "#4A5568" : "#1A1A2E", textDecoration: i < 2 ? "line-through" : "none" }}>{item}</span>
+                <span style={{ fontSize: 12, color: item.done ? "#9CA3AF" : "#1A1A2E", textDecoration: item.done ? "line-through" : "none", lineHeight: 1.5 }}>{item.label}</span>
               </div>
             ))}
           </div>
 
-          {/* 배지 */}
+          {/* 신뢰 배지 */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <span style={{ background: "#E8F4FF", color: "#1B6FC8", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 회원가입 없이 바로 사용</span>
-            <span style={{ background: "#F0FDF4", color: "#059669", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 참고용 계산 · 쉬운 체크리스트</span>
+            <span style={{ background: "#F0FDF4", color: "#059669", fontSize: 12, fontWeight: 600, padding: "6px 12px", borderRadius: 99 }}>✓ 내 정보는 이 기기에만 저장</span>
           </div>
         </div>
       </div>

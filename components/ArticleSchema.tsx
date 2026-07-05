@@ -21,10 +21,10 @@ export default function ArticleSchema({
     datePublished,
     dateModified: dateModified ?? datePublished,
     url,
-    author: { "@type": "Organization", name: "시니어라이프" },
+    author: { "@type": "Organization", name: "시니어 든든" },
     publisher: {
       "@type": "Organization",
-      name: "시니어라이프",
+      name: "시니어 든든",
       url: "https://senior-life.kr",
     },
     inLanguage: "ko",
