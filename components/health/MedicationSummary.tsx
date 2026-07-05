@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type MealTiming = "식전" | "식후" | "상관없음";
 const TIMES = ["아침", "점심", "저녁", "자기 전"] as const;
@@ -21,6 +21,29 @@ export default function MedicationSummary() {
   const [list, setList] = useState<Medicine[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [nameError, setNameError] = useState(false);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("med-list");
+      if (saved) setList(JSON.parse(saved));
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("med-list", JSON.stringify(list));
+      if (list.length > 0) setSavedAt(new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }));
+    } catch {}
+  }, [list]);
+
+  const handleReset = () => {
+    if (!confirm("저장된 약 목록을 모두 삭제할까요?")) return;
+    setList([]);
+    setSavedAt(null);
+    setShowResult(false);
+    try { localStorage.removeItem("med-list"); } catch {}
+  };
 
   const toggleTime = (t: TimeKey) => {
     setForm((prev) => ({
@@ -231,16 +254,31 @@ export default function MedicationSummary() {
       {/* 추가된 약 목록 */}
       {list.length > 0 && (
         <div style={{ marginBottom: 20 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E" }}>
-              입력한 약 <span style={{ color: "#059669" }}>{list.length}가지</span>
-            </p>
-            <button
-              onClick={() => setShowResult(true)}
-              style={{ height: 44, padding: "0 20px", fontSize: 14, fontWeight: 700, color: "#fff", background: "#059669", border: "none", borderRadius: 10, cursor: "pointer" }}
-            >
-              요약표 만들기 →
-            </button>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, gap: 8, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E" }}>
+                입력한 약 <span style={{ color: "#059669" }}>{list.length}가지</span>
+              </p>
+              {savedAt && (
+                <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", background: "#F0FDF4", border: "1px solid #A7F3D0", padding: "2px 8px", borderRadius: 99 }}>
+                  💾 저장됨 {savedAt}
+                </span>
+              )}
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button
+                onClick={handleReset}
+                style={{ height: 40, padding: "0 14px", fontSize: 13, fontWeight: 600, color: "#EF4444", background: "#FFF5F5", border: "1.5px solid #FECACA", borderRadius: 10, cursor: "pointer" }}
+              >
+                목록 초기화
+              </button>
+              <button
+                onClick={() => setShowResult(true)}
+                style={{ height: 40, padding: "0 20px", fontSize: 14, fontWeight: 700, color: "#fff", background: "#059669", border: "none", borderRadius: 10, cursor: "pointer" }}
+              >
+                요약표 만들기 →
+              </button>
+            </div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -346,7 +384,7 @@ export default function MedicationSummary() {
       {/* 상시 면책 */}
       <div style={{ padding: "14px 18px", background: "#fff", borderRadius: 12, border: "1px solid #D1FAE5" }}>
         <p style={{ fontSize: 12, color: "#4A5568", lineHeight: 1.65 }}>
-          ℹ️ 이 도구는 복용약 목록을 <strong>정리해두기 위한 참고용</strong>입니다. 입력한 정보는 저장되지 않으며, 창을 닫으면 사라집니다. 약 복용 관련 결정은 의사·약사와 상담하세요.
+          ℹ️ 이 도구는 복용약 목록을 <strong>정리해두기 위한 참고용</strong>입니다. 입력한 정보는 이 기기에 자동 저장되어 브라우저를 닫아도 유지됩니다. 약 복용 관련 결정은 의사·약사와 상담하세요.
         </p>
       </div>
 

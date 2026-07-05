@@ -39,14 +39,21 @@ export default function RetirementCalculatorPreview() {
   const [living, setLiving] = useState(2000000);
   const [pension, setPension] = useState(600000);
   const [goal, setGoal] = useState(500000000);
+  const [currentAge, setCurrentAge] = useState(60);
+  const [retirementAge, setRetirementAge] = useState(65);
+  const [inflationOn, setInflationOn] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
+  const yearsToRetirement = Math.max(retirementAge - currentAge, 0);
+  const retirementSavings = savings + monthly * 12 * yearsToRetirement;
+  const adjustedLiving = inflationOn ? Math.round(living * Math.pow(1.02, yearsToRetirement)) : living;
+
   const safeGoal = Math.max(goal, 1);
-  const readiness = Math.min(Math.round((savings / safeGoal) * 100), 100);
-  const remaining = Math.max(goal - savings, 0);
+  const readiness = Math.min(Math.round((retirementSavings / safeGoal) * 100), 100);
+  const remaining = Math.max(goal - retirementSavings, 0);
   const monthlyIncome = monthly + pension;
-  const shortfall = Math.max(living - monthlyIncome, 0);
+  const shortfall = Math.max(adjustedLiving - monthlyIncome, 0);
   const yearsNeeded =
     monthly > 0 && remaining > 0
       ? Math.ceil(remaining / (monthly * 12))
@@ -70,13 +77,16 @@ export default function RetirementCalculatorPreview() {
       gradeText.detail,
       "",
       "─ 준비 현황 ─────────────────────",
+      `현재 나이           ${currentAge}세  →  은퇴 예정 ${retirementAge}세`,
+      `은퇴까지 남은 기간  ${yearsToRetirement}년`,
       `현재 모아둔 돈      ${fmt(savings)}원`,
+      `은퇴 시점 예상 저축 ${fmt(retirementSavings)}원`,
       `목표 노후자금       ${fmt(goal)}원`,
       `목표까지 남은 금액  ${fmt(remaining)}원`,
       `예상 준비 기간      ${yearsNeeded != null ? (yearsNeeded === 0 ? "목표 달성" : `약 ${yearsNeeded}년`) : "계산 불가"}`,
       "",
       "─ 월 생활비 분석 ────────────────",
-      `예상 월 생활비      ${fmt(living)}원`,
+      `예상 월 생활비      ${fmt(adjustedLiving)}원${inflationOn && yearsToRetirement > 0 ? ` (물가상승 ${yearsToRetirement}년 반영)` : ""}`,
       `연금 + 저축 합계    ${fmt(monthlyIncome)}원`,
       `월 부족 예상액      ${shortfall > 0 ? fmt(shortfall) + "원" : "부족 없음"}`,
       "",
@@ -172,6 +182,32 @@ export default function RetirementCalculatorPreview() {
         {/* 입력 패널 */}
         <div style={{ background: "#F8FBFF", borderRadius: 20, padding: "24px 20px", marginBottom: 24, border: "1.5px solid #DBEAFE" }}>
           <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 18 }}>기본 정보 입력</p>
+
+          {/* 나이 입력 */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }} className="rc-input-grid">
+            {[
+              { label: "현재 나이", val: currentAge, set: setCurrentAge, step: 1, hint: "만 나이로 입력", unit: "세" },
+              { label: "은퇴 예정 나이", val: retirementAge, set: setRetirementAge, step: 1, hint: "몇 세부터 은퇴하실 예정인가요?", unit: "세" },
+            ].map((f) => (
+              <div key={f.label} style={{ background: "#fff", borderRadius: 12, padding: "14px 16px", border: "1px solid #E8F0FE" }}>
+                <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#4A5568", marginBottom: 4 }}>{f.label}</label>
+                <p style={{ fontSize: 10, color: "#9CA3AF", marginBottom: 8 }}>{f.hint}</p>
+                <input
+                  type="number"
+                  value={f.val || ""}
+                  step={f.step}
+                  min={1}
+                  max={120}
+                  onChange={(e) => f.set(Number(e.target.value) || 0)}
+                  style={{ width: "100%", fontSize: 18, fontWeight: 700, color: "#1A1A2E", border: "none", outline: "none", background: "transparent", boxSizing: "border-box", padding: 0 }}
+                />
+                <p style={{ fontSize: 11, color: "#1B6FC8", marginTop: 4, fontWeight: 600 }}>
+                  {f.val}{f.unit} {f.label === "은퇴 예정 나이" && yearsToRetirement > 0 ? `→ 은퇴까지 ${yearsToRetirement}년` : ""}
+                </p>
+              </div>
+            ))}
+          </div>
+
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="rc-input-grid">
             {[
               { label: "현재 모아둔 돈", val: savings, set: setSavings, step: 1000000, hint: "예금, 적금, 투자 포함" },
@@ -193,6 +229,25 @@ export default function RetirementCalculatorPreview() {
                 <p style={{ fontSize: 11, color: "#1B6FC8", marginTop: 4, fontWeight: 600 }}>{fmt(f.val)}원</p>
               </div>
             ))}
+          </div>
+
+          {/* 물가상승률 토글 */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14, padding: "12px 16px", background: "#fff", borderRadius: 12, border: "1px solid #E8F0FE" }}>
+            <button
+              onClick={() => setInflationOn((v) => !v)}
+              style={{ width: 48, height: 28, borderRadius: 99, background: inflationOn ? "#1B6FC8" : "#D1D5DB", border: "none", cursor: "pointer", position: "relative", transition: "background 0.2s", flexShrink: 0 }}
+              aria-label="물가상승률 반영 토글"
+            >
+              <span style={{ position: "absolute", top: 3, left: inflationOn ? 22 : 3, width: 22, height: 22, borderRadius: "50%", background: "#fff", transition: "left 0.2s", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} />
+            </button>
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#1A1A2E" }}>물가상승률 반영 (연 2%)</p>
+              <p style={{ fontSize: 11, color: "#6B7280" }}>
+                {inflationOn && yearsToRetirement > 0
+                  ? `월 생활비 ${fmt(living)}원 → ${yearsToRetirement}년 후 ${fmt(adjustedLiving)}원으로 계산`
+                  : "켜면 은퇴 시점 월 생활비를 연 2% 물가상승률 기준으로 조정합니다"}
+              </p>
+            </div>
           </div>
           <button
             onClick={handleCalculate}
@@ -234,14 +289,17 @@ export default function RetirementCalculatorPreview() {
               {/* 핵심 수치 */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }} className="rc-result-grid">
                 {[
+                  { label: "은퇴까지 남은 기간", value: yearsToRetirement === 0 ? "이미 은퇴 시점" : `약 ${yearsToRetirement}년`, warn: false },
+                  { label: "은퇴 시점 예상 저축", value: fmt(retirementSavings) + "원", warn: false },
                   { label: "목표까지 남은 금액", value: fmt(remaining) + "원", warn: remaining > 0 },
                   { label: "예상 준비 기간", value: yearsNeeded != null ? (yearsNeeded === 0 ? "목표 달성 ✓" : `약 ${yearsNeeded}년`) : "계산 불가", warn: false },
-                  { label: "월 생활비 대비 부족액", value: shortfall > 0 ? fmt(shortfall) + "원" : "부족 없음 ✓", warn: shortfall > 0 },
+                  { label: "월 생활비 대비 부족액", value: shortfall > 0 ? fmt(shortfall) + "원" : "부족 없음 ✓", warn: shortfall > 0, sub: inflationOn && yearsToRetirement > 0 ? `물가상승 반영 ${fmt(adjustedLiving)}원 기준` : undefined },
                   { label: "연금 + 저축 합계 (월)", value: fmt(monthlyIncome) + "원", warn: false },
                 ].map((item) => (
                   <div key={item.label} style={{ border: "1px solid #E8F0FE", borderRadius: 12, padding: "14px 16px" }}>
                     <p style={{ fontSize: 11, color: "#4A5568", marginBottom: 6, fontWeight: 600 }}>{item.label}</p>
                     <p style={{ fontSize: 17, fontWeight: 800, color: item.warn ? "#D97706" : "#1A1A2E" }}>{item.value}</p>
+                    {"sub" in item && item.sub && <p style={{ fontSize: 10, color: "#9CA3AF", marginTop: 3 }}>{item.sub}</p>}
                   </div>
                 ))}
               </div>

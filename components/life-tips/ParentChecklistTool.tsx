@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CheckItem {
   id: string;
@@ -80,9 +80,36 @@ const CATEGORIES: Category[] = [
 
 const ALL_ITEMS = CATEGORIES.flatMap((c) => c.items.map((i) => ({ ...i, catKey: c.key, catTitle: c.title })));
 
+interface SavedData { checked: Record<string, boolean>; date: string; pct: number; }
+
 export default function ParentChecklistTool() {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [showResult, setShowResult] = useState(false);
+  const [lastSaved, setLastSaved] = useState<SavedData | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("parent-checklist");
+      if (raw) {
+        const data: SavedData = JSON.parse(raw);
+        setChecked(data.checked);
+        setLastSaved(data);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      const total = ALL_ITEMS.length;
+      const cnt = ALL_ITEMS.filter((i) => checked[i.id]).length;
+      const p = Math.round((cnt / total) * 100);
+      if (cnt > 0) {
+        const data: SavedData = { checked, date: new Date().toLocaleDateString("ko-KR"), pct: p };
+        localStorage.setItem("parent-checklist", JSON.stringify(data));
+        setLastSaved(data);
+      }
+    } catch {}
+  }, [checked]);
 
   const toggle = (id: string) => {
     setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -108,6 +135,7 @@ export default function ParentChecklistTool() {
       "  (시니어 든든 참고용 도구)",
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
       "",
+      `점검 날짜: ${new Date().toLocaleDateString("ko-KR")}`,
       `전체 점검 항목: ${totalItems}개 중 ${totalChecked}개 확인 (${pct}%)`,
       `상태: ${grade.emoji} ${grade.label}`,
       "",
@@ -191,6 +219,16 @@ export default function ParentChecklistTool() {
           현재 상태와 챙겨야 할 것을 정리해드립니다.
         </p>
       </div>
+
+      {/* 지난 점검 배지 */}
+      {lastSaved && (
+        <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#F5F3FF", borderRadius: 10, padding: "10px 16px", marginBottom: 16, border: "1px solid #DDD6FE" }}>
+          <span style={{ fontSize: 16 }}>📅</span>
+          <p style={{ fontSize: 13, color: "#4A5568" }}>
+            지난 점검: <strong style={{ color: "#7C3AED" }}>{lastSaved.date}</strong> · <strong style={{ color: "#7C3AED" }}>{lastSaved.pct}%</strong> 확인
+          </p>
+        </div>
+      )}
 
       {/* 전체 진행률 */}
       <div style={{ background: "#F5F3FF", borderRadius: 14, padding: "16px 18px", border: "1.5px solid #DDD6FE", marginBottom: 20, display: "flex", alignItems: "center", gap: 16 }}>
@@ -278,6 +316,7 @@ export default function ParentChecklistTool() {
               </div>
               <p style={{ fontSize: 13, color: "#4A5568", marginTop: 10, lineHeight: 1.65 }}>
                 전체 {totalItems}개 항목 중 <strong>{totalChecked}개</strong>를 확인했습니다.
+                <span style={{ fontSize: 11, color: "#9CA3AF", marginLeft: 8 }}>점검일: {new Date().toLocaleDateString("ko-KR")}</span>
               </p>
             </div>
 

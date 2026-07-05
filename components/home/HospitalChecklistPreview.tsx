@@ -67,6 +67,7 @@ const checklistData: Record<VisitType, { bring: string[]; questions: string[] }>
 export default function HospitalChecklistPreview() {
   const [selected, setSelected] = useState<VisitType | null>(null);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [symptomMemo, setSymptomMemo] = useState("");
 
   const toggleCheck = (key: string) => setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
 
@@ -86,6 +87,7 @@ export default function HospitalChecklistPreview() {
       "💬 의사 선생님께 여쭤볼 것",
       ...data.questions.map((q, i) => `  ${i + 1}. ${q}`),
       "",
+      ...(symptomMemo.trim() ? ["📝 오늘 특별히 말씀드릴 것", `  ${symptomMemo.trim()}`, ""] : []),
       "─────────────────────────────────",
       "📱 보호자분께 드리는 메모",
       "",
@@ -97,6 +99,7 @@ export default function HospitalChecklistPreview() {
       "선생님께 여쭤봐야 할 것:",
       ...data.questions.map((q) => `  · ${q}`),
       "",
+      ...(symptomMemo.trim() ? ["📝 오늘 특별히 말씀드릴 것:", `  ${symptomMemo.trim()}`, ""] : []),
       "─────────────────────────────────",
       "※ 병원 방문 준비 도구 · 시니어 든든",
       "※ 정확한 진단과 치료는 의료진 안내를 따르세요.",
@@ -159,6 +162,7 @@ export default function HospitalChecklistPreview() {
         ${data.bring.map((b, i) => `${i + 1}. ${b}`).join("<br>")}<br><br>
         <strong>선생님께 여쭤봐야 할 것:</strong><br>
         ${data.questions.map((q, i) => `${i + 1}. ${q}`).join("<br>")}
+        ${symptomMemo.trim() ? `<br><br><strong>📝 오늘 특별히 말씀드릴 것:</strong><br>${symptomMemo.trim()}` : ""}
       </p>
     </div>
 
@@ -190,13 +194,29 @@ export default function HospitalChecklistPreview() {
           {visitTypes.map((v) => (
             <button
               key={v.key}
-              onClick={() => { setSelected(v.key); setChecked({}); }}
+              onClick={() => { setSelected(v.key); setChecked({}); setSymptomMemo(""); }}
               style={{ height: 52, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${selected === v.key ? "#0EA5E9" : "#DBEAFE"}`, background: selected === v.key ? "#0EA5E9" : "#fff", color: selected === v.key ? "#fff" : "#1A1A2E", cursor: "pointer", display: "flex", alignItems: "center", gap: 7 }}
             >
               <span>{v.icon}</span>{v.label}
             </button>
           ))}
         </div>
+
+        {/* 증상 메모 */}
+        {selected && (
+          <div style={{ background: "#fff", borderRadius: 14, border: "1.5px solid #BAE6FD", padding: "18px 20px", marginBottom: 20 }}>
+            <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 8 }}>
+              📝 오늘 특별히 말씀드릴 것이 있나요? <span style={{ fontSize: 12, fontWeight: 400, color: "#6B7280" }}>(선택 — 복사·인쇄에 포함됩니다)</span>
+            </label>
+            <textarea
+              value={symptomMemo}
+              onChange={(e) => setSymptomMemo(e.target.value)}
+              placeholder="예: 어제부터 왼쪽 무릎이 아파요. 계단 오를 때 특히 심하고, 부어있어요."
+              rows={3}
+              style={{ width: "100%", fontSize: 15, lineHeight: 1.65, padding: "12px 14px", borderRadius: 10, border: "1.5px solid #BAE6FD", outline: "none", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box", color: "#1A1A2E" }}
+            />
+          </div>
+        )}
 
         {/* 결과 */}
         {selected && selectedData && (
@@ -259,6 +279,12 @@ export default function HospitalChecklistPreview() {
                     <li key={i} style={{ fontSize: 13, color: "#78350F", lineHeight: 1.9 }}>{q}</li>
                   ))}
                 </ul>
+                {symptomMemo.trim() && (
+                  <>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: "#78350F", marginBottom: 4, marginTop: 10 }}>📝 오늘 특별히 말씀드릴 것:</p>
+                    <p style={{ fontSize: 13, color: "#78350F", lineHeight: 1.8, padding: "8px 12px", background: "rgba(255,255,255,0.5)", borderRadius: 8 }}>{symptomMemo}</p>
+                  </>
+                )}
               </div>
 
               {/* 면책 */}

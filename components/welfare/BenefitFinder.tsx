@@ -4,6 +4,7 @@ import { useState } from "react";
 type AgeGroup = "under60" | "60to64" | "65to69" | "70plus";
 type IncomeLevel = "basic" | "near-basic" | "medium50" | "other";
 type MobilityLevel = "independent" | "partial" | "full-care";
+type HouseholdType = "alone" | "couple" | "with-family";
 
 interface Benefit {
   id: string;
@@ -18,6 +19,7 @@ interface Benefit {
     age: AgeGroup[];
     income: IncomeLevel[];
     mobility?: MobilityLevel[];
+    household?: HouseholdType[];
   };
 }
 
@@ -25,10 +27,10 @@ const BENEFITS: Benefit[] = [
   {
     id: "basic-pension",
     name: "기초연금",
-    tag: "현금 지원",
+    tag: "소득 지원",
     tagColor: "#1B6FC8",
-    amount: "월 최대 334,810원 (2024년 기준)",
-    description: "만 65세 이상 소득 하위 70%에 해당하면 매월 기초연금을 받을 수 있습니다. 국민연금 수령액, 재산, 소득에 따라 금액이 달라집니다.",
+    amount: "독거 월 최대 334,810원 / 부부 월 최대 535,680원 (2024년 기준)",
+    description: "만 65세 이상 소득 하위 70%에 해당하면 매월 기초연금을 받을 수 있습니다. 독거 어르신은 최대 334,810원, 부부가 모두 수급할 경우 각각 20% 감액되어 합산 535,680원(267,840원×2)을 받습니다.",
     how: "주소지 읍·면·동 주민센터 또는 복지로(bokjiro.go.kr) 온라인 신청",
     href: "/welfare/basic-pension",
     conditions: { age: ["65to69", "70plus"], income: ["basic", "near-basic", "medium50", "other"] },
@@ -50,10 +52,10 @@ const BENEFITS: Benefit[] = [
     tag: "돌봄 서비스",
     tagColor: "#0EA5E9",
     amount: "안전확인·생활지원·연계 서비스 무료",
-    description: "혼자 사시거나 거동이 불편한 어르신을 위해 정기적으로 방문하거나 전화로 안부를 확인하고 생활에 필요한 도움을 드립니다.",
+    description: "혼자 사시거나 거동이 불편한 어르신을 위해 정기적으로 방문하거나 전화로 안부를 확인하고 생활에 필요한 도움을 드립니다. 독거 어르신이나 부부 가구에서 특히 유용합니다.",
     how: "주소지 읍·면·동 주민센터에 신청하거나 노인복지관에 문의",
     href: null,
-    conditions: { age: ["65to69", "70plus"], income: ["basic", "near-basic", "medium50", "other"], mobility: ["independent", "partial", "full-care"] },
+    conditions: { age: ["65to69", "70plus"], income: ["basic", "near-basic", "medium50", "other"], mobility: ["independent", "partial", "full-care"], household: ["alone", "couple"] },
   },
   {
     id: "medical-aid",
@@ -132,6 +134,12 @@ const MOBILITY_OPTIONS: { key: MobilityLevel; label: string; sub: string }[] = [
   { key: "full-care", label: "상시 돌봄 필요", sub: "일상의 대부분에서 도움 필요" },
 ];
 
+const HOUSEHOLD_OPTIONS: { key: HouseholdType; label: string; sub: string }[] = [
+  { key: "alone", label: "독거 (혼자)", sub: "혼자 생활하는 경우" },
+  { key: "couple", label: "배우자와 함께", sub: "부부 가구" },
+  { key: "with-family", label: "자녀·가족과 함께", sub: "동거 가족이 있는 경우" },
+];
+
 const TAG_BG: Record<string, string> = {
   "#1B6FC8": "#EFF6FF",
   "#0EA5E9": "#F0F9FF",
@@ -144,36 +152,42 @@ export default function BenefitFinder() {
   const [age, setAge] = useState<AgeGroup | null>(null);
   const [income, setIncome] = useState<IncomeLevel | null>(null);
   const [mobility, setMobility] = useState<MobilityLevel | null>(null);
+  const [household, setHousehold] = useState<HouseholdType | null>(null);
   const [showResult, setShowResult] = useState(false);
 
-  const matched = showResult && age && income && mobility
+  const matched = showResult && age && income && mobility && household
     ? BENEFITS.filter((b) => {
         const ageMatch = b.conditions.age.includes(age);
         const incomeMatch = b.conditions.income.includes(income);
         const mobilityMatch = !b.conditions.mobility || b.conditions.mobility.includes(mobility);
-        return ageMatch && incomeMatch && mobilityMatch;
+        const householdMatch = !b.conditions.household || b.conditions.household.includes(household);
+        return ageMatch && incomeMatch && mobilityMatch && householdMatch;
       })
     : [];
 
   const ageLabelOf = (k: AgeGroup) => AGE_OPTIONS.find((o) => o.key === k)?.label ?? "";
   const incomeLabelOf = (k: IncomeLevel) => INCOME_OPTIONS.find((o) => o.key === k)?.label ?? "";
   const mobilityLabelOf = (k: MobilityLevel) => MOBILITY_OPTIONS.find((o) => o.key === k)?.label ?? "";
+  const householdLabelOf = (k: HouseholdType) => HOUSEHOLD_OPTIONS.find((o) => o.key === k)?.label ?? "";
+
+  const reset = () => setShowResult(false);
 
   const handleCheck = () => {
-    if (!age || !income || !mobility) { alert("세 가지 항목을 모두 선택해주세요."); return; }
+    if (!age || !income || !mobility || !household) { alert("네 가지 항목을 모두 선택해주세요."); return; }
     setShowResult(true);
     setTimeout(() => document.getElementById("bf-result")?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
   const handleCopy = () => {
-    if (!matched.length) return;
+    if (!matched.length || !age || !income || !mobility || !household) return;
     const lines = [
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
       "  내 혜택 찾아보기 결과",
       "  (시니어 든든 참고용 도구)",
       "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
       "",
-      `나이: ${age ? ageLabelOf(age) : ""}  |  소득: ${income ? incomeLabelOf(income) : ""}  |  거동: ${mobility ? mobilityLabelOf(mobility) : ""}`,
+      `나이: ${ageLabelOf(age)}  |  소득: ${incomeLabelOf(income)}`,
+      `거동: ${mobilityLabelOf(mobility)}  |  가구: ${householdLabelOf(household)}`,
       `확인된 혜택: ${matched.length}개`,
       "",
       ...matched.map((b, i) => [
@@ -194,7 +208,7 @@ export default function BenefitFinder() {
       .catch(() => alert("복사에 실패했습니다."));
   };
 
-  const canCheck = !!age && !!income && !!mobility;
+  const canCheck = !!age && !!income && !!mobility && !!household;
 
   const SelectBtn = ({
     label, sub, active, onClick,
@@ -231,7 +245,7 @@ export default function BenefitFinder() {
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {AGE_OPTIONS.map((o) => (
-              <SelectBtn key={o.key} label={o.label} active={age === o.key} onClick={() => { setAge(o.key); setShowResult(false); }} />
+              <SelectBtn key={o.key} label={o.label} active={age === o.key} onClick={() => { setAge(o.key); reset(); }} />
             ))}
           </div>
         </div>
@@ -243,7 +257,7 @@ export default function BenefitFinder() {
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
             {INCOME_OPTIONS.map((o) => (
-              <SelectBtn key={o.key} label={o.label} sub={o.sub} active={income === o.key} onClick={() => { setIncome(o.key); setShowResult(false); }} />
+              <SelectBtn key={o.key} label={o.label} sub={o.sub} active={income === o.key} onClick={() => { setIncome(o.key); reset(); }} />
             ))}
           </div>
         </div>
@@ -255,7 +269,19 @@ export default function BenefitFinder() {
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }} className="bf-mobility-grid">
             {MOBILITY_OPTIONS.map((o) => (
-              <SelectBtn key={o.key} label={o.label} sub={o.sub} active={mobility === o.key} onClick={() => { setMobility(o.key); setShowResult(false); }} />
+              <SelectBtn key={o.key} label={o.label} sub={o.sub} active={mobility === o.key} onClick={() => { setMobility(o.key); reset(); }} />
+            ))}
+          </div>
+        </div>
+
+        {/* 가구 구성 */}
+        <div style={{ marginBottom: 22 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E", marginBottom: 6 }}>
+            <span style={{ color: "#1B6FC8" }}>04</span>  가구 구성은 어떻게 되시나요?
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }} className="bf-mobility-grid">
+            {HOUSEHOLD_OPTIONS.map((o) => (
+              <SelectBtn key={o.key} label={o.label} sub={o.sub} active={household === o.key} onClick={() => { setHousehold(o.key); reset(); }} />
             ))}
           </div>
         </div>
@@ -264,12 +290,12 @@ export default function BenefitFinder() {
           onClick={handleCheck}
           style={{ width: "100%", height: 58, fontSize: 17, fontWeight: 700, color: "#fff", background: canCheck ? "#1B6FC8" : "#9CA3AF", border: "none", borderRadius: 14, cursor: canCheck ? "pointer" : "default", letterSpacing: "-0.2px", transition: "background 0.2s" }}
         >
-          {canCheck ? "혜택 확인하기 →" : "세 항목을 모두 선택해주세요"}
+          {canCheck ? "혜택 확인하기 →" : "네 항목을 모두 선택해주세요"}
         </button>
       </div>
 
       {/* 결과 */}
-      {showResult && age && income && mobility && (
+      {showResult && age && income && mobility && household && (
         <div id="bf-result">
           {/* 결과 헤더 */}
           <div style={{ background: matched.length > 0 ? "#EFF6FF" : "#FEF2F2", border: `1.5px solid ${matched.length > 0 ? "#BFDBFE" : "#FECACA"}`, borderRadius: 14, padding: "16px 18px", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
@@ -279,7 +305,7 @@ export default function BenefitFinder() {
                 {matched.length > 0 ? `확인된 혜택 ${matched.length}개` : "해당 조건의 혜택을 찾지 못했습니다"}
               </p>
               <p style={{ fontSize: 12, color: "#4A5568", lineHeight: 1.5 }}>
-                {ageLabelOf(age)} · {incomeLabelOf(income)} · {mobilityLabelOf(mobility)} 기준
+                {ageLabelOf(age)} · {incomeLabelOf(income)} · {mobilityLabelOf(mobility)} · {householdLabelOf(household)} 기준
               </p>
             </div>
             {matched.length > 0 && (
