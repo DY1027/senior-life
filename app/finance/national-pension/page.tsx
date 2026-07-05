@@ -25,7 +25,7 @@ const faqItems = [
 export default function NationalPensionPage() {
   return (
     <>
-      <ArticleSchema title="국민연금 예상 수령액 조회 방법" description="국민연금 예상 수령액을 앱·홈페이지에서 조회하는 방법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://senior-life.kr/finance/national-pension" />
+      <ArticleSchema title="국민연금 예상 수령액 조회 방법" description="국민연금 예상 수령액을 앱·홈페이지에서 조회하는 방법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/finance/national-pension" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "노후재정", href: "/finance" }, { label: "국민연금 수령액 조회" }]} />

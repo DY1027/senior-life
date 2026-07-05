@@ -76,7 +76,15 @@ export default function LoginPage() {
         )}
 
         <p style={{ textAlign: "center", fontSize: 12, color: "#9CA3AF", marginTop: 20 }}>
-          가입하면 서비스 이용약관에 동의하는 것으로 간주됩니다
+          가입하면{" "}
+          <a href="/legal/terms" target="_blank" rel="noopener noreferrer" style={{ color: "#6B7280", textDecoration: "underline" }}>
+            이용약관
+          </a>
+          {" "}및{" "}
+          <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "#6B7280", textDecoration: "underline" }}>
+            개인정보처리방침
+          </a>
+          에 동의하는 것으로 간주됩니다
         </p>
       </div>
     </div>

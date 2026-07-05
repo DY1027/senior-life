@@ -13,7 +13,7 @@ export default function BreadcrumbNav({ items }: { items: BreadcrumbItem[] }) {
       "@type": "ListItem",
       position: idx + 1,
       name: item.label,
-      ...(item.href ? { item: `https://senior-life.kr${item.href}` } : {}),
+      ...(item.href ? { item: `https://seniordeundun.com${item.href}` } : {}),
     })),
   };
 

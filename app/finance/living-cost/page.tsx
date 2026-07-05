@@ -19,7 +19,7 @@ const faqItems = [
 export default function LivingCostPage() {
   return (
     <>
-      <ArticleSchema title="노후 생활비 계산기" description="가구 유형·거주 지역·생활 수준에 따른 월 생활비 예상액을 계산합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://senior-life.kr/finance/living-cost" />
+      <ArticleSchema title="노후 생활비 계산기" description="가구 유형·거주 지역·생활 수준에 따른 월 생활비 예상액을 계산합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/finance/living-cost" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "노후재정", href: "/finance" }, { label: "노후 생활비 계산기" }]} />

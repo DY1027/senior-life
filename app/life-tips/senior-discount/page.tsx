@@ -35,7 +35,7 @@ const faqItems = [
 export default function SeniorDiscountPage() {
   return (
     <>
-      <ArticleSchema title="시니어 할인 카드 총정리" description="65세 이상 교통·문화·쇼핑 할인 혜택을 정리합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://senior-life.kr/life-tips/senior-discount" />
+      <ArticleSchema title="시니어 할인 카드 총정리" description="65세 이상 교통·문화·쇼핑 할인 혜택을 정리합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/life-tips/senior-discount" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "생활팁", href: "/life-tips" }, { label: "시니어 할인 총정리" }]} />

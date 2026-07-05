@@ -70,6 +70,13 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* 약관/정책 링크 */}
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
+          <Link href="/legal/terms" style={{ fontSize: 11, color: "#6B6860", textDecoration: "none" }}>이용약관</Link>
+          <Link href="/legal/privacy" style={{ fontSize: 11, color: "#6B6860", fontWeight: 700, textDecoration: "none" }}>개인정보처리방침</Link>
+          <Link href="/legal/refund" style={{ fontSize: 11, color: "#6B6860", textDecoration: "none" }}>환불규정</Link>
+        </div>
+
         {/* 구분선 */}
         <div style={{ borderTop: "0.5px solid #EEECE6", paddingTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <p style={{ fontSize: 11, color: "#9B9890" }}>

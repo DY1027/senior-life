@@ -4,11 +4,11 @@ import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
 
 export const metadata: Metadata = {
-  title: "기초연금 수급자격과 신청방법 완벽 가이드 (2024년)",
+  title: "기초연금 수급자격과 신청방법 완벽 가이드 (2026년)",
   description:
-    "기초연금이란 만 65세 이상 소득 하위 70% 어르신에게 지급되는 연금입니다. 수급자격 조건, 신청 절차, 2024년 지급액을 단계별로 안내합니다.",
+    "기초연금이란 만 65세 이상 소득 하위 70% 어르신에게 지급되는 연금입니다. 수급자격 조건, 신청 절차, 2026년 지급액을 단계별로 안내합니다.",
   openGraph: {
-    title: "기초연금 수급자격과 신청방법 (2024년)",
+    title: "기초연금 수급자격과 신청방법 (2026년)",
     description: "65세 이상 소득 하위 70%에게 지급되는 기초연금, 신청 방법을 확인하세요.",
   },
 };
@@ -17,7 +17,7 @@ const faqItems = [
   {
     question: "기초연금 수급자격은 어떻게 되나요?",
     answer:
-      "만 65세 이상이며, 대한민국 국적을 보유하고 국내에 거주하는 어르신 중 가구의 소득인정액이 선정기준액 이하인 분에게 지급됩니다. 2024년 기준 단독가구 월 213만 원, 부부가구 월 340만 8,000원 이하면 신청 대상입니다.",
+      "만 65세 이상이며, 대한민국 국적을 보유하고 국내에 거주하는 어르신 중 가구의 소득인정액이 선정기준액 이하인 분에게 지급됩니다. 2026년 기준 단독가구 월 247만 원, 부부가구 월 395만 2,000원 이하면 신청 대상입니다.",
   },
   {
     question: "기초연금 신청은 어디서 하나요?",
@@ -25,14 +25,14 @@ const faqItems = [
       "주소지 관할 읍·면·동 주민센터 또는 국민연금공단 지사에서 신청할 수 있습니다. 복지로(bokjiro.go.kr) 홈페이지나 복지로 앱에서 온라인 신청도 가능합니다.",
   },
   {
-    question: "기초연금 2024년 지급액은 얼마인가요?",
+    question: "기초연금 2026년 지급액은 얼마인가요?",
     answer:
-      "2024년 기준 최대 월 334,810원이 지급됩니다. 소득인정액과 국민연금 수령 여부에 따라 금액이 달라질 수 있으며, 부부가 모두 수급자인 경우 각 20% 감액됩니다.",
+      "2026년 기준 최대 월 349,700원이 지급됩니다. 소득인정액과 국민연금 수령 여부에 따라 금액이 달라질 수 있으며, 부부가 모두 수급자인 경우 각 20% 감액됩니다.",
   },
   {
     question: "기초연금과 국민연금을 동시에 받을 수 있나요?",
     answer:
-      "네, 동시에 받을 수 있습니다. 단, 국민연금 수령액이 기준연금액(2024년 기준 월 약 334,810원)의 150%인 약 50만 원을 초과하면 기초연금이 일부 감액될 수 있습니다.",
+      "네, 동시에 받을 수 있습니다. 단, 국민연금 수령액이 기준연금액(2026년 기준 월 약 349,700원)의 150%인 약 52만 5,000원을 초과하면 기초연금이 일부 감액될 수 있습니다.",
   },
   {
     question: "기초연금 신청 시 필요한 서류는 무엇인가요?",
@@ -72,11 +72,11 @@ export default function BasicPensionPage() {
   return (
     <>
       <ArticleSchema
-        title="기초연금 수급자격과 신청방법 완벽 가이드 (2024년)"
+        title="기초연금 수급자격과 신청방법 완벽 가이드 (2026년)"
         description="기초연금이란 만 65세 이상 소득 하위 70% 어르신에게 지급되는 연금입니다."
         datePublished="2024-01-01"
-        dateModified="2024-11-01"
-        url="https://senior-life.kr/welfare/basic-pension"
+        dateModified="2026-07-06"
+        url="https://seniordeundun.com/welfare/basic-pension"
       />
       <script
         type="application/ld+json"
@@ -108,7 +108,7 @@ export default function BasicPensionPage() {
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
               <i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />
-              2024년 11월 업데이트
+              2026년 7월 업데이트
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
               <i className="ti ti-clock" style={{ fontSize: 12 }} aria-hidden="true" />
@@ -129,7 +129,7 @@ export default function BasicPensionPage() {
           <p style={{ fontSize: 10, fontWeight: 600, color: "#C4621A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
           <p style={{ fontSize: 14, fontWeight: 500, color: "#7C3415", lineHeight: 1.65 }}>
             기초연금은 만 65세 이상 소득 하위 70% 어르신에게 국가가 지급하는 연금으로,
-            2024년 기준 최대 월 334,810원을 받을 수 있습니다.
+            2026년 기준 최대 월 349,700원을 받을 수 있습니다.
             주민센터 방문 또는 복지로 앱에서 신청 가능합니다.
           </p>
         </div>
@@ -143,7 +143,7 @@ export default function BasicPensionPage() {
             {[
               "만 65세 이상",
               "대한민국 국적 보유 + 국내 거주",
-              "소득인정액이 선정기준액 이하 (2024년: 단독가구 월 213만 원 / 부부가구 월 340만 8,000원)",
+              "소득인정액이 선정기준액 이하 (2026년: 단독가구 월 247만 원 / 부부가구 월 395만 2,000원)",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", background: "#FAFAF8", borderRadius: 10, border: "0.5px solid #EEECE6" }}>
                 <span style={{ width: 24, height: 24, borderRadius: "50%", background: "#1A1A1A", color: "#fff", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -181,20 +181,20 @@ export default function BasicPensionPage() {
         {/* 지급액 */}
         <section style={{ marginBottom: 32 }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A", marginBottom: 14, letterSpacing: "-0.3px" }}>
-            2024년 기초연금 지급액
+            2026년 기초연금 지급액
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             <div style={{ padding: "16px 18px", background: "#FAFAF8", borderRadius: 12, border: "0.5px solid #EEECE6" }}>
               <p style={{ fontSize: 11, color: "#9B9890", marginBottom: 6 }}>단독가구</p>
               <p style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.4px" }}>
-                월 <span style={{ color: "#E67E3F" }}>334,810</span>원
+                월 <span style={{ color: "#E67E3F" }}>349,700</span>원
               </p>
               <p style={{ fontSize: 11, color: "#9B9890", marginTop: 4 }}>최대 지급액</p>
             </div>
             <div style={{ padding: "16px 18px", background: "#FAFAF8", borderRadius: 12, border: "0.5px solid #EEECE6" }}>
               <p style={{ fontSize: 11, color: "#9B9890", marginBottom: 6 }}>부부 각각</p>
               <p style={{ fontSize: 22, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.4px" }}>
-                월 <span style={{ color: "#E67E3F" }}>267,850</span>원
+                월 <span style={{ color: "#E67E3F" }}>279,760</span>원
               </p>
               <p style={{ fontSize: 11, color: "#9B9890", marginTop: 4 }}>부부 모두 수급 시 20% 감액</p>
             </div>

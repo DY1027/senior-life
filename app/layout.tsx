@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const naverSiteVerification = process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://senior-life.vercel.app"),
+  metadataBase: new URL("https://seniordeundun.com"),
   title: {
     default: "시니어 든든 — 노후자금, 병원 준비, 복지혜택을 한 번에",
     template: "%s | 시니어 든든",
@@ -28,6 +31,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true, "max-snippet": -1 },
+  },
+  verification: {
+    ...(googleSiteVerification ? { google: googleSiteVerification } : {}),
+    ...(naverSiteVerification ? { other: { "naver-site-verification": naverSiteVerification } } : {}),
   },
 };
 

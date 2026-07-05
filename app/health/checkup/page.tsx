@@ -28,7 +28,7 @@ const faqItems = [
 export default function CheckupPage() {
   return (
     <>
-      <ArticleSchema title="노인 무료 건강검진 항목 총정리" description="66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://senior-life.kr/health/checkup" />
+      <ArticleSchema title="노인 무료 건강검진 항목 총정리" description="66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/health/checkup" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "건강·병원", href: "/health" }, { label: "노인 무료 건강검진" }]} />

@@ -25,7 +25,7 @@ export default function ArticleSchema({
     publisher: {
       "@type": "Organization",
       name: "시니어 든든",
-      url: "https://senior-life.kr",
+      url: "https://seniordeundun.com",
     },
     inLanguage: "ko",
   };

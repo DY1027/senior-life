@@ -26,7 +26,7 @@ const faqItems = [
 export default function FamilyCarePage() {
   return (
     <>
-      <ArticleSchema title="부모님 돌봄 가족을 위한 체크리스트" description="재가 돌봄 시 확인 항목과 위급 상황 대처법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://senior-life.kr/life-tips/family-care" />
+      <ArticleSchema title="부모님 돌봄 가족을 위한 체크리스트" description="재가 돌봄 시 확인 항목과 위급 상황 대처법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/life-tips/family-care" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "생활팁", href: "/life-tips" }, { label: "가족 돌봄 체크리스트" }]} />
