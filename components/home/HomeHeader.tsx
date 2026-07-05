@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase";
+import { getClient } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
 const navLinks = [
@@ -15,26 +15,26 @@ const navLinks = [
 export default function HomeHeader() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getUser().then((res) => setUser(res.data.user));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    const sb = getClient();
+    if (!sb) return;
+    sb.auth.getUser().then((res) => setUser(res.data.user));
+    const { data: { subscription } } = sb.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null);
     });
     return () => subscription.unsubscribe();
   }, []);
 
   async function handleSignOut() {
-    await supabase?.auth.signOut();
+    const sb = getClient();
+    await sb?.auth.signOut();
     setUser(null);
   }
 
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 100, background: "#fff", borderBottom: "1px solid #E8F0FE", boxShadow: "0 2px 8px rgba(27,111,200,0.06)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", display: "flex", alignItems: "center", height: 64, gap: 16 }}>
-        {/* 로고 */}
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none", flexShrink: 0 }}>
           <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg,#1B6FC8,#0EA5E9)", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="white" opacity=".9"/><path d="M9 12l2 2 4-4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -45,7 +45,6 @@ export default function HomeHeader() {
           </div>
         </Link>
 
-        {/* 데스크탑 nav */}
         <nav style={{ display: "flex", gap: 2, flex: 1, justifyContent: "center" }} className="hh-nav">
           {navLinks.map((l) => (
             <Link key={l.href} href={l.href} style={{ padding: "8px 14px", fontSize: 15, fontWeight: 600, color: "#1A1A2E", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
@@ -54,7 +53,6 @@ export default function HomeHeader() {
           ))}
         </nav>
 
-        {/* 인증 버튼 */}
         <div className="hh-auth" style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -77,7 +75,6 @@ export default function HomeHeader() {
           )}
         </div>
 
-        {/* 햄버거 */}
         <button onClick={() => setOpen(!open)} className="hh-burger" aria-label="메뉴 열기" style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
           {open
             ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A1A2E" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -86,7 +83,6 @@ export default function HomeHeader() {
         </button>
       </div>
 
-      {/* 모바일 드로어 */}
       {open && (
         <div style={{ background: "#fff", borderTop: "1px solid #E8F0FE", padding: "8px 20px 20px" }}>
           {navLinks.map((l) => (

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase";
+import { getClient } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
 const nav = [
@@ -14,19 +14,20 @@ const nav = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getUser().then((res) => setUser(res.data.user));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    const sb = getClient();
+    if (!sb) return;
+    sb.auth.getUser().then((res) => setUser(res.data.user));
+    const { data: { subscription } } = sb.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null);
     });
     return () => subscription.unsubscribe();
   }, []);
 
   async function handleSignOut() {
-    await supabase?.auth.signOut();
+    const sb = getClient();
+    await sb?.auth.signOut();
     setUser(null);
   }
 

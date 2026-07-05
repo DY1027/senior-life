@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase";
+import { getClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -8,21 +8,20 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   async function handleEmail() {
     setLoading(true);
-    await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
+    await getClient()!.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
     setSent(true);
     setLoading(false);
   }
 
   async function handleGoogle() {
-    await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/auth/callback` } });
+    await getClient()!.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/auth/callback` } });
   }
 
   async function handleKakao() {
-    await supabase.auth.signInWithOAuth({ provider: "kakao", options: { redirectTo: `${location.origin}/auth/callback` } });
+    await getClient()!.auth.signInWithOAuth({ provider: "kakao", options: { redirectTo: `${location.origin}/auth/callback` } });
   }
 
   return (
