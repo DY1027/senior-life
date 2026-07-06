@@ -1,16 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getClient } from "@/lib/supabase";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState(() =>
-    typeof window !== "undefined" && new URLSearchParams(window.location.search).has("error")
-      ? "로그인 인증을 완료하지 못했습니다. 다시 시도해주세요."
-      : ""
-  );
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("error")) {
+      setError("로그인 인증을 완료하지 못했습니다. 다시 시도해주세요.");
+    }
+  }, []);
 
   const getSupabaseOrSetError = () => {
     const client = getClient();
