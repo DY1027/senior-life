@@ -45,7 +45,7 @@ export default function HomeFooter() {
           {/* 이용 안내 + 문의 */}
           <div>
             <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 16 }}>이용 안내</p>
-            {[["이용 가이드","#"],["개인정보처리방침","#"],["이용약관","#"],["문의하기","#"]].map(([l,h]) => (
+            {[["이용 가이드","#"],["개인정보처리방침","/legal/privacy"],["이용약관","/legal/terms"],["문의하기","mailto:eoduq07@naver.com"]].map(([l,h]) => (
               <a key={l} href={h} style={{ display: "block", fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 10, textDecoration: "none" }}>{l}</a>
             ))}
           </div>
