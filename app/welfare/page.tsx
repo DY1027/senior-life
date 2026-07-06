@@ -6,6 +6,7 @@ import BenefitFinder from "@/components/welfare/BenefitFinder";
 export const metadata: Metadata = {
   title: "내 혜택 찾아보기 — 기초연금·장기요양·복지혜택 안내",
   description: "나이, 소득, 거동 상태를 선택하면 받을 수 있는 복지혜택을 바로 확인할 수 있습니다. 기초연금, 장기요양, 의료급여, 노인일자리 등 8가지 혜택을 안내합니다.",
+  alternates: { canonical: "/welfare" },
 };
 
 const articles = [

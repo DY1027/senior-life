@@ -6,20 +6,60 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(() =>
+    typeof window !== "undefined" && new URLSearchParams(window.location.search).has("error")
+      ? "로그인 인증을 완료하지 못했습니다. 다시 시도해주세요."
+      : ""
+  );
+
+  const getSupabaseOrSetError = () => {
+    const client = getClient();
+    if (!client) {
+      setError("로그인 설정을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+      return null;
+    }
+    return client;
+  };
 
   async function handleEmail() {
+    const client = getSupabaseOrSetError();
+    if (!client) return;
     setLoading(true);
-    await getClient()!.auth.signInWithOtp({ email, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
-    setSent(true);
-    setLoading(false);
+    setError("");
+    try {
+      const { error: signInError } = await client.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      });
+      if (signInError) throw signInError;
+      setSent(true);
+    } catch {
+      setError("이메일 로그인 링크를 보내지 못했습니다. 이메일 주소를 확인한 뒤 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleGoogle() {
-    await getClient()!.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${location.origin}/auth/callback` } });
+    const client = getSupabaseOrSetError();
+    if (!client) return;
+    setError("");
+    const { error: signInError } = await client.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${location.origin}/auth/callback` },
+    });
+    if (signInError) setError("Google 로그인을 시작하지 못했습니다. 잠시 후 다시 시도해주세요.");
   }
 
   async function handleKakao() {
-    await getClient()!.auth.signInWithOAuth({ provider: "kakao", options: { redirectTo: `${location.origin}/auth/callback` } });
+    const client = getSupabaseOrSetError();
+    if (!client) return;
+    setError("");
+    const { error: signInError } = await client.auth.signInWithOAuth({
+      provider: "kakao",
+      options: { redirectTo: `${location.origin}/auth/callback` },
+    });
+    if (signInError) setError("카카오 로그인을 시작하지 못했습니다. 잠시 후 다시 시도해주세요.");
   }
 
   return (
@@ -53,6 +93,11 @@ export default function LoginPage() {
         </div>
 
         {/* 이메일 로그인 */}
+        {error && (
+          <p style={{ fontSize: 13, color: "#DC2626", background: "#FEF2F2", border: "1px solid #FECACA", borderRadius: 10, padding: "10px 12px", marginBottom: 12 }}>
+            {error}
+          </p>
+        )}
         {sent ? (
           <div style={{ textAlign: "center", padding: "20px", background: "#F0FDF4", borderRadius: 12 }}>
             <p style={{ fontSize: 15, fontWeight: 600, color: "#059669" }}>✉️ 이메일을 확인하세요</p>
@@ -61,9 +106,11 @@ export default function LoginPage() {
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <input
+              id="login-email"
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              aria-label="이메일 주소"
               placeholder="이메일 주소 입력"
               style={{ height: 52, padding: "0 16px", borderRadius: 12, border: "1px solid #E5E7EB", fontSize: 15, outline: "none", width: "100%", boxSizing: "border-box" }}
             />

@@ -6,6 +6,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "노인 무료 건강검진 항목 총정리 — 66세 생애전환기 검진 (2024년)",
   description: "66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다. 무료로 받을 수 있는 검진 종류와 신청 방법을 확인하세요.",
+  alternates: { canonical: "/health/checkup" },
 };
 
 const checkups = [

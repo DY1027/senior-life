@@ -6,6 +6,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "건강보험 본인부담금 계산 방법 — 외래·입원·약국별 정리 (2024년)",
   description: "건강보험 본인부담금이란 진료비 중 환자가 직접 부담하는 금액입니다. 외래·입원·약국별 본인부담률과 본인부담상한제 혜택을 쉽게 안내합니다.",
+  alternates: { canonical: "/health/insurance-copay" },
 };
 
 const copayTable = [

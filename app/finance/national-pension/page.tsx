@@ -6,6 +6,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "국민연금 예상 수령액 조회 방법 — 앱·홈페이지 단계별 안내",
   description: "국민연금 예상 수령액을 조회하는 방법을 단계별로 안내합니다. 내 연금 앱과 국민연금공단 홈페이지에서 쉽게 확인할 수 있습니다.",
+  alternates: { canonical: "/finance/national-pension" },
 };
 
 const steps = [

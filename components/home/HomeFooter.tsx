@@ -45,7 +45,7 @@ export default function HomeFooter() {
           {/* 이용 안내 + 문의 */}
           <div>
             <p style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 16 }}>이용 안내</p>
-            {[["이용 가이드","#"],["개인정보처리방침","/legal/privacy"],["이용약관","/legal/terms"],["문의하기","mailto:eoduq07@naver.com"]].map(([l,h]) => (
+            {[["자주 묻는 질문","/#faq"],["개인정보처리방침","/legal/privacy"],["이용약관","/legal/terms"],["문의하기","mailto:eoduq07@naver.com"]].map(([l,h]) => (
               <a key={l} href={h} style={{ display: "block", fontSize: 14, color: "rgba(255,255,255,0.6)", marginBottom: 10, textDecoration: "none" }}>{l}</a>
             ))}
           </div>
@@ -59,7 +59,7 @@ export default function HomeFooter() {
         </div>
 
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>© 2025 시니어 든든. All rights reserved.</p>
+          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>© 2026 시니어 든든. All rights reserved.</p>
         </div>
       </div>
 

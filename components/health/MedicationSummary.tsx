@@ -161,9 +161,9 @@ export default function MedicationSummary() {
       {/* 헤더 */}
       <div style={{ background: "linear-gradient(135deg,#059669,#10B981)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, color: "#fff" }}>
         <p style={{ fontSize: 13, fontWeight: 600, opacity: 0.85, marginBottom: 6 }}>복용약 요약표</p>
-        <h2 style={{ fontSize: "clamp(20px,3vw,26px)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.3, marginBottom: 8 }}>
+        <h1 style={{ fontSize: "clamp(20px,3vw,26px)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.3, marginBottom: 8 }}>
           복용 중인 약을 정리해<br />병원·약국에 보여주세요
-        </h2>
+        </h1>
         <p style={{ fontSize: 14, opacity: 0.85, lineHeight: 1.65 }}>
           약 이름, 용량, 복용 시간을 입력하면 한 장짜리 요약표로 정리됩니다.<br />
           인쇄하거나 복사해서 진료 때 바로 사용하세요.

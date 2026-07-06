@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
+import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
 const naverSiteVerification = process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION;
+const notoSansKr = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
@@ -12,6 +18,9 @@ export const metadata: Metadata = {
   },
   description:
     "50대 이상 시니어와 부모님 정보를 찾는 가족을 위한 생활정보 포털. 기초연금, 복지혜택, 건강보험, 노후재정, 생활팁을 쉽고 정확하게 안내합니다.",
+  alternates: {
+    canonical: "/",
+  },
   keywords: ["시니어", "노인복지", "기초연금", "건강보험", "노후준비", "부모님 정보"],
   authors: [{ name: "시니어 든든" }],
   creator: "시니어 든든",
@@ -40,14 +49,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className="h-full">
+    <html lang="ko" className={`${notoSansKr.className} h-full`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"

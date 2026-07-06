@@ -6,6 +6,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "장기요양보험 등급 신청 방법 — 1~5등급 판정 기준 (2026년)",
   description: "장기요양보험 등급 신청 방법, 1~5등급 판정 기준, 신청 절차를 단계별로 안내합니다. 국민건강보험공단 방문 또는 전화로 신청 가능합니다.",
+  alternates: { canonical: "/welfare/long-term-care" },
 };
 
 const grades = [

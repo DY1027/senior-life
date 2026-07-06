@@ -6,6 +6,7 @@ import MedicationSummary from "@/components/health/MedicationSummary";
 export const metadata: Metadata = {
   title: "복용약 요약표 · 건강·병원 정보 — 시니어 든든",
   description: "복용 중인 약을 입력하면 병원·약국에 보여줄 수 있는 요약표를 만들어드립니다. 건강보험 본인부담금, 노인 무료 건강검진 정보도 확인하세요.",
+  alternates: { canonical: "/health" },
 };
 
 const articles = [

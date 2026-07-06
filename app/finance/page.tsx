@@ -5,6 +5,7 @@ import BreadcrumbNav from "@/components/BreadcrumbNav";
 export const metadata: Metadata = {
   title: "노후재정 정보 — 국민연금·노후자금·생활비 계산",
   description: "시니어를 위한 노후재정 정보. 국민연금 예상 수령액 조회 방법, 노후 생활비 계산기, 퇴직 후 절세 방법을 안내합니다.",
+  alternates: { canonical: "/finance" },
 };
 
 const articles = [

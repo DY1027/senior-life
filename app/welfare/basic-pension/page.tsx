@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "기초연금 수급자격과 신청방법 완벽 가이드 (2026년)",
   description:
     "기초연금이란 만 65세 이상 소득 하위 70% 어르신에게 지급되는 연금입니다. 수급자격 조건, 신청 절차, 2026년 지급액을 단계별로 안내합니다.",
+  alternates: { canonical: "/welfare/basic-pension" },
   openGraph: {
     title: "기초연금 수급자격과 신청방법 (2026년)",
     description: "65세 이상 소득 하위 70%에게 지급되는 기초연금, 신청 방법을 확인하세요.",

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
   title: "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
   description: "기초연금, 병원 방문 체크리스트, 노후자금 계산기까지. 어르신과 가족이 바로 활용할 수 있는 시니어 생활도구 서비스입니다. 회원가입 없이 바로 사용하세요.",
+  alternates: { canonical: "/" },
   keywords: ["시니어든든", "노후자금 계산기", "병원 체크리스트", "기초연금", "시니어 복지혜택", "노인 건강보험"],
   openGraph: {
     type: "website",

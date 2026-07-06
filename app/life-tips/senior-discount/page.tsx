@@ -6,6 +6,7 @@ import FAQAccordion from "@/components/FAQAccordion";
 export const metadata: Metadata = {
   title: "시니어 할인 카드 총정리 — 교통·문화·쇼핑 혜택 (2024년)",
   description: "65세 이상 어르신이 받을 수 있는 교통·문화시설·쇼핑 할인 혜택을 한눈에 정리했습니다. 지하철 무임승차부터 국립공원 무료 입장까지 확인하세요.",
+  alternates: { canonical: "/life-tips/senior-discount" },
 };
 
 const discounts = [

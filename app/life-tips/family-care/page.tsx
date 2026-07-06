@@ -7,6 +7,7 @@ import ParentChecklistTool from "@/components/life-tips/ParentChecklistTool";
 export const metadata: Metadata = {
   title: "부모님 돌봄 가족을 위한 체크리스트 — 재가 돌봄 가이드",
   description: "부모님을 돌보는 가족을 위한 체크리스트입니다. 재가 돌봄 시 확인 항목, 위급 상황 대처법, 돌봄 번아웃 예방법을 안내합니다.",
+  alternates: { canonical: "/life-tips/family-care" },
 };
 
 const checklist = [

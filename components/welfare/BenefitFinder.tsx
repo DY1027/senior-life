@@ -227,9 +227,9 @@ export default function BenefitFinder() {
       {/* 섹션 헤더 */}
       <div style={{ background: "linear-gradient(135deg,#1B6FC8,#0EA5E9)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, color: "#fff" }}>
         <p style={{ fontSize: 13, fontWeight: 600, opacity: 0.85, marginBottom: 6 }}>복지혜택 찾기</p>
-        <h2 style={{ fontSize: "clamp(20px,3vw,26px)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.3, marginBottom: 8 }}>
+        <h1 style={{ fontSize: "clamp(20px,3vw,26px)", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.3, marginBottom: 8 }}>
           내 상황에 맞는 혜택을<br />바로 확인해보세요
-        </h2>
+        </h1>
         <p style={{ fontSize: 14, opacity: 0.85, lineHeight: 1.65 }}>
           아래 항목을 선택하면 받을 수 있는 복지혜택 목록을 보여드립니다.<br />
           회원가입 없이 바로 확인할 수 있습니다.

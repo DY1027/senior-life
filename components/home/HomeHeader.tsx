@@ -5,11 +5,10 @@ import { getClient } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
 const navLinks = [
-  { label: "노후자금", href: "/finance" },
-  { label: "병원준비", href: "/health/checkup" },
   { label: "복지혜택", href: "/welfare" },
-  { label: "건강정보", href: "/health" },
-  { label: "생활정보", href: "/life-tips" },
+  { label: "건강·병원", href: "/health" },
+  { label: "노후재정", href: "/finance" },
+  { label: "생활팁", href: "/life-tips" },
 ];
 
 export default function HomeHeader() {

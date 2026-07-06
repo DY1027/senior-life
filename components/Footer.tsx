@@ -80,7 +80,7 @@ export default function Footer() {
         {/* 구분선 */}
         <div style={{ borderTop: "0.5px solid #EEECE6", paddingTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <p style={{ fontSize: 11, color: "#9B9890" }}>
-            © 2025 시니어 든든. 본 정보는 참고용이며 정확한 내용은 관련 기관에 문의하세요.
+          © 2026 시니어 든든. 본 정보는 참고용이며 정확한 내용은 관련 기관에 문의하세요.
           </p>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {sources.map((src) => (

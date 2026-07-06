@@ -1,0 +1,172 @@
+[
+  {
+    "route": "/",
+    "status": 200,
+    "title": "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\home--mobile.png"
+  },
+  {
+    "route": "/welfare",
+    "status": 200,
+    "title": "내 혜택 찾아보기 — 기초연금·장기요양·복지혜택 안내 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\welfare--mobile.png"
+  },
+  {
+    "route": "/welfare/basic-pension",
+    "status": 200,
+    "title": "기초연금 수급자격과 신청방법 완벽 가이드 (2026년) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\welfare__basic-pension--mobile.png"
+  },
+  {
+    "route": "/welfare/long-term-care",
+    "status": 200,
+    "title": "장기요양보험 등급 신청 방법 — 1~5등급 판정 기준 (2026년) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\welfare__long-term-care--mobile.png"
+  },
+  {
+    "route": "/health",
+    "status": 200,
+    "title": "복용약 요약표 · 건강·병원 정보 — 시니어 든든 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\health--mobile.png"
+  },
+  {
+    "route": "/health/checkup",
+    "status": 200,
+    "title": "노인 무료 건강검진 항목 총정리 — 66세 생애전환기 검진 (2024년) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\health__checkup--mobile.png"
+  },
+  {
+    "route": "/health/insurance-copay",
+    "status": 200,
+    "title": "건강보험 본인부담금 계산 방법 — 외래·입원·약국별 정리 (2024년) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\health__insurance-copay--mobile.png"
+  },
+  {
+    "route": "/finance",
+    "status": 200,
+    "title": "노후재정 정보 — 국민연금·노후자금·생활비 계산 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\finance--mobile.png"
+  },
+  {
+    "route": "/finance/national-pension",
+    "status": 200,
+    "title": "국민연금 예상 수령액 조회 방법 — 앱·홈페이지 단계별 안내 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\finance__national-pension--mobile.png"
+  },
+  {
+    "route": "/finance/living-cost",
+    "status": 200,
+    "title": "노후 생활비 계산기 — 얼마가 필요할까? (2024년 기준) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\finance__living-cost--mobile.png"
+  },
+  {
+    "route": "/life-tips",
+    "status": 200,
+    "title": "시니어 생활팁 — 할인혜택·절약·가족 돌봄 가이드 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\life-tips--mobile.png"
+  },
+  {
+    "route": "/life-tips/senior-discount",
+    "status": 200,
+    "title": "시니어 할인 카드 총정리 — 교통·문화·쇼핑 혜택 (2024년) | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\life-tips__senior-discount--mobile.png"
+  },
+  {
+    "route": "/life-tips/family-care",
+    "status": 200,
+    "title": "부모님 돌봄 가족을 위한 체크리스트 — 재가 돌봄 가이드 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\life-tips__family-care--mobile.png"
+  },
+  {
+    "route": "/legal/privacy",
+    "status": 200,
+    "title": "개인정보처리방침 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\legal__privacy--mobile.png"
+  },
+  {
+    "route": "/legal/terms",
+    "status": 200,
+    "title": "이용약관 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\legal__terms--mobile.png"
+  },
+  {
+    "route": "/legal/refund",
+    "status": 200,
+    "title": "환불규정 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\legal__refund--mobile.png"
+  },
+  {
+    "route": "/login",
+    "status": 200,
+    "title": "로그인 | 시니어 든든",
+    "h1": 1,
+    "replacement": 0,
+    "horizontalOverflow": false,
+    "consoleErrors": [],
+    "screenshot": "C:\\Users\\eoduq\\DY_md\\senior-life\\audit-results\\playwright-2026-07-06\\login--mobile.png"
+  }
+]

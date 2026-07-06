@@ -7,6 +7,7 @@ import LivingCostCalculator from "./LivingCostCalculator";
 export const metadata: Metadata = {
   title: "노후 생활비 계산기 — 얼마가 필요할까? (2024년 기준)",
   description: "노후에 필요한 생활비를 계산해보세요. 가구 유형·거주 지역·생활 수준에 따른 월 생활비 예상액을 바로 확인할 수 있습니다.",
+  alternates: { canonical: "/finance/living-cost" },
 };
 
 const faqItems = [

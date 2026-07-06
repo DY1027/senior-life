@@ -24,7 +24,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section style={{ background: "#FAF8F5", padding: "72px 20px" }}>
+    <section id="faq" style={{ background: "#FAF8F5", padding: "72px 20px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <p style={{ fontSize: 13, fontWeight: 600, color: "#1B6FC8", marginBottom: 6, letterSpacing: "0.05em" }}>FAQ</p>

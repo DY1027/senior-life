@@ -5,6 +5,7 @@ import BreadcrumbNav from "@/components/BreadcrumbNav";
 export const metadata: Metadata = {
   title: "시니어 생활팁 — 할인혜택·절약·가족 돌봄 가이드",
   description: "50대 이상 시니어를 위한 생활팁. 시니어 할인 카드 총정리, 절약 정보, 부모님 스마트폰 설정 가이드, 가족 돌봄 체크리스트를 안내합니다.",
+  alternates: { canonical: "/life-tips" },
 };
 
 const articles = [
