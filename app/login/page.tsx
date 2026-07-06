@@ -10,6 +10,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (new URLSearchParams(window.location.search).has("error")) {
+      // One-time check on mount — SSR has no access to window.location, so
+      // this can't be a lazy useState initializer without a hydration mismatch.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setError("로그인 인증을 완료하지 못했습니다. 다시 시도해주세요.");
     }
   }, []);

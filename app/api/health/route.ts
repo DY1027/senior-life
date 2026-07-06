@@ -17,8 +17,14 @@ export async function GET() {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     );
     const { error } = await supabase.from("_health_ping").select("1").limit(1).maybeSingle();
-    // 테이블이 없어 "relation does not exist" 오류가 나도 DB 연결 자체는 성공
-    if (error && !error.message.includes("does not exist") && !error.message.includes("permission")) {
+    // 프로브용 테이블이 없어서 나는 오류는 DB 연결 자체는 성공했다는 뜻이므로 정상 처리.
+    // PostgREST는 "PGRST205"(스키마 캐시에 테이블 없음) 또는 Postgres "42P01"(undefined_table)로
+    // 응답하며, 메시지 문구는 "Could not find the table ... in the schema cache" 형태다.
+    const isMissingTable =
+      error?.code === "PGRST205" ||
+      error?.code === "42P01" ||
+      /does not exist|could not find the table|permission/i.test(error?.message ?? "");
+    if (error && !isMissingTable) {
       dbStatus = "error";
       dbMessage = error.message;
     }

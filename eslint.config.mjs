@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local, gitignored Playwright audit output — not app source.
+    "audit-results/**",
   ]),
 ]);
 
