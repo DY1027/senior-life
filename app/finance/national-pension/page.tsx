@@ -43,7 +43,7 @@ export default function NationalPensionPage() {
       <article style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 48px" }}>
         <div style={{ background: "#EFF6FF", border: "0.5px solid #BFDBFE", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
           <p style={{ fontSize: 10, fontWeight: 600, color: "#1D4ED8", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
-          <p style={{ fontSize: 14, fontWeight: 500, color: "#1E3A8A", lineHeight: 1.65 }}>국민연금 예상 수령액은 '내 연금' 앱 또는 국민연금공단 홈페이지(nps.or.kr)에서 본인 인증 후 바로 확인할 수 있습니다. 연금액은 가입 기간과 납부 금액에 따라 달라집니다.</p>
+          <p style={{ fontSize: 14, fontWeight: 500, color: "#1E3A8A", lineHeight: 1.65 }}>국민연금 예상 수령액은 &apos;내 연금&apos; 앱 또는 국민연금공단 홈페이지(nps.or.kr)에서 본인 인증 후 바로 확인할 수 있습니다. 연금액은 가입 기간과 납부 금액에 따라 달라집니다.</p>
         </div>
 
         <section style={{ marginBottom: 32 }}>

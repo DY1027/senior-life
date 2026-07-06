@@ -92,28 +92,29 @@ export default function ParentChecklistTool() {
       const raw = localStorage.getItem("parent-checklist");
       if (raw) {
         const data: SavedData = JSON.parse(raw);
+        // One-time hydration from localStorage on mount — SSR has no access to
+        // localStorage, so this can't be a lazy useState initializer without a
+        // hydration mismatch.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setChecked(data.checked);
         setLastSaved(data);
       }
     } catch {}
   }, []);
 
-  useEffect(() => {
-    try {
-      const total = ALL_ITEMS.length;
-      const cnt = ALL_ITEMS.filter((i) => checked[i.id]).length;
-      const p = Math.round((cnt / total) * 100);
-      if (cnt > 0) {
-        const data: SavedData = { checked, date: new Date().toLocaleDateString("ko-KR"), pct: p };
-        localStorage.setItem("parent-checklist", JSON.stringify(data));
-        setLastSaved(data);
-      }
-    } catch {}
-  }, [checked]);
-
   const toggle = (id: string) => {
-    setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+    const next = { ...checked, [id]: !checked[id] };
+    setChecked(next);
     setShowResult(false);
+
+    const cnt = ALL_ITEMS.filter((i) => next[i.id]).length;
+    if (cnt > 0) {
+      const data: SavedData = { checked: next, date: new Date().toLocaleDateString("ko-KR"), pct: Math.round((cnt / ALL_ITEMS.length) * 100) };
+      try {
+        localStorage.setItem("parent-checklist", JSON.stringify(data));
+      } catch {}
+      setLastSaved(data);
+    }
   };
 
   const countOf = (cat: Category) => cat.items.filter((i) => checked[i.id]).length;

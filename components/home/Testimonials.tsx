@@ -17,7 +17,7 @@ export default function Testimonials() {
                 {"★★★★★".split("").map((s, i) => <span key={i} style={{ fontSize: 18, color: "#F59E0B" }}>{s}</span>)}
                 <span style={{ fontSize: 14, fontWeight: 700, color: "#F59E0B", marginLeft: 6 }}>{r.stars}.0</span>
               </div>
-              <p style={{ fontSize: 14, color: "#1A1A2E", lineHeight: 1.75, flex: 1 }}>"{r.text}"</p>
+              <p style={{ fontSize: 14, color: "#1A1A2E", lineHeight: 1.75, flex: 1 }}>&quot;{r.text}&quot;</p>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: "50%", background: "#DBEAFE", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{r.avatar}</div>
                 <div>

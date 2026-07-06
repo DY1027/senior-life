@@ -26,16 +26,21 @@ export default function MedicationSummary() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("med-list");
+      // One-time hydration from localStorage on mount — SSR has no access to
+      // localStorage, so this can't be a lazy useState initializer without a
+      // hydration mismatch.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (saved) setList(JSON.parse(saved));
     } catch {}
   }, []);
 
-  useEffect(() => {
+  const persist = (next: Medicine[]) => {
+    setList(next);
     try {
-      localStorage.setItem("med-list", JSON.stringify(list));
-      if (list.length > 0) setSavedAt(new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }));
+      localStorage.setItem("med-list", JSON.stringify(next));
+      setSavedAt(next.length > 0 ? new Date().toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }) : null);
     } catch {}
-  }, [list]);
+  };
 
   const handleReset = () => {
     if (!confirm("저장된 약 목록을 모두 삭제할까요?")) return;
@@ -55,18 +60,15 @@ export default function MedicationSummary() {
   const handleAdd = () => {
     if (!form.name.trim()) { setNameError(true); return; }
     setNameError(false);
-    setList((prev) => [...prev, { ...form, name: form.name.trim(), id: Date.now().toString() }]);
+    persist([...list, { ...form, name: form.name.trim(), id: Date.now().toString() }]);
     setForm(EMPTY);
     setShowResult(false);
   };
 
   const handleDelete = (id: string) => {
-    setList((prev) => prev.filter((m) => m.id !== id));
+    persist(list.filter((m) => m.id !== id));
     setShowResult(false);
   };
-
-  const timeRow = (m: Medicine) =>
-    TIMES.map((t) => (m.times.includes(t) ? "○" : "─")).join("  ");
 
   const buildCopyText = () => {
     if (!list.length) return "";
