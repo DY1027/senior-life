@@ -1,4 +1,3 @@
-"use client";
 const cards = [
   { icon: "🏥", title: "병원 방문 준비", desc: "진료 전 체크리스트와 준비물을 확인해 보세요.", href: "/health/checkup", bg: "#EFF6FF" },
   { icon: "📝", title: "증상 메모", desc: "증상을 기록하고 의사에게 보여주세요.", href: "/health", bg: "#F0FDF4" },
@@ -15,9 +14,7 @@ export default function HealthHospitalSection() {
         <p style={{ fontSize: 15, color: "#4A5568", marginBottom: 36 }}>건강을 지키고 병원 방문을 더 편리하게 준비하세요.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
           {cards.map((c) => (
-            <a key={c.title} href={c.href} style={{ background: "#fff", borderRadius: 18, padding: "24px 20px", textDecoration: "none", border: "1.5px solid #E8F0FE", display: "flex", flexDirection: "column", gap: 12 }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#1B6FC8")}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E8F0FE")}>
+            <a key={c.title} href={c.href} className="hh-card" style={{ background: "#fff", borderRadius: 18, padding: "24px 20px", textDecoration: "none", border: "1.5px solid #E8F0FE", display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ width: 52, height: 52, borderRadius: 14, background: c.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>{c.icon}</div>
               <div>
                 <p style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E", marginBottom: 6 }}>{c.title}</p>
@@ -28,7 +25,10 @@ export default function HealthHospitalSection() {
           ))}
         </div>
       </div>
-      <style>{`@media(max-width:768px){div[style*="repeat(4"]{grid-template-columns:repeat(2,1fr)!important;}}`}</style>
+      <style>{`
+        .hh-card:hover{border-color:#1B6FC8;}
+        @media(max-width:768px){div[style*="repeat(4"]{grid-template-columns:repeat(2,1fr)!important;}}
+      `}</style>
     </section>
   );
 }

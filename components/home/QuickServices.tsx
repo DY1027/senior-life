@@ -1,4 +1,3 @@
-"use client";
 const services = [
   { icon: "💰", title: "노후자금 계산기", desc: "현재 자산과 월 생활비를 입력해 노후 준비 상태를 확인합니다.", href: "#calculator", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
   { icon: "🏥", title: "병원 방문 체크리스트", desc: "진료 전 챙길 것과 의사에게 물어볼 질문을 정리합니다.", href: "#checklist", badge: "바로 사용 가능", badgeColor: "#1B6FC8", bg: "#F0F7FF" },
@@ -17,10 +16,8 @@ export default function QuickServices() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(160px,1fr))", gap: 14 }}>
           {services.map((s) => (
-            <a key={s.title} href={s.href}
-              style={{ display: "flex", flexDirection: "column", gap: 12, padding: "22px 20px", background: s.bg, borderRadius: 16, border: "1.5px solid #E8F0FE", textDecoration: "none", transition: "border-color 0.15s" }}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#1B6FC8")}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E8F0FE")}>
+            <a key={s.title} href={s.href} className="qs-card"
+              style={{ display: "flex", flexDirection: "column", gap: 12, padding: "22px 20px", background: s.bg, borderRadius: 16, border: "1.5px solid #E8F0FE", textDecoration: "none", transition: "border-color 0.15s" }}>
               <div style={{ fontSize: 28 }}>{s.icon}</div>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
@@ -36,6 +33,7 @@ export default function QuickServices() {
           ))}
         </div>
       </div>
+      <style>{`.qs-card:hover{border-color:#1B6FC8;}`}</style>
     </section>
   );
 }
