@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getClient } from "@/lib/supabase";
+import { useIsAdmin } from "@/components/useIsAdmin";
 import type { User } from "@supabase/supabase-js";
 
 const nav = [
@@ -14,6 +15,7 @@ const nav = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const isAdmin = useIsAdmin(!!user);
 
   useEffect(() => {
     const sb = getClient();
@@ -51,6 +53,11 @@ export default function Header() {
         <div className="hidden md:flex" style={{ alignItems: "center", gap: 8 }}>
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {isAdmin && (
+                <Link href="/admin" style={{ padding: "6px 12px", background: "#1A1A2E", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                  관리자
+                </Link>
+              )}
               <span style={{ fontSize: 12, color: "#4A5568" }}>{user.email?.split("@")[0]}님</span>
               <button onClick={handleSignOut} style={{ padding: "6px 14px", background: "transparent", color: "#6B7280", border: "1px solid #E5E7EB", borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                 로그아웃
@@ -81,6 +88,12 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
+          {user && isAdmin && (
+            <Link href="/admin" onClick={() => setOpen(false)}
+              style={{ display: "block", padding: "12px 0", fontSize: 16, fontWeight: 700, color: "#1A1A2E", borderBottom: "0.5px solid #EEECE6", textDecoration: "none" }}>
+              🔧 관리자
+            </Link>
+          )}
           <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
             {user ? (
               <button onClick={handleSignOut} style={{ flex: 1, padding: "12px", background: "transparent", color: "#6B7280", border: "1px solid #E5E7EB", borderRadius: 999, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
