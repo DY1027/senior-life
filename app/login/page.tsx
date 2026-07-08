@@ -9,12 +9,29 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("error")) {
-      // One-time check on mount — SSR has no access to window.location, so
-      // this can't be a lazy useState initializer without a hydration mismatch.
+    let alive = true;
+    const hasError = new URLSearchParams(window.location.search).has("error");
+    const client = getClient();
+    if (!client) {
+      // 브라우저 이펙트에서는 client가 사실상 항상 존재하지만, 방어적으로 처리.
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setError("로그인 인증을 완료하지 못했습니다. 다시 시도해주세요.");
+      if (hasError) setError("로그인 인증을 완료하지 못했습니다. 다시 시도해주세요.");
+      return;
     }
+    // OAuth 콜백이 중복 호출되면 가입은 성공해도 ?error가 붙어 돌아올 수 있다.
+    // 이미 세션이 있으면(=로그인 성공) 에러를 무시하고 홈으로 보내, 사용자가
+    // 불필요한 에러 화면에 머무르지 않게 한다.
+    client.auth.getSession().then(({ data }) => {
+      if (!alive) return;
+      if (data.session) {
+        window.location.replace("/");
+        return;
+      }
+      if (hasError) setError("로그인 인증을 완료하지 못했습니다. 다시 시도해주세요.");
+    });
+    return () => {
+      alive = false;
+    };
   }, []);
 
   const getSupabaseOrSetError = () => {
