@@ -2,6 +2,7 @@
   "id": "cafe",
   "title": "카페 키오스크 연습",
   "place": "카페",
+  "brand": "든든카페",
   "emoji": "☕",
   "intro": "실제 카페 키오스크처럼 하나씩 눌러보며 연습해요. 천천히 눌러도 괜찮아요. 이 화면은 연습용이라, 실제로 결제되지 않아요.",
   "successTitle": "잘하셨어요! 카페 주문 연습을 끝냈어요.",
@@ -24,10 +25,10 @@
       "voice": "마시고 싶은 것을 하나 골라 보세요. 아메리카노, 카페라떼, 딸기라떼, 유자차 중에서 고를 수 있어요.",
       "layout": "grid",
       "options": [
-        { "id": "americano", "emoji": "☕", "label": "아메리카노", "sublabel": "4,500원", "summaryKey": "메뉴", "summaryValue": "아메리카노" },
-        { "id": "latte", "emoji": "🥛", "label": "카페라떼", "sublabel": "5,000원", "summaryKey": "메뉴", "summaryValue": "카페라떼" },
-        { "id": "strawberry", "emoji": "🍓", "label": "딸기라떼", "sublabel": "5,500원", "summaryKey": "메뉴", "summaryValue": "딸기라떼" },
-        { "id": "citron", "emoji": "🍋", "label": "유자차", "sublabel": "5,000원", "summaryKey": "메뉴", "summaryValue": "유자차" }
+        { "id": "americano", "emoji": "☕", "label": "아메리카노", "sublabel": "4,500원", "summaryKey": "메뉴", "summaryValue": "아메리카노", "price": 4500 },
+        { "id": "latte", "emoji": "🥛", "label": "카페라떼", "sublabel": "5,000원", "summaryKey": "메뉴", "summaryValue": "카페라떼", "price": 5000 },
+        { "id": "strawberry", "emoji": "🍓", "label": "딸기라떼", "sublabel": "5,500원", "summaryKey": "메뉴", "summaryValue": "딸기라떼", "price": 5500 },
+        { "id": "citron", "emoji": "🍋", "label": "유자차", "sublabel": "5,000원", "summaryKey": "메뉴", "summaryValue": "유자차", "price": 5000 }
       ]
     },
     {
@@ -48,9 +49,9 @@
       "voice": "몇 잔이 필요하세요? 한 잔, 두 잔, 세 잔 중에서 골라 보세요.",
       "layout": "list",
       "options": [
-        { "id": "one", "emoji": "1️⃣", "label": "1잔", "summaryKey": "잔 수", "summaryValue": "1잔" },
-        { "id": "two", "emoji": "2️⃣", "label": "2잔", "summaryKey": "잔 수", "summaryValue": "2잔" },
-        { "id": "three", "emoji": "3️⃣", "label": "3잔", "summaryKey": "잔 수", "summaryValue": "3잔" }
+        { "id": "one", "emoji": "1️⃣", "label": "1잔", "summaryKey": "잔 수", "summaryValue": "1잔", "qty": 1 },
+        { "id": "two", "emoji": "2️⃣", "label": "2잔", "summaryKey": "잔 수", "summaryValue": "2잔", "qty": 2 },
+        { "id": "three", "emoji": "3️⃣", "label": "3잔", "summaryKey": "잔 수", "summaryValue": "3잔", "qty": 3 }
       ]
     },
     {

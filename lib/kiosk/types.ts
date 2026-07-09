@@ -10,6 +10,9 @@ export interface KioskOption {
   // 이 선택이 마지막 주문 요약에 어떻게 남을지
   summaryKey?: string; // 예: "주문 방식"
   summaryValue?: string; // 예: "매장에서 먹기"
+  // 합계 금액 계산용(선택). price=단품 가격, qty=수량 배수.
+  price?: number; // 예: 4500 (메뉴 선택 시)
+  qty?: number; // 예: 2 (수량 선택 시)
 }
 
 export interface KioskStep {
@@ -26,6 +29,7 @@ export interface KioskScenario {
   id: string; // "cafe"
   title: string; // "카페 키오스크 연습"
   place: string; // "카페"
+  brand: string; // 화면 상단 가상 브랜드 이름 (예: "든든카페")
   emoji: string; // "☕"
   intro: string; // 시작 화면 안내
   successTitle: string; // 완료 화면 제목 (칭찬)
