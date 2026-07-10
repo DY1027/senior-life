@@ -10,6 +10,7 @@ const nav = [
   { label: "건강·병원", href: "/health" },
   { label: "노후재정", href: "/finance" },
   { label: "생활팁", href: "/life-tips" },
+  { label: "키오스크 연습", href: "/kiosk" },
 ];
 
 export default function Header() {
