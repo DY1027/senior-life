@@ -6,11 +6,12 @@ import { useIsAdmin } from "@/components/useIsAdmin";
 import type { User } from "@supabase/supabase-js";
 
 const nav = [
+  { label: "키오스크 연습", href: "/kiosk" },
+  { label: "두뇌 놀이", href: "/brain" },
   { label: "복지혜택", href: "/welfare" },
   { label: "건강·병원", href: "/health" },
   { label: "노후재정", href: "/finance" },
   { label: "생활팁", href: "/life-tips" },
-  { label: "키오스크 연습", href: "/kiosk" },
 ];
 
 export default function Header() {

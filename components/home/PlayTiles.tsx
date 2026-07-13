@@ -41,12 +41,12 @@ const tiles = [
     img: "/tiles/tile-brain.webp",
     alt: "할아버지가 든든이와 함께 퍼즐을 맞추는 그림",
     title: "두뇌 놀이",
-    desc: "기억력 게임과 오늘의 문제로 즐겁게 두뇌 운동해요",
-    href: null, // 준비 중
-    badge: "곧 열려요",
+    desc: "카드 짝 맞추기로 즐겁게 두뇌 운동해요",
+    href: "/brain",
+    badge: "새 놀이",
     border: "border-[#FDDFC0]",
     badgeStyle: "bg-[#E67E3F] text-white",
-    cta: "",
+    cta: "놀러가기 →",
   },
 ];
 
