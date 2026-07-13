@@ -2,6 +2,7 @@ import Link from "next/link";
 
 // 계산기·체크리스트 등 실용 도구 모음 — 큰 글씨 링크 줄로 단순하게
 const tools = [
+  { emoji: "📅", label: "사진 달력 만들기", desc: "가족 사진으로 하나뿐인 달력을 만들어요", href: "/making/calendar" },
   { emoji: "💰", label: "노후자금 계산기", desc: "준비 상태를 진단해 드려요", href: "/finance/retirement" },
   { emoji: "🧮", label: "노후 생활비 계산기", desc: "한 달 생활비가 얼마나 필요할까요", href: "/finance/living-cost" },
   { emoji: "💊", label: "복용약 요약표", desc: "드시는 약을 한 장으로 정리해요", href: "/health" },
