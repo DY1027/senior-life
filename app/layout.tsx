@@ -9,28 +9,28 @@ const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
   title: {
-    default: "시니어 든든 — 노후자금, 병원 준비, 복지혜택을 한 번에",
+    default: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
     template: "%s | 시니어 든든",
   },
   description:
-    "50대 이상 시니어와 부모님 정보를 찾는 가족을 위한 생활정보 포털. 기초연금, 복지혜택, 건강보험, 노후재정, 생활팁을 쉽고 정확하게 안내합니다.",
+    "키오스크 연습, 복지혜택 찾기, 병원 준비, 노후자금 계산까지. 어르신이 눌러보며 배우고 가족이 함께 쓰는 시니어 놀이터입니다. 회원가입 없이 무료로 사용하세요.",
   alternates: {
     canonical: "/",
   },
-  keywords: ["시니어", "노인복지", "기초연금", "건강보험", "노후준비", "부모님 정보"],
+  keywords: ["시니어", "시니어 놀이터", "키오스크 연습", "노인복지", "기초연금", "건강보험", "노후준비", "부모님 정보"],
   authors: [{ name: "시니어 든든" }],
   creator: "시니어 든든",
   openGraph: {
     type: "website",
     locale: "ko_KR",
     siteName: "시니어 든든",
-    title: "시니어 든든 — 부모님 혜택, 한 번에 정리됩니다",
-    description: "기초연금·복지혜택·건강보험·노후재정·생활팁을 쉽고 정확하게",
+    title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
+    description: "키오스크 연습·복지혜택·병원 준비·노후재정을 쉽고 재미있게",
   },
   twitter: {
     card: "summary_large_image",
     title: "시니어 든든",
-    description: "50대 이상을 위한 생활정보 포털",
+    description: "눌러보며 배우는 시니어 놀이터",
   },
   robots: {
     index: true,

@@ -39,13 +39,13 @@ export default function Header() {
       <div style={{ maxWidth: 1024, margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#E67E3F", display: "inline-block" }} />
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px" }}>시니어 든든</span>
+          <span style={{ fontSize: 17, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px" }}>시니어 든든</span>
         </Link>
 
         <nav className="hidden md:flex" style={{ gap: 2 }} aria-label="주요 메뉴">
           {nav.map((item) => (
             <Link key={item.href} href={item.href}
-              style={{ padding: "6px 14px", fontSize: 13, fontWeight: 500, color: "#6B6860", borderRadius: 8, textDecoration: "none" }}>
+              style={{ padding: "6px 14px", fontSize: 15, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none" }}>
               {item.label}
             </Link>
           ))}

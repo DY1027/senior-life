@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 const articles = [
+  { title: "노후자금 계산기 — 준비 상태 진단", desc: "목표 금액과 현재 저축을 입력하면 노후 준비 상태를 진단하고 다음 확인할 것을 알려드립니다.", href: "/finance/retirement", tag: "계산기", icon: "ti-calculator", tagBg: "#EFF6FF", tagColor: "#1D4ED8", tagBorder: "#BFDBFE" },
   { title: "국민연금 예상 수령액 조회 방법", desc: "국민연금공단 앱과 홈페이지에서 예상 연금액을 조회하는 방법을 단계별로 안내합니다.", href: "/finance/national-pension", tag: "국민연금", icon: "ti-chart-line", tagBg: "#EFF6FF", tagColor: "#1D4ED8", tagBorder: "#BFDBFE" },
   { title: "노후 생활비 계산기 — 얼마가 필요할까?", desc: "부부·개인별 적정 노후 생활비와 현재 준비 상태를 점검하는 방법을 안내합니다.", href: "/finance/living-cost", tag: "노후준비", icon: "ti-calculator", tagBg: "#EFF6FF", tagColor: "#1D4ED8", tagBorder: "#BFDBFE" },
 ];

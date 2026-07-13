@@ -1,28 +1,26 @@
 import type { Metadata } from "next";
-import HomeHeader from "@/components/home/HomeHeader";
-import HeroSection from "@/components/home/HeroSection";
-import QuickServices from "@/components/home/QuickServices";
-import RetirementCalculatorPreview from "@/components/home/RetirementCalculatorPreview";
-import HospitalChecklistPreview from "@/components/home/HospitalChecklistPreview";
-import CategorySections from "@/components/home/CategorySections";
-import GuideSteps from "@/components/home/GuideSteps";
-import UseCasesSection from "@/components/home/UseCasesSection";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import PlaygroundHero from "@/components/home/PlaygroundHero";
+import PlayTiles from "@/components/home/PlayTiles";
+import PracticeRow from "@/components/home/PracticeRow";
+import ToolLinks from "@/components/home/ToolLinks";
+import InfoCategories from "@/components/home/InfoCategories";
 import FAQSection from "@/components/home/FAQSection";
-import CTASection from "@/components/home/CTASection";
-import HomeFooter from "@/components/home/HomeFooter";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
-  title: "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
-  description: "기초연금, 병원 방문 체크리스트, 노후자금 계산기까지. 어르신과 가족이 바로 활용할 수 있는 시니어 생활도구 서비스입니다. 회원가입 없이 바로 사용하세요.",
+  title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
+  description:
+    "키오스크 연습, 복지혜택 찾기, 병원 준비, 노후자금 계산까지. 어르신이 눌러보며 배우고 가족이 함께 쓰는 시니어 놀이터입니다. 회원가입 없이 무료로 사용하세요.",
   alternates: { canonical: "/" },
-  keywords: ["시니어든든", "노후자금 계산기", "병원 체크리스트", "기초연금", "시니어 복지혜택", "노인 건강보험"],
+  keywords: ["시니어든든", "시니어 놀이터", "키오스크 연습", "노후자금 계산기", "기초연금", "시니어 복지혜택", "병원 체크리스트"],
   openGraph: {
     type: "website",
     locale: "ko_KR",
     siteName: "시니어 든든",
-    title: "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에",
-    description: "어르신과 가족이 바로 활용할 수 있는 시니어 생활도구. 회원가입 없이 바로 사용하세요.",
+    title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
+    description: "키오스크 연습, 복지혜택 찾기, 병원 준비까지. 회원가입 없이 무료로 사용하세요.",
   },
   robots: { index: true, follow: true },
 };
@@ -30,17 +28,14 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <HomeHeader />
-      <HeroSection />
-      <QuickServices />
-      <RetirementCalculatorPreview />
-      <HospitalChecklistPreview />
-      <CategorySections />
-      <GuideSteps />
-      <UseCasesSection />
+      <Header />
+      <PlaygroundHero />
+      <PlayTiles />
+      <PracticeRow />
+      <ToolLinks />
+      <InfoCategories />
       <FAQSection />
-      <CTASection />
-      <HomeFooter />
+      <Footer />
     </>
   );
 }
