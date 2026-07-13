@@ -7,6 +7,7 @@ import type { User } from "@supabase/supabase-js";
 
 const nav = [
   { label: "키오스크 연습", href: "/kiosk" },
+  { label: "그림책", href: "/stories" },
   { label: "복지혜택", href: "/welfare" },
   { label: "건강·병원", href: "/health" },
   { label: "노후재정", href: "/finance" },

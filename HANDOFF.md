@@ -104,6 +104,14 @@ senior-life/
   클릭 핸들러는 `cardsRef` 미러로 최신 상태를 읽는다(더블탭 레이스 방지 — state 클로저로 되돌리지 말 것).
 - [ ] 오늘의 문제(속담·상식 퀴즈), 순서 기억하기 — 허브에 "만들고 있어요"로 예고됨
 
+### 든든이 그림책 (`/stories`) — 공개 중
+- [x] 그림책 엔진 `components/stories/StoryPlayer.tsx` (2026-07-13) — 장면 그림/이모지 + 큰 글씨 +
+  [다음 장], 사기 문자 예시 말풍선(`sms`), 고르기 퀴즈(`quiz`, 답 전 다음 잠금·오답도 다정하게).
+  콘텐츠는 `content/stories/*.ts` (`lib/stories/types.ts` 스키마). 새 그림책 = 콘텐츠 파일 + 라우트 + 허브 등록.
+- [x] 1호: 보이스피싱 예방 (`/stories/phishing`) — 홈 배너(StoryBanner)·헤더 nav·sitemap 연결.
+  GA4: `story_start/complete/share`.
+- [ ] 예고됨: 키오스크 이야기, 스마트폰 안전 수칙
+
 ### 만들기 놀이 (`/making`)
 - [x] 사진 달력 만들기 (`/making/calendar`, 2026-07-13) — 사진(선택) → 연/월 → 색·문구 → 완성.
   캔버스로 A4 비율 PNG 생성, 인쇄(`window.print` + print CSS)·사진첩 저장·공유(navigator.share).
