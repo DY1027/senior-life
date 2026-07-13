@@ -1,11 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
 
-// 완성된 키오스크 4종으로 바로 들어가는 지름길 카드
+// 완성된 키오스크 4종으로 바로 들어가는 지름길 카드 (일러스트 썸네일)
 const practices = [
-  { emoji: "☕", label: "카페 주문", href: "/kiosk/cafe" },
-  { emoji: "🏥", label: "병원 접수", href: "/kiosk/hospital" },
-  { emoji: "🍔", label: "햄버거 주문", href: "/kiosk/fastfood" },
-  { emoji: "🏛️", label: "서류 발급", href: "/kiosk/civil" },
+  { img: "/tiles/kiosk-cafe.webp", alt: "김이 나는 커피와 카페 키오스크 그림", label: "카페 주문", href: "/kiosk/cafe" },
+  { img: "/tiles/kiosk-hospital.webp", alt: "청진기와 병원 접수 키오스크 그림", label: "병원 접수", href: "/kiosk/hospital" },
+  { img: "/tiles/kiosk-fastfood.webp", alt: "햄버거와 감자튀김, 주문 키오스크 그림", label: "햄버거 주문", href: "/kiosk/fastfood" },
+  { img: "/tiles/kiosk-civil.webp", alt: "서류가 나오는 무인민원발급기 그림", label: "서류 발급", href: "/kiosk/civil" },
 ];
 
 export default function PracticeRow() {
@@ -23,11 +24,13 @@ export default function PracticeRow() {
             <Link
               key={p.href}
               href={p.href}
-              className="flex flex-col items-center gap-2 rounded-2xl border-2 border-[#BBD9F5] bg-white px-4 py-6 no-underline transition-transform active:scale-[0.97]"
+              className="flex flex-col overflow-hidden rounded-2xl border-2 border-[#F1E3C8] bg-[#F9F2E0] no-underline transition-transform active:scale-[0.97]"
             >
-              <span className="text-[40px] leading-none" aria-hidden="true">{p.emoji}</span>
-              <span className="break-keep text-center text-[18px] font-extrabold text-[#1A1A2E]">{p.label}</span>
-              <span className="text-[14px] font-bold text-[#1B6FC8]">연습하기 →</span>
+              <Image src={p.img} alt={p.alt} width={560} height={443} className="h-auto w-full" />
+              <span className="px-3 pb-4 pt-1 text-center">
+                <span className="block break-keep text-[18px] font-extrabold text-[#1A1A2E]">{p.label}</span>
+                <span className="mt-0.5 block text-[14px] font-bold text-[#C4621A]">연습하기 →</span>
+              </span>
             </Link>
           ))}
         </div>
