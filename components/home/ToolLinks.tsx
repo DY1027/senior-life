@@ -13,10 +13,10 @@ export default function ToolLinks() {
   return (
     <section className="bg-white px-5 py-10">
       <div className="mx-auto max-w-[720px]">
-        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#1A1A2E]">
+        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#3B3226]">
           🧰 든든 도구함
         </h2>
-        <p className="mt-2 text-center text-[16px] text-[#6B7280]">필요할 때 꺼내 쓰는 생활 도구예요.</p>
+        <p className="mt-2 text-center text-[16px] text-[#8A7660]">필요할 때 꺼내 쓰는 생활 도구예요.</p>
         <div className="mt-6 flex flex-col gap-3">
           {tools.map((t) => (
             <Link
@@ -26,8 +26,8 @@ export default function ToolLinks() {
             >
               <span className="text-[32px] leading-none" aria-hidden="true">{t.emoji}</span>
               <span className="flex-1">
-                <span className="block text-[19px] font-bold text-[#1A1A2E]">{t.label}</span>
-                <span className="block text-[15px] text-[#6B7280]">{t.desc}</span>
+                <span className="block text-[19px] font-bold text-[#3B3226]">{t.label}</span>
+                <span className="block text-[15px] text-[#8A7660]">{t.desc}</span>
               </span>
               <span className="text-[18px] font-extrabold text-[#C4621A]" aria-hidden="true">→</span>
             </Link>

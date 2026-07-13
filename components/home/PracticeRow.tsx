@@ -13,10 +13,10 @@ export default function PracticeRow() {
   return (
     <section className="px-5 py-10">
       <div className="mx-auto max-w-[880px]">
-        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#1A1A2E]">
+        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#3B3226]">
           오늘의 연습, 바로 시작해요
         </h2>
-        <p className="mt-2 text-center text-[16px] leading-relaxed text-[#6B7280]">
+        <p className="mt-2 text-center text-[16px] leading-relaxed text-[#8A7660]">
           실수해도 괜찮아요. 실제로 결제되지 않는 <strong>연습용 화면</strong>이에요.
         </p>
         <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -28,7 +28,7 @@ export default function PracticeRow() {
             >
               <Image src={p.img} alt={p.alt} width={560} height={443} className="h-auto w-full" />
               <span className="px-3 pb-4 pt-1 text-center">
-                <span className="block break-keep text-[18px] font-extrabold text-[#1A1A2E]">{p.label}</span>
+                <span className="block break-keep text-[18px] font-extrabold text-[#3B3226]">{p.label}</span>
                 <span className="mt-0.5 block text-[14px] font-bold text-[#C4621A]">연습하기 →</span>
               </span>
             </Link>

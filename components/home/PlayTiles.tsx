@@ -11,8 +11,8 @@ const tiles = [
     desc: "카페 · 병원 접수 · 햄버거 · 서류 발급, 집에서 미리 눌러 봐요",
     href: "/kiosk",
     badge: "4가지 연습",
-    border: "border-[#BBD9F5]",
-    badgeStyle: "bg-[#1B6FC8] text-white",
+    border: "border-[#EFDFC0]",
+    badgeStyle: "bg-[#E67E3F] text-white",
     cta: "해보기 →",
   },
   {
@@ -22,7 +22,7 @@ const tiles = [
     desc: "몇 가지만 답하면 받을 수 있는 복지혜택을 알려드려요",
     href: "/welfare",
     badge: null,
-    border: "border-[#A7F3D0]",
+    border: "border-[#DCE8CE]",
     badgeStyle: "",
     cta: "찾아보기 →",
   },
@@ -33,7 +33,7 @@ const tiles = [
     desc: "챙길 것과 의사에게 물어볼 질문을 정리해 드려요",
     href: "/health/hospital-checklist",
     badge: null,
-    border: "border-[#BFDBFE]",
+    border: "border-[#EFDFC0]",
     badgeStyle: "",
     cta: "준비하기 →",
   },
@@ -60,8 +60,8 @@ function TileInner({ t }: { t: (typeof tiles)[number] }) {
         )}
       </div>
       <div className="px-6 pb-6 pt-1 text-center">
-        <p className="text-[23px] font-extrabold leading-snug text-[#1A1A2E]">{t.title}</p>
-        <p className="mt-1.5 text-[16px] leading-relaxed text-[#4A5568]">{t.desc}</p>
+        <p className="text-[23px] font-extrabold leading-snug text-[#3B3226]">{t.title}</p>
+        <p className="mt-1.5 text-[16px] leading-relaxed text-[#6E5C49]">{t.desc}</p>
         {t.href ? (
           <p className="mt-3 text-[17px] font-extrabold text-[#C4621A]">{t.cta}</p>
         ) : (

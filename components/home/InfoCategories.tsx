@@ -13,7 +13,7 @@ export default function InfoCategories() {
   return (
     <section className="px-5 py-10">
       <div className="mx-auto max-w-[880px]">
-        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#1A1A2E]">
+        <h2 className="text-center text-[clamp(22px,4vw,28px)] font-extrabold tracking-[-0.5px] text-[#3B3226]">
           📚 알아두면 든든한 정보
         </h2>
         <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -25,8 +25,8 @@ export default function InfoCategories() {
             >
               <Image src={c.img} alt={c.alt} width={560} height={475} className="h-auto w-full" />
               <span className="px-3 pb-4 pt-1">
-                <span className="block text-[18px] font-bold text-[#1A1A2E]">{c.label}</span>
-                <span className="block break-keep text-[14px] text-[#6B7280]">{c.desc}</span>
+                <span className="block text-[18px] font-bold text-[#3B3226]">{c.label}</span>
+                <span className="block break-keep text-[14px] text-[#8A7660]">{c.desc}</span>
               </span>
             </Link>
           ))}

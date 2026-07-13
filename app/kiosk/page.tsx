@@ -24,10 +24,10 @@ export default function KioskHubPage() {
       <Header />
       <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px 56px" }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#EAF3FC", color: "#1B6FC8", fontSize: 13, fontWeight: 700, padding: "6px 14px", borderRadius: 999, marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#FDF0E0", color: "#C4621A", fontSize: 13, fontWeight: 700, padding: "6px 14px", borderRadius: 999, marginBottom: 14 }}>
             🖐️ 눌러보며 배우는 연습 도구
           </div>
-          <h1 style={{ fontSize: "clamp(24px,5vw,34px)", fontWeight: 800, color: "#1A1A2E", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>
+          <h1 style={{ fontSize: "clamp(24px,5vw,34px)", fontWeight: 800, color: "#3B3226", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>
             무엇을 연습해 볼까요?
           </h1>
           <p style={{ fontSize: 17, color: "#4A5568", lineHeight: 1.7 }}>
@@ -48,17 +48,17 @@ export default function KioskHubPage() {
                   gap: 18,
                   padding: "22px 20px",
                   background: "#fff",
-                  border: "2.5px solid #BBD9F5",
+                  border: "2.5px solid #EFDFC0",
                   borderRadius: 20,
                   textDecoration: "none",
                 }}
               >
                 <Image src={p.img} alt="" width={84} height={66} style={{ width: 84, height: "auto", borderRadius: 14, flexShrink: 0 }} />
                 <span style={{ flex: 1 }}>
-                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#1A1A2E", marginBottom: 4, wordBreak: "keep-all" }}>{p.title}</span>
+                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#3B3226", marginBottom: 4, wordBreak: "keep-all" }}>{p.title}</span>
                   <span style={{ display: "block", fontSize: 15, color: "#6B7280", lineHeight: 1.5, wordBreak: "keep-all" }}>{p.desc}</span>
                 </span>
-                <span style={{ fontSize: 15, fontWeight: 800, color: "#1B6FC8", whiteSpace: "nowrap" }}>연습하기 →</span>
+                <span style={{ fontSize: 15, fontWeight: 800, color: "#C4621A", whiteSpace: "nowrap" }}>연습하기 →</span>
               </Link>
             ) : (
               <div

@@ -69,7 +69,7 @@ export default function Header() {
               <Link href="/login" style={{ padding: "7px 16px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
                 로그인
               </Link>
-              <Link href="/login" style={{ padding: "7px 18px", background: "#1B6FC8", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
+              <Link href="/login" style={{ padding: "7px 18px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
                 무료 가입
               </Link>
             </>
@@ -105,7 +105,7 @@ export default function Header() {
                 <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, textAlign: "center", padding: "12px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
                   로그인
                 </Link>
-                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, textAlign: "center", padding: "12px", background: "#1B6FC8", color: "#fff", borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
+                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, textAlign: "center", padding: "12px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
                   무료 가입
                 </Link>
               </>
