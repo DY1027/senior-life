@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { trackKiosk } from "@/lib/kiosk/track";
 
@@ -77,7 +78,13 @@ export default function ResultCard({
   return (
     <div style={{ padding: "24px 18px 26px" }}>
       <div style={{ textAlign: "center", marginBottom: 20 }}>
-        <div style={{ fontSize: 54, lineHeight: 1, marginBottom: 8 }} aria-hidden="true">🎉</div>
+        <Image
+          src="/mascot-celebrate.webp"
+          alt="색종이 사이에서 만세하는 든든이"
+          width={128}
+          height={132}
+          style={{ margin: "0 auto 8px", borderRadius: 20 }}
+        />
         <h1 style={{ fontSize: "clamp(22px,5vw,28px)", fontWeight: 800, color: "#1A1A2E", lineHeight: 1.35, marginBottom: 8 }}>{successTitle}</h1>
         <p style={{ fontSize: 17, color: "#4A5568", lineHeight: 1.7 }}>{praise}</p>
       </div>
