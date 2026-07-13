@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,10 +12,10 @@ export const metadata: Metadata = {
 };
 
 const practices = [
-  { id: "cafe", emoji: "☕", title: "카페 키오스크", desc: "매장·포장, 메뉴, 온도, 잔 수, 계산까지", href: "/kiosk/cafe", ready: true },
-  { id: "hospital", emoji: "🏥", title: "병원 접수 키오스크", desc: "접수, 진료과 선택, 번호표 발급", href: "/kiosk/hospital", ready: false },
-  { id: "fastfood", emoji: "🍔", title: "패스트푸드 주문", desc: "세트 메뉴, 음료 변경, 결제", href: "/kiosk/fastfood", ready: false },
-  { id: "civil", emoji: "🏛️", title: "무인민원발급기", desc: "등본·가족관계증명서 발급", href: "/kiosk/civil", ready: false },
+  { id: "cafe", img: "/tiles/kiosk-cafe.webp", title: "카페 키오스크", desc: "매장·포장, 메뉴, 온도, 잔 수, 계산까지", href: "/kiosk/cafe", ready: true },
+  { id: "hospital", img: "/tiles/kiosk-hospital.webp", title: "병원 접수 키오스크", desc: "접수, 진료과 선택, 번호표 발급", href: "/kiosk/hospital", ready: true },
+  { id: "fastfood", img: "/tiles/kiosk-fastfood.webp", title: "패스트푸드 주문", desc: "세트 메뉴, 음료 변경, 결제", href: "/kiosk/fastfood", ready: true },
+  { id: "civil", img: "/tiles/kiosk-civil.webp", title: "무인민원발급기", desc: "등본·가족관계증명서 발급", href: "/kiosk/civil", ready: true },
 ];
 
 export default function KioskHubPage() {
@@ -23,10 +24,10 @@ export default function KioskHubPage() {
       <Header />
       <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px 56px" }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#EAF3FC", color: "#1B6FC8", fontSize: 13, fontWeight: 700, padding: "6px 14px", borderRadius: 999, marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#FDF0E0", color: "#C4621A", fontSize: 13, fontWeight: 700, padding: "6px 14px", borderRadius: 999, marginBottom: 14 }}>
             🖐️ 눌러보며 배우는 연습 도구
           </div>
-          <h1 style={{ fontSize: "clamp(24px,5vw,34px)", fontWeight: 800, color: "#1A1A2E", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>
+          <h1 style={{ fontSize: "clamp(24px,5vw,34px)", fontWeight: 800, color: "#3B3226", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>
             무엇을 연습해 볼까요?
           </h1>
           <p style={{ fontSize: 17, color: "#4A5568", lineHeight: 1.7 }}>
@@ -47,17 +48,17 @@ export default function KioskHubPage() {
                   gap: 18,
                   padding: "22px 20px",
                   background: "#fff",
-                  border: "2.5px solid #BBD9F5",
+                  border: "2.5px solid #EFDFC0",
                   borderRadius: 20,
                   textDecoration: "none",
                 }}
               >
-                <span style={{ fontSize: 44, lineHeight: 1 }} aria-hidden="true">{p.emoji}</span>
+                <Image src={p.img} alt="" width={84} height={66} style={{ width: 84, height: "auto", borderRadius: 14, flexShrink: 0 }} />
                 <span style={{ flex: 1 }}>
-                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#1A1A2E", marginBottom: 4 }}>{p.title}</span>
-                  <span style={{ display: "block", fontSize: 15, color: "#6B7280", lineHeight: 1.5 }}>{p.desc}</span>
+                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#3B3226", marginBottom: 4, wordBreak: "keep-all" }}>{p.title}</span>
+                  <span style={{ display: "block", fontSize: 15, color: "#6B7280", lineHeight: 1.5, wordBreak: "keep-all" }}>{p.desc}</span>
                 </span>
-                <span style={{ fontSize: 15, fontWeight: 800, color: "#1B6FC8", whiteSpace: "nowrap" }}>연습하기 →</span>
+                <span style={{ fontSize: 15, fontWeight: 800, color: "#C4621A", whiteSpace: "nowrap" }}>연습하기 →</span>
               </Link>
             ) : (
               <div
@@ -73,10 +74,10 @@ export default function KioskHubPage() {
                   opacity: 0.75,
                 }}
               >
-                <span style={{ fontSize: 44, lineHeight: 1, filter: "grayscale(0.3)" }} aria-hidden="true">{p.emoji}</span>
+                <Image src={p.img} alt="" width={84} height={66} style={{ width: 84, height: "auto", borderRadius: 14, flexShrink: 0, filter: "grayscale(0.3)", opacity: 0.8 }} />
                 <span style={{ flex: 1 }}>
-                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#6B6860", marginBottom: 4 }}>{p.title}</span>
-                  <span style={{ display: "block", fontSize: 15, color: "#9B9890", lineHeight: 1.5 }}>{p.desc}</span>
+                  <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#6B6860", marginBottom: 4, wordBreak: "keep-all" }}>{p.title}</span>
+                  <span style={{ display: "block", fontSize: 15, color: "#9B9890", lineHeight: 1.5, wordBreak: "keep-all" }}>{p.desc}</span>
                 </span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "#9B9890", background: "#EEECE6", padding: "5px 12px", borderRadius: 999, whiteSpace: "nowrap" }}>준비 중</span>
               </div>

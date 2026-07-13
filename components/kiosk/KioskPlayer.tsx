@@ -30,6 +30,12 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
   const qty = qtyChoice?.qty ?? 1;
   const total = priceEach != null ? priceEach * qty : null;
 
+  // 시나리오에 가격이 하나라도 있으면 결제형(카페·패스트푸드·민원발급기),
+  // 없으면 접수형(병원)으로 보고 금액·결제 표시를 통째로 숨긴다.
+  const hasPayment = scenario.steps.some((s) => s.options.some((o) => o.price != null));
+  const unitLabel = scenario.unitLabel ?? "잔";
+  const finishLabel = scenario.finishLabel ?? "결제하기";
+
   // 주문 요약(요약값이 있는 선택만)
   const summaries = choices
     .filter((c): c is KioskOption => !!c && !!c.summaryKey)
@@ -119,6 +125,11 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
               finishedAt={finishedAt}
               scenarioId={scenario.id}
               onRestart={handleRestart}
+              hasPayment={hasPayment}
+              showTicket={scenario.showTicket ?? true}
+              ticketNote={scenario.ticketNote}
+              receiptTitle={scenario.receiptTitle}
+              receiptNote={scenario.receiptNote}
             />
           ) : (
             <div style={{ padding: "22px 18px 20px" }}>
@@ -145,17 +156,19 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
               )}
 
               {/* 하단 주문내역 + 다음 (실제 키오스크처럼) */}
-              <div style={{ marginTop: 18, borderTop: "1px solid #E5E7EB", paddingTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                <div style={{ fontSize: 15, color: "#4A5568", lineHeight: 1.5, minWidth: 130 }}>
-                  {menuChoice ? (
-                    <>
-                      담은 것 <span style={{ color: "#1A1A2E", fontWeight: 800 }}>{menuChoice.summaryValue}{qty > 1 ? ` ${qty}잔` : ""}</span>
-                      <br />합계 <span style={{ color: "#1B6FC8", fontWeight: 800, fontSize: 18 }}>{(total ?? 0).toLocaleString()}원</span>
-                    </>
-                  ) : (
-                    <span style={{ color: "#9CA3AF" }}>메뉴를 고르면 금액이 나와요</span>
-                  )}
-                </div>
+              <div style={{ marginTop: 18, borderTop: "1px solid #E5E7EB", paddingTop: 16, display: "flex", alignItems: "center", justifyContent: hasPayment ? "space-between" : "flex-end", gap: 12, flexWrap: "wrap" }}>
+                {hasPayment && (
+                  <div style={{ fontSize: 15, color: "#4A5568", lineHeight: 1.5, minWidth: 130 }}>
+                    {menuChoice ? (
+                      <>
+                        담은 것 <span style={{ color: "#1A1A2E", fontWeight: 800 }}>{menuChoice.summaryValue}{qty > 1 ? ` ${qty}${unitLabel}` : ""}</span>
+                        <br />합계 <span style={{ color: "#1B6FC8", fontWeight: 800, fontSize: 18 }}>{(total ?? 0).toLocaleString()}원</span>
+                      </>
+                    ) : (
+                      <span style={{ color: "#9CA3AF" }}>{scenario.cartEmptyText ?? "메뉴를 고르면 금액이 나와요"}</span>
+                    )}
+                  </div>
+                )}
 
                 <button
                   type="button"
@@ -177,7 +190,7 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {currentChoice ? (isLast ? "결제하기 →" : "다음 →") : "위에서 골라 주세요"}
+                  {currentChoice ? (isLast ? `${finishLabel} →` : "다음 →") : "위에서 골라 주세요"}
                 </button>
               </div>
 
@@ -195,7 +208,7 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
         </div>
 
         <p style={{ marginTop: 16, fontSize: 14, color: "#6B7280", textAlign: "center", lineHeight: 1.6 }}>
-          천천히 눌러도 괜찮아요. 이 화면은 <strong>연습용</strong>이라 실제로 결제되지 않아요.
+          천천히 눌러도 괜찮아요. 이 화면은 <strong>연습용</strong>이라 실제로 접수·결제되지 않아요.
         </p>
       </div>
 

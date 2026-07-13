@@ -27,15 +27,15 @@ export default function FAQSection() {
     <section id="faq" style={{ background: "#FAF8F5", padding: "72px 20px" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#1B6FC8", marginBottom: 6, letterSpacing: "0.05em" }}>FAQ</p>
-        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.5px", marginBottom: 36 }}>자주 묻는 질문</h2>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "#C4621A", marginBottom: 6, letterSpacing: "0.05em" }}>FAQ</p>
+        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#3B3226", letterSpacing: "-0.5px", marginBottom: 36 }}>자주 묻는 질문</h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {faqs.map((f, i) => (
-            <div key={i} style={{ background: "#fff", borderRadius: 14, border: `1.5px solid ${open === i ? "#1B6FC8" : "#E8F0FE"}`, overflow: "hidden" }}>
+            <div key={i} style={{ background: "#fff", borderRadius: 14, border: `1.5px solid ${open === i ? "#E67E3F" : "#EFE3CC"}`, overflow: "hidden" }}>
               <button onClick={() => setOpen(open === i ? null : i)}
                 style={{ width: "100%", padding: "20px 22px", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, textAlign: "left", minHeight: 52 }}>
                 <span style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: "#1B6FC8", flexShrink: 0, marginTop: 1 }}>Q.</span>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: "#C4621A", flexShrink: 0, marginTop: 1 }}>Q.</span>
                   <span style={{ fontSize: 16, fontWeight: 600, color: "#1A1A2E", lineHeight: 1.5 }}>{f.q}</span>
                 </span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5568" strokeWidth="2" style={{ flexShrink: 0, transform: open === i ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>

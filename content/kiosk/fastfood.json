@@ -1,0 +1,74 @@
+{
+  "id": "fastfood",
+  "title": "패스트푸드 키오스크 연습",
+  "place": "패스트푸드점",
+  "brand": "든든버거",
+  "emoji": "🍔",
+  "intro": "실제 햄버거 가게 키오스크처럼 하나씩 눌러보며 연습해요. 천천히 눌러도 괜찮아요. 이 화면은 연습용이라, 실제로 결제되지 않아요.",
+  "successTitle": "잘하셨어요! 햄버거 주문 연습을 끝냈어요.",
+  "unitLabel": "개",
+  "ticketNote": "이 번호가 카운터 위 화면에 뜨면, 받는 곳으로 가서 음식을 받으면 돼요. 그때까지는 자리에서 기다리시면 됩니다.",
+  "steps": [
+    {
+      "id": "order-type",
+      "title": "어디에서 드시겠어요?",
+      "guide": "먹고 갈지, 가지고 갈지 골라 보세요.",
+      "voice": "어디에서 드실지 골라 보세요. 매장에서 드시거나, 포장하실 수 있어요.",
+      "layout": "list",
+      "options": [
+        { "id": "eat-in", "emoji": "🍽️", "label": "매장에서 먹기", "summaryKey": "주문 방식", "summaryValue": "매장에서 먹기" },
+        { "id": "takeout", "emoji": "🛍️", "label": "포장하기", "summaryKey": "주문 방식", "summaryValue": "포장하기" }
+      ]
+    },
+    {
+      "id": "menu",
+      "title": "어떤 세트를 드시겠어요?",
+      "guide": "세트에는 햄버거, 감자튀김, 음료가 함께 나와요.",
+      "voice": "드시고 싶은 세트를 하나 골라 보세요. 불고기버거, 치즈버거, 새우버거, 치킨버거 세트 중에서 고를 수 있어요.",
+      "layout": "grid",
+      "options": [
+        { "id": "bulgogi", "emoji": "🍔", "label": "불고기버거 세트", "sublabel": "6,500원", "summaryKey": "메뉴", "summaryValue": "불고기버거 세트", "price": 6500 },
+        { "id": "cheese", "emoji": "🧀", "label": "치즈버거 세트", "sublabel": "6,200원", "summaryKey": "메뉴", "summaryValue": "치즈버거 세트", "price": 6200 },
+        { "id": "shrimp", "emoji": "🍤", "label": "새우버거 세트", "sublabel": "6,800원", "summaryKey": "메뉴", "summaryValue": "새우버거 세트", "price": 6800 },
+        { "id": "chicken", "emoji": "🍗", "label": "치킨버거 세트", "sublabel": "7,000원", "summaryKey": "메뉴", "summaryValue": "치킨버거 세트", "price": 7000 }
+      ]
+    },
+    {
+      "id": "drink",
+      "title": "세트 음료를 골라 보세요",
+      "guide": "기본은 콜라예요. 바꿔도 돈이 더 들지 않아요.",
+      "voice": "세트에 함께 나올 음료를 골라 보세요. 콜라, 사이다, 오렌지주스 중에서 고를 수 있어요.",
+      "layout": "list",
+      "options": [
+        { "id": "cola", "emoji": "🥤", "label": "콜라", "sublabel": "기본 음료", "summaryKey": "음료", "summaryValue": "콜라" },
+        { "id": "sprite", "emoji": "🫧", "label": "사이다", "summaryKey": "음료", "summaryValue": "사이다" },
+        { "id": "orange", "emoji": "🍊", "label": "오렌지주스", "summaryKey": "음료", "summaryValue": "오렌지주스" }
+      ]
+    },
+    {
+      "id": "count",
+      "title": "몇 개 드릴까요?",
+      "guide": "세트 개수를 골라 보세요.",
+      "voice": "세트가 몇 개 필요하세요? 한 개, 두 개, 세 개 중에서 골라 보세요.",
+      "layout": "list",
+      "options": [
+        { "id": "one", "emoji": "1️⃣", "label": "1개", "summaryKey": "개수", "summaryValue": "1개", "qty": 1 },
+        { "id": "two", "emoji": "2️⃣", "label": "2개", "summaryKey": "개수", "summaryValue": "2개", "qty": 2 },
+        { "id": "three", "emoji": "3️⃣", "label": "3개", "summaryKey": "개수", "summaryValue": "3개", "qty": 3 }
+      ]
+    },
+    {
+      "id": "pay",
+      "title": "어떻게 계산할까요?",
+      "guide": "계산 방법을 골라 보세요.",
+      "voice": "마지막이에요. 계산 방법을 골라 보세요. 카드, 휴대폰 간편결제, 매장 상품권 중에서 고를 수 있어요.",
+      "note": "연습이라 실제로 돈이 나가지 않아요. 편하게 눌러 보세요.",
+      "layout": "list",
+      "options": [
+        { "id": "card", "emoji": "💳", "label": "카드", "summaryKey": "계산 방법", "summaryValue": "카드" },
+        { "id": "mobile", "emoji": "📱", "label": "휴대폰 간편결제", "summaryKey": "계산 방법", "summaryValue": "휴대폰 간편결제" },
+        { "id": "voucher", "emoji": "🎟️", "label": "매장 상품권", "summaryKey": "계산 방법", "summaryValue": "매장 상품권" }
+      ]
+    }
+  ]
+}

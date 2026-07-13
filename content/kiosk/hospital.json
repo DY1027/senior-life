@@ -1,0 +1,52 @@
+{
+  "id": "hospital",
+  "title": "병원 접수 키오스크 연습",
+  "place": "병원",
+  "brand": "든든병원",
+  "emoji": "🏥",
+  "intro": "실제 병원 접수 기계처럼 하나씩 눌러보며 연습해요. 천천히 눌러도 괜찮아요. 이 화면은 연습용이라, 실제로 접수되지 않아요.",
+  "successTitle": "잘하셨어요! 병원 접수 연습을 끝냈어요.",
+  "finishLabel": "접수하기",
+  "ticketNote": "이 번호가 진료실 앞 화면에 뜨거나 이름이 불리면, 진료실로 들어가시면 돼요. 그때까지는 대기 의자에 앉아 기다리시면 됩니다.",
+  "receiptTitle": "접수증",
+  "receiptNote": "접수증에는 접수한 진료과와 대기 번호가 적혀 있어요. 궁금한 것이 있으면 접수증을 들고 접수 창구(원무과) 직원에게 물어보면 됩니다. 진료가 끝난 뒤에는 수납 창구에서 진료비를 내면 돼요.",
+  "steps": [
+    {
+      "id": "visit-type",
+      "title": "무엇을 하러 오셨어요?",
+      "guide": "예약 없이 왔으면 '오늘 진료 접수'를 누르면 돼요.",
+      "voice": "무엇을 하러 오셨는지 골라 보세요. 예약 없이 오셨으면 오늘 진료 접수, 미리 예약하고 오셨으면 예약 확인을 누르세요.",
+      "layout": "list",
+      "options": [
+        { "id": "walk-in", "emoji": "🩺", "label": "오늘 진료 접수", "sublabel": "예약 없이 왔어요", "summaryKey": "접수 종류", "summaryValue": "오늘 진료 접수" },
+        { "id": "reserved", "emoji": "📅", "label": "예약 확인", "sublabel": "미리 예약하고 왔어요", "summaryKey": "접수 종류", "summaryValue": "예약 확인" }
+      ]
+    },
+    {
+      "id": "identify",
+      "title": "본인 확인을 해볼게요",
+      "guide": "실제 기계에서는 주민등록번호를 입력하거나 신분증을 넣어요.",
+      "voice": "본인 확인 방법을 골라 보세요. 주민등록번호 입력, 신분증 넣기, 모바일 건강보험증 중에서 고를 수 있어요.",
+      "layout": "list",
+      "options": [
+        { "id": "rrn", "emoji": "🔢", "label": "주민등록번호 입력", "summaryKey": "본인 확인", "summaryValue": "주민등록번호" },
+        { "id": "idcard", "emoji": "🪪", "label": "신분증 넣기", "summaryKey": "본인 확인", "summaryValue": "신분증" },
+        { "id": "mobile", "emoji": "📱", "label": "모바일 건강보험증", "summaryKey": "본인 확인", "summaryValue": "모바일 건강보험증" }
+      ]
+    },
+    {
+      "id": "department",
+      "title": "어느 진료과로 접수할까요?",
+      "guide": "가려는 진료과를 하나 골라 보세요.",
+      "voice": "접수할 진료과를 하나 골라 보세요. 내과, 정형외과, 안과, 이비인후과 중에서 고를 수 있어요.",
+      "layout": "grid",
+      "note": "접수하기를 누르면 대기 번호표가 나와요. 실제로 접수되지는 않아요.",
+      "options": [
+        { "id": "internal", "emoji": "🩺", "label": "내과", "sublabel": "감기·소화불량 등", "summaryKey": "진료과", "summaryValue": "내과" },
+        { "id": "ortho", "emoji": "🦴", "label": "정형외과", "sublabel": "무릎·허리·관절", "summaryKey": "진료과", "summaryValue": "정형외과" },
+        { "id": "eye", "emoji": "👁️", "label": "안과", "sublabel": "눈 검사·백내장", "summaryKey": "진료과", "summaryValue": "안과" },
+        { "id": "ent", "emoji": "👂", "label": "이비인후과", "sublabel": "귀·코·목", "summaryKey": "진료과", "summaryValue": "이비인후과" }
+      ]
+    }
+  ]
+}
