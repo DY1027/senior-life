@@ -1,7 +1,7 @@
 # 시니어 든든 — 에이전트 인수인계 문서
 
-> 최종 업데이트: 2026-07-10
-> 최종 배포 태그: `v1.1.0-kiosk-cafe` (커밋 `44bfe0b`)
+> 최종 업데이트: 2026-07-13
+> 최종 배포 태그: `v1.1.0-kiosk-cafe` (커밋 `44bfe0b`) + 키오스크 4종 완성 (브랜치 `claude/mvp-site-improvements-q1m22g`)
 > 저장소: https://github.com/DY1027/senior-life
 
 ---
@@ -97,7 +97,7 @@ senior-life/
 - [x] 내 혜택 찾아보기 (BenefitFinder)
 - [x] 복용약 요약표 (MedicationSummary)
 - [x] 부모님 생활 점검표 (ParentChecklistTool)
-- [x] **카페 키오스크 연습** (KioskPlayer + cafe.json)
+- [x] **키오스크 연습 4종 완성** (KioskPlayer + cafe/hospital/fastfood/civil.json)
 
 ### 인프라
 - [x] Supabase 인증 (Google OAuth)
@@ -112,21 +112,20 @@ senior-life/
 
 ## 5. 미완료 / 다음 작업
 
-### 키오스크 연습 확장 (우선순위 높음)
-허브 페이지(`app/kiosk/page.tsx`)에 4개 키오스크가 등록되어 있고, 카페만 완성 상태.
-나머지 3개는 **시나리오 JSON + 라우트 페이지**만 추가하면 된다.
-KioskPlayer 엔진과 공통 컴포넌트는 이미 범용으로 만들어져 있다.
-
-| 키오스크 | 상태 | 필요한 작업 |
-|---|---|---|
-| 병원 접수 (`/kiosk/hospital`) | `ready: false` | `content/kiosk/hospital.json` + `app/kiosk/hospital/page.tsx` |
-| 패스트푸드 (`/kiosk/fastfood`) | `ready: false` | `content/kiosk/fastfood.json` + `app/kiosk/fastfood/page.tsx` |
-| 무인민원발급기 (`/kiosk/civil`) | `ready: false` | `content/kiosk/civil.json` + `app/kiosk/civil/page.tsx` |
+### 키오스크 연습 — 4종 모두 완성 (2026-07-13)
+카페·병원 접수·패스트푸드·무인민원발급기 4종이 모두 `ready: true` 상태다.
+엔진이 시나리오별 차이를 지원하도록 일반화되었다 (`lib/kiosk/types.ts`의 `KioskScenario` 선택 필드):
+- `finishLabel` — 마지막 버튼 글자 (접수하기/발급하기 등)
+- `unitLabel` — 수량 단위 (잔/개/통)
+- `showTicket: false` — 완료 화면 번호표 숨김 (민원발급기)
+- `ticketNote`, `receiptTitle`, `receiptNote`, `cartEmptyText` — 완료 화면 문구
+- 가격(`price`) 있는 옵션이 하나도 없으면 합계·결제 UI가 자동으로 숨겨진다 (병원 접수)
 
 **새 키오스크 추가 방법:**
 1. `content/kiosk/{id}.json`에 `KioskScenario` 형태의 시나리오 데이터 작성 (`cafe.json` 참고)
 2. `app/kiosk/{id}/page.tsx` 생성 (`app/kiosk/cafe/page.tsx` 복사 후 import 경로만 변경)
-3. `app/kiosk/page.tsx`의 `practices` 배열에서 해당 항목의 `ready: true`로 변경
+3. `app/kiosk/page.tsx`의 `practices` 배열에 항목 추가 (`ready: true`)
+4. `app/sitemap.ts`에 URL 추가
 
 ### 기타 잠재 작업
 - Playwright 테스트 작성 (현재 의존성만 설치됨)

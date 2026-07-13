@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 const practices = [
   { id: "cafe", emoji: "☕", title: "카페 키오스크", desc: "매장·포장, 메뉴, 온도, 잔 수, 계산까지", href: "/kiosk/cafe", ready: true },
-  { id: "hospital", emoji: "🏥", title: "병원 접수 키오스크", desc: "접수, 진료과 선택, 번호표 발급", href: "/kiosk/hospital", ready: false },
-  { id: "fastfood", emoji: "🍔", title: "패스트푸드 주문", desc: "세트 메뉴, 음료 변경, 결제", href: "/kiosk/fastfood", ready: false },
-  { id: "civil", emoji: "🏛️", title: "무인민원발급기", desc: "등본·가족관계증명서 발급", href: "/kiosk/civil", ready: false },
+  { id: "hospital", emoji: "🏥", title: "병원 접수 키오스크", desc: "접수, 진료과 선택, 번호표 발급", href: "/kiosk/hospital", ready: true },
+  { id: "fastfood", emoji: "🍔", title: "패스트푸드 주문", desc: "세트 메뉴, 음료 변경, 결제", href: "/kiosk/fastfood", ready: true },
+  { id: "civil", emoji: "🏛️", title: "무인민원발급기", desc: "등본·가족관계증명서 발급", href: "/kiosk/civil", ready: true },
 ];
 
 export default function KioskHubPage() {
