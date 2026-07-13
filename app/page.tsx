@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import PlaygroundHero from "@/components/home/PlaygroundHero";
 import PlayTiles from "@/components/home/PlayTiles";
 import PracticeRow from "@/components/home/PracticeRow";
+import StoryBanner from "@/components/home/StoryBanner";
 import ToolLinks from "@/components/home/ToolLinks";
 import InfoCategories from "@/components/home/InfoCategories";
 import FAQSection from "@/components/home/FAQSection";
@@ -32,6 +33,7 @@ export default function HomePage() {
       <PlaygroundHero />
       <PlayTiles />
       <PracticeRow />
+      <StoryBanner />
       <ToolLinks />
       <InfoCategories />
       <FAQSection />

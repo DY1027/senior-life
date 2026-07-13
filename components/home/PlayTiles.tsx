@@ -42,11 +42,11 @@ const tiles = [
     alt: "할아버지가 든든이와 함께 퍼즐을 맞추는 그림",
     title: "두뇌 놀이",
     desc: "기억력 게임과 오늘의 문제로 즐겁게 두뇌 운동해요",
-    href: null, // 준비 중
+    href: null, // 보류 중 (게임은 /brain에 완성돼 있음 — 공개 시 href만 되돌리면 됨)
     badge: "곧 열려요",
     border: "border-[#FDDFC0]",
     badgeStyle: "bg-[#E67E3F] text-white",
-    cta: "",
+    cta: "놀러가기 →",
   },
 ];
 
