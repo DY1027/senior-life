@@ -5,7 +5,6 @@ import PlaygroundHero from "@/components/home/PlaygroundHero";
 import PlayTiles from "@/components/home/PlayTiles";
 import PracticeRow from "@/components/home/PracticeRow";
 import StoryBanner from "@/components/home/StoryBanner";
-import ToolLinks from "@/components/home/ToolLinks";
 import InfoCategories from "@/components/home/InfoCategories";
 import FAQSection from "@/components/home/FAQSection";
 import ClosingScene from "@/components/home/ClosingScene";
@@ -38,7 +37,6 @@ export default function HomePage() {
       <PlayTiles />
       <PracticeRow />
       <StoryBanner />
-      <ToolLinks />
       <InfoCategories />
       <FAQSection />
       <ClosingScene />
