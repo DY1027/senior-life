@@ -27,6 +27,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/stories`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/stories/phishing`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    // /brain, /making 은 완성돼 있으나 보류 중 — 공개 시 여기와 홈 타일·헤더 nav 를 되돌릴 것
+    { url: `${base}/brain`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/brain/matching`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/making`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/making/calendar`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
   ];
 }
