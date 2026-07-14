@@ -66,6 +66,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-full flex flex-col">
+        {/* 글자 크게 설정을 첫 페인트 전에 적용 (깜빡임 방지) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("bigtext")==="1")document.documentElement.dataset.bigtext="1"}catch(e){}`,
+          }}
+        />
         <main className="flex-1">{children}</main>
       </body>
       {gaMeasurementId && <GoogleAnalytics gaId={gaMeasurementId} />}

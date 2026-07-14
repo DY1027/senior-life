@@ -56,6 +56,11 @@ button {
   font-family: inherit;
 }
 
+/* 글자 크게 모드 — px 기반 레이아웃이라 zoom으로 전체 확대 (헤더의 가+ 버튼) */
+html[data-bigtext="1"] body {
+  zoom: 1.15;
+}
+
 @media print {
   nav, footer, .no-print { display: none !important; }
   body { font-size: 12pt; color: #000; background: #fff; }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getClient } from "@/lib/supabase";
 import { useIsAdmin } from "@/components/useIsAdmin";
+import BigTextToggle from "@/components/BigTextToggle";
 import type { User } from "@supabase/supabase-js";
 
 const nav = [
@@ -52,6 +53,8 @@ export default function Header() {
           ))}
         </nav>
 
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <BigTextToggle />
         <div className="hidden md:flex" style={{ alignItems: "center", gap: 8 }}>
           {user ? (
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -80,6 +83,7 @@ export default function Header() {
         <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="메뉴 열기" style={{ background: "none", border: "none", padding: 6, color: "#1A1A1A" }}>
           <i className={`ti ${open ? "ti-x" : "ti-menu-2"}`} style={{ fontSize: 22 }} />
         </button>
+        </div>
       </div>
 
       {open && (
