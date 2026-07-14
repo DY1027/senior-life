@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { track } from "@/lib/track";
 import { getHoliday } from "@/lib/making/holidays";
+import AffiliateCard from "@/components/AffiliateCard";
+import { AFFILIATE } from "@/content/affiliate";
 
 // 사진 달력 만들기 — 만들기 놀이 1호.
 // 사진은 서버로 보내지 않고 브라우저 안에서만 처리한다 (업로드 API 없음).
@@ -336,6 +338,19 @@ export default function CalendarMaker() {
             <button type="button" onClick={() => setStep("style")} className="h-[54px] rounded-2xl border-2 border-[#EFDFC0] bg-white text-[16px] font-bold text-[#3B3226]">
               ← 다시 꾸미기
             </button>
+          </div>
+
+          {/* 프린터 안내 + 파트너스 카드 */}
+          <div className="mt-6 rounded-2xl bg-[#FBF6EA] p-4">
+            <p className="break-keep text-center text-[15px] leading-relaxed text-[#6E5C49]">
+              프린터가 없어도 괜찮아요. 사진첩에 저장한 뒤
+              <br />
+              가까운 <strong>편의점 인쇄기</strong>에서 몇백 원에 뽑을 수 있어요.
+            </p>
+            <AffiliateCard product={AFFILIATE.photoPrinter} heading="🖨️ 집에서 자주 뽑고 싶다면" />
+          </div>
+
+          <div className="mt-4 flex flex-col gap-3">
             <Link href="/making" className="flex h-[50px] items-center justify-center text-[16px] font-bold text-[#8A7660] no-underline">
               다른 만들기 보러 가기
             </Link>
