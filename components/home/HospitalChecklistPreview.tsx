@@ -120,10 +120,10 @@ export default function HospitalChecklistPreview() {
     const label = visitTypes.find((v) => v.key === selected)?.label ?? "";
 
     const bringRows = data.bring
-      .map((b, i) => `<tr><td style="padding:6px 8px;border:1px solid #E8F0FE;">${i + 1}</td><td style="padding:6px 10px;border:1px solid #E8F0FE;">${b}</td><td style="padding:6px 8px;border:1px solid #E8F0FE;text-align:center;">□</td></tr>`)
+      .map((b, i) => `<tr><td style="padding:6px 8px;border:1px solid #F3E7D3;">${i + 1}</td><td style="padding:6px 10px;border:1px solid #F3E7D3;">${b}</td><td style="padding:6px 8px;border:1px solid #F3E7D3;text-align:center;">□</td></tr>`)
       .join("");
     const questionRows = data.questions
-      .map((q, i) => `<tr><td style="padding:6px 8px;border:1px solid #E8F0FE;">${i + 1}</td><td style="padding:6px 10px;border:1px solid #E8F0FE;">${q}</td></tr>`)
+      .map((q, i) => `<tr><td style="padding:6px 8px;border:1px solid #F3E7D3;">${i + 1}</td><td style="padding:6px 10px;border:1px solid #F3E7D3;">${q}</td></tr>`)
       .join("");
 
     const w = window.open("", "_blank", "width=800,height=900");
@@ -131,16 +131,16 @@ export default function HospitalChecklistPreview() {
     w.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>병원 방문 체크리스트 — ${label}</title>
     <style>
       *{box-sizing:border-box;margin:0;padding:0;}
-      body{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;padding:32px;color:#1A1A2E;max-width:680px;margin:0 auto;font-size:14px;}
-      h1{font-size:20px;font-weight:800;color:#0EA5E9;margin-bottom:4px;}
-      .sub{font-size:12px;color:#4A5568;margin-bottom:24px;border-bottom:2px solid #0EA5E9;padding-bottom:12px;}
-      h2{font-size:15px;font-weight:700;margin:20px 0 10px;color:#1A1A2E;}
+      body{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;padding:32px;color:#3B3226;max-width:680px;margin:0 auto;font-size:14px;}
+      h1{font-size:20px;font-weight:800;color:#E67E3F;margin-bottom:4px;}
+      .sub{font-size:12px;color:#6B5E4C;margin-bottom:24px;border-bottom:2px solid #E67E3F;padding-bottom:12px;}
+      h2{font-size:15px;font-weight:700;margin:20px 0 10px;color:#3B3226;}
       table{width:100%;border-collapse:collapse;margin-bottom:4px;font-size:14px;}
-      th{background:#F0F9FF;color:#0EA5E9;font-size:13px;padding:8px;border:1px solid #BAE6FD;text-align:left;}
+      th{background:#FDF7E7;color:#E67E3F;font-size:13px;padding:8px;border:1px solid #EFDFC0;text-align:left;}
       .memo{background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:14px 16px;margin-top:20px;}
       .memo h2{font-size:14px;margin:0 0 10px;color:#92400E;}
       .memo p{font-size:13px;color:#78350F;line-height:1.9;}
-      .disclaimer{margin-top:24px;font-size:11px;color:#9CA3AF;border-top:1px solid #E8F0FE;padding-top:12px;line-height:1.7;}
+      .disclaimer{margin-top:24px;font-size:11px;color:#9CA3AF;border-top:1px solid #F3E7D3;padding-top:12px;line-height:1.7;}
       @media print{body{padding:16px;font-size:13px;}h1{font-size:18px;}}
     </style></head><body>
     <h1>병원 방문 체크리스트 — ${label}</h1>
@@ -177,25 +177,25 @@ export default function HospitalChecklistPreview() {
   const selectedIcon = selected ? (visitTypes.find((v) => v.key === selected)?.icon ?? "") : "";
 
   return (
-    <section id="checklist" style={{ background: "#F0F7FF", padding: "72px 20px" }}>
+    <section id="checklist" style={{ background: "#FDF7E7", padding: "72px 20px" }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#0EA5E9", marginBottom: 6, letterSpacing: "0.05em" }}>병원 방문 체크리스트</p>
-        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#1A1A2E", letterSpacing: "-0.5px", marginBottom: 8 }}>
+        <p style={{ fontSize: 13, fontWeight: 600, color: "#E67E3F", marginBottom: 6, letterSpacing: "0.05em" }}>병원 방문 체크리스트</p>
+        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#3B3226", letterSpacing: "-0.5px", marginBottom: 8 }}>
           병원 가기 전, 미리 준비해보세요
         </h2>
-        <p style={{ fontSize: 15, color: "#4A5568", marginBottom: 32, lineHeight: 1.65 }}>
+        <p style={{ fontSize: 15, color: "#6B5E4C", marginBottom: 32, lineHeight: 1.65 }}>
           진료 목적을 선택하면 오늘 챙길 것과 의사에게 물어볼 질문을 정리해드립니다.<br />
-          <strong style={{ color: "#1B6FC8" }}>복사하거나 인쇄해서</strong> 병원에 가져가세요.
+          <strong style={{ color: "#C4621A" }}>복사하거나 인쇄해서</strong> 병원에 가져가세요.
         </p>
 
         {/* 진료 유형 선택 */}
-        <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E", marginBottom: 14 }}>어떤 진료를 보러 가시나요?</p>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#3B3226", marginBottom: 14 }}>어떤 진료를 보러 가시나요?</p>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
           {visitTypes.map((v) => (
             <button
               key={v.key}
               onClick={() => { setSelected(v.key); setChecked({}); setSymptomMemo(""); }}
-              style={{ height: 52, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${selected === v.key ? "#0EA5E9" : "#DBEAFE"}`, background: selected === v.key ? "#0EA5E9" : "#fff", color: selected === v.key ? "#fff" : "#1A1A2E", cursor: "pointer", display: "flex", alignItems: "center", gap: 7 }}
+              style={{ height: 52, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${selected === v.key ? "#E67E3F" : "#EFDFC0"}`, background: selected === v.key ? "#E67E3F" : "#fff", color: selected === v.key ? "#fff" : "#3B3226", cursor: "pointer", display: "flex", alignItems: "center", gap: 7 }}
             >
               <span>{v.icon}</span>{v.label}
             </button>
@@ -204,8 +204,8 @@ export default function HospitalChecklistPreview() {
 
         {/* 증상 메모 */}
         {selected && (
-          <div style={{ background: "#fff", borderRadius: 14, border: "1.5px solid #BAE6FD", padding: "18px 20px", marginBottom: 20 }}>
-            <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 8 }}>
+          <div style={{ background: "#fff", borderRadius: 14, border: "1.5px solid #EFDFC0", padding: "18px 20px", marginBottom: 20 }}>
+            <label style={{ display: "block", fontSize: 14, fontWeight: 700, color: "#3B3226", marginBottom: 8 }}>
               📝 오늘 특별히 말씀드릴 것이 있나요? <span style={{ fontSize: 12, fontWeight: 400, color: "#6B7280" }}>(선택 — 복사·인쇄에 포함됩니다)</span>
             </label>
             <textarea
@@ -213,15 +213,15 @@ export default function HospitalChecklistPreview() {
               onChange={(e) => setSymptomMemo(e.target.value)}
               placeholder="예: 어제부터 왼쪽 무릎이 아파요. 계단 오를 때 특히 심하고, 부어있어요."
               rows={3}
-              style={{ width: "100%", fontSize: 15, lineHeight: 1.65, padding: "12px 14px", borderRadius: 10, border: "1.5px solid #BAE6FD", outline: "none", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box", color: "#1A1A2E" }}
+              style={{ width: "100%", fontSize: 15, lineHeight: 1.65, padding: "12px 14px", borderRadius: 10, border: "1.5px solid #EFDFC0", outline: "none", resize: "vertical", fontFamily: "inherit", boxSizing: "border-box", color: "#3B3226" }}
             />
           </div>
         )}
 
         {/* 결과 */}
         {selected && selectedData && (
-          <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "2px solid #BAE6FD", marginBottom: 16 }}>
-            <div style={{ background: "#0EA5E9", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "2px solid #EFDFC0", marginBottom: 16 }}>
+            <div style={{ background: "#E67E3F", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>{selectedIcon} {selectedLabel} 준비 목록</p>
               <span style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.15)", padding: "3px 10px", borderRadius: 99 }}>참고용 도구</span>
             </div>
@@ -231,17 +231,17 @@ export default function HospitalChecklistPreview() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }} className="cl-grid">
                 {/* 오늘 챙길 것 */}
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 12 }}>✅ 오늘 챙길 것</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#3B3226", marginBottom: 12 }}>✅ 오늘 챙길 것</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {selectedData.bring.map((item) => (
-                      <label key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer", padding: "10px 12px", borderRadius: 10, background: checked[item] ? "#F0FDF4" : "#F0F7FF", minHeight: 44 }}>
+                      <label key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer", padding: "10px 12px", borderRadius: 10, background: checked[item] ? "#F0FDF4" : "#FDF7E7", minHeight: 44 }}>
                         <input
                           type="checkbox"
                           checked={!!checked[item]}
                           onChange={() => toggleCheck(item)}
-                          style={{ width: 20, height: 20, cursor: "pointer", accentColor: "#0EA5E9", flexShrink: 0, marginTop: 2 }}
+                          style={{ width: 20, height: 20, cursor: "pointer", accentColor: "#E67E3F", flexShrink: 0, marginTop: 2 }}
                         />
-                        <span style={{ fontSize: 14, color: checked[item] ? "#6B7280" : "#1A1A2E", textDecoration: checked[item] ? "line-through" : "none", lineHeight: 1.5 }}>{item}</span>
+                        <span style={{ fontSize: 14, color: checked[item] ? "#6B7280" : "#3B3226", textDecoration: checked[item] ? "line-through" : "none", lineHeight: 1.5 }}>{item}</span>
                       </label>
                     ))}
                   </div>
@@ -249,12 +249,12 @@ export default function HospitalChecklistPreview() {
 
                 {/* 의사에게 물어볼 질문 */}
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#1A1A2E", marginBottom: 12 }}>💬 의사 선생님께 여쭤볼 것</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#3B3226", marginBottom: 12 }}>💬 의사 선생님께 여쭤볼 것</p>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {selectedData.questions.map((q, i) => (
-                      <div key={i} style={{ display: "flex", gap: 10, padding: "10px 12px", borderRadius: 10, background: "#F0F7FF" }}>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: "#0EA5E9", flexShrink: 0, lineHeight: 1.6, width: 18, textAlign: "right" }}>{i + 1}</span>
-                        <p style={{ fontSize: 14, color: "#1A1A2E", lineHeight: 1.6 }}>{q}</p>
+                      <div key={i} style={{ display: "flex", gap: 10, padding: "10px 12px", borderRadius: 10, background: "#FDF7E7" }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: "#E67E3F", flexShrink: 0, lineHeight: 1.6, width: 18, textAlign: "right" }}>{i + 1}</span>
+                        <p style={{ fontSize: 14, color: "#3B3226", lineHeight: 1.6 }}>{q}</p>
                       </div>
                     ))}
                   </div>
@@ -288,7 +288,7 @@ export default function HospitalChecklistPreview() {
               </div>
 
               {/* 면책 */}
-              <div style={{ background: "#F0F9FF", border: "1px solid #BAE6FD", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
+              <div style={{ background: "#FDF7E7", border: "1px solid #EFDFC0", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
                 <p style={{ fontSize: 12, color: "#0369A1", lineHeight: 1.7 }}>
                   ⚠️ 이 체크리스트는 <strong>병원 방문 준비를 돕기 위한 참고용 도구</strong>입니다. 정확한 진단과 치료는 의사·약사 등 <strong>의료진의 안내</strong>를 따라야 합니다.
                 </p>
@@ -296,10 +296,10 @@ export default function HospitalChecklistPreview() {
 
               {/* 버튼 */}
               <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={handleCopy} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#fff", background: "#0EA5E9", border: "none", borderRadius: 12, cursor: "pointer" }}>
+                <button onClick={handleCopy} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#fff", background: "#E67E3F", border: "none", borderRadius: 12, cursor: "pointer" }}>
                   📋 결과 복사하기
                 </button>
-                <button onClick={handlePrint} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#0EA5E9", background: "#F0F9FF", border: "2px solid #BAE6FD", borderRadius: 12, cursor: "pointer" }}>
+                <button onClick={handlePrint} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#E67E3F", background: "#FDF7E7", border: "2px solid #EFDFC0", borderRadius: 12, cursor: "pointer" }}>
                   🖨️ 인쇄하기
                 </button>
               </div>
@@ -308,8 +308,8 @@ export default function HospitalChecklistPreview() {
         )}
 
         {/* 상시 면책 */}
-        <div style={{ padding: "14px 18px", background: "#fff", borderRadius: 12, border: "1px solid #DBEAFE" }}>
-          <p style={{ fontSize: 12, color: "#4A5568", lineHeight: 1.65 }}>
+        <div style={{ padding: "14px 18px", background: "#fff", borderRadius: 12, border: "1px solid #EFDFC0" }}>
+          <p style={{ fontSize: 12, color: "#6B5E4C", lineHeight: 1.65 }}>
             ℹ️ 이 체크리스트는 <strong>병원 방문 준비를 돕기 위한 참고용 도구</strong>입니다. 정확한 진단과 치료는 의료진의 안내를 따라야 합니다.
           </p>
         </div>

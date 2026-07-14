@@ -4,7 +4,7 @@ import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
 
 export const metadata: Metadata = {
-  title: "노인 무료 건강검진 항목 총정리 — 66세 생애전환기 검진 (2024년)",
+  title: "노인 무료 건강검진 항목 총정리 — 66세 생애전환기 검진 (2026년)",
   description: "66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다. 무료로 받을 수 있는 검진 종류와 신청 방법을 확인하세요.",
   alternates: { canonical: "/health/checkup" },
 };
@@ -29,24 +29,24 @@ const faqItems = [
 export default function CheckupPage() {
   return (
     <>
-      <ArticleSchema title="노인 무료 건강검진 항목 총정리" description="66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/health/checkup" />
+      <ArticleSchema title="노인 무료 건강검진 항목 총정리" description="66세 이상 생애전환기 건강검진과 국가암검진 대상 항목을 안내합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/health/checkup" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "건강·병원", href: "/health" }, { label: "노인 무료 건강검진" }]} />
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#ECFDF5", color: "#065F46", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #A7F3D0", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#EFF5E9", color: "#4F7245", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #CFE3C0", marginBottom: 14 }}>
             <i className="ti ti-stethoscope" style={{ fontSize: 11 }} aria-hidden="true" />건강검진
           </div>
-          <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>노인 무료 건강검진 항목<br />총정리 (2024년)</h1>
+          <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>노인 무료 건강검진 항목<br />총정리 (2026년)</h1>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2024년 기준</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2026년 기준</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-file-check" style={{ fontSize: 12 }} aria-hidden="true" />국민건강보험공단 자료</span>
           </div>
         </div>
       </div>
 
       <article style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 48px" }}>
-        <div style={{ background: "#ECFDF5", border: "0.5px solid #A7F3D0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
-          <p style={{ fontSize: 10, fontWeight: 600, color: "#065F46", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
+        <div style={{ background: "#EFF5E9", border: "0.5px solid #CFE3C0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
+          <p style={{ fontSize: 10, fontWeight: 600, color: "#4F7245", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
           <p style={{ fontSize: 14, fontWeight: 500, color: "#064E3B", lineHeight: 1.65 }}>국가건강검진은 2년마다 무료로 받을 수 있으며, 만 66세에는 골밀도·인지기능·우울증 검사 등이 추가되는 생애전환기 건강검진을 받습니다. 암검진은 종류에 따라 매년 또는 2년마다 무료 제공됩니다.</p>
         </div>
 
@@ -57,7 +57,7 @@ export default function CheckupPage() {
               <div key={c.name} style={{ padding: "14px 16px", background: "#FAFAF8", borderRadius: 10, border: "0.5px solid #EEECE6" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 4 }}>
                   <p style={{ fontSize: 14, fontWeight: 600, color: "#1A1A1A" }}>{c.name}</p>
-                  <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", background: "#ECFDF5", padding: "2px 8px", borderRadius: 999, whiteSpace: "nowrap", marginLeft: 8 }}>{c.cost}</span>
+                  <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", background: "#EFF5E9", padding: "2px 8px", borderRadius: 999, whiteSpace: "nowrap", marginLeft: 8 }}>{c.cost}</span>
                 </div>
                 <p style={{ fontSize: 11, color: "#E67E3F", fontWeight: 600, marginBottom: 3 }}>{c.age}</p>
                 <p style={{ fontSize: 12, color: "#6B6860" }}>{c.items}</p>

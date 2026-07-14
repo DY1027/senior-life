@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 };
 
 const articles = [
-  { title: "병원 방문 체크리스트", desc: "진료 목적을 선택하면 챙길 것과 의사에게 물어볼 질문을 정리해드립니다. 인쇄해서 가져가세요.", href: "/health/hospital-checklist", tag: "체크리스트", icon: "ti-checklist", tagBg: "#ECFDF5", tagColor: "#065F46", tagBorder: "#A7F3D0" },
-  { title: "건강보험 본인부담금 계산 방법", desc: "외래·입원·약국별 본인부담금 계산 방법과 본인부담상한제 혜택을 안내합니다.", href: "/health/insurance-copay", tag: "건강보험", icon: "ti-receipt", tagBg: "#ECFDF5", tagColor: "#065F46", tagBorder: "#A7F3D0" },
-  { title: "노인 무료 건강검진 항목 총정리", desc: "66세 이상 생애전환기 검진 및 국가암검진 대상 항목과 신청 방법을 안내합니다.", href: "/health/checkup", tag: "건강검진", icon: "ti-stethoscope", tagBg: "#ECFDF5", tagColor: "#065F46", tagBorder: "#A7F3D0" },
+  { title: "병원 방문 체크리스트", desc: "진료 목적을 선택하면 챙길 것과 의사에게 물어볼 질문을 정리해드립니다. 인쇄해서 가져가세요.", href: "/health/hospital-checklist", tag: "체크리스트", icon: "ti-checklist", tagBg: "#EFF5E9", tagColor: "#4F7245", tagBorder: "#CFE3C0" },
+  { title: "건강보험 본인부담금 계산 방법", desc: "외래·입원·약국별 본인부담금 계산 방법과 본인부담상한제 혜택을 안내합니다.", href: "/health/insurance-copay", tag: "건강보험", icon: "ti-receipt", tagBg: "#EFF5E9", tagColor: "#4F7245", tagBorder: "#CFE3C0" },
+  { title: "노인 무료 건강검진 항목 총정리", desc: "66세 이상 생애전환기 검진 및 국가암검진 대상 항목과 신청 방법을 안내합니다.", href: "/health/checkup", tag: "건강검진", icon: "ti-stethoscope", tagBg: "#EFF5E9", tagColor: "#4F7245", tagBorder: "#CFE3C0" },
 ];
 
 export default function HealthPage() {

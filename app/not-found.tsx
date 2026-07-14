@@ -61,7 +61,7 @@ export default function NotFound() {
               justifyContent: "center",
               padding: "14px 22px",
               borderRadius: 999,
-              background: "#1B6FC8",
+              background: "#C4621A",
               color: "#fff",
               fontSize: 15,
               fontWeight: 800,

@@ -27,16 +27,16 @@ const faqItems = [
 export default function FamilyCarePage() {
   return (
     <>
-      <ArticleSchema title="부모님 돌봄 가족을 위한 체크리스트" description="재가 돌봄 시 확인 항목과 위급 상황 대처법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/life-tips/family-care" />
+      <ArticleSchema title="부모님 돌봄 가족을 위한 체크리스트" description="재가 돌봄 시 확인 항목과 위급 상황 대처법을 안내합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/life-tips/family-care" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "생활팁", href: "/life-tips" }, { label: "가족 돌봄 체크리스트" }]} />
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#F5F3FF", color: "#6D28D9", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #DDD6FE", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#FDF0E0", color: "#C4621A", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #FDDFC0", marginBottom: 14 }}>
             <i className="ti ti-heart" style={{ fontSize: 11 }} aria-hidden="true" />가족돌봄
           </div>
           <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>부모님 돌봄 가족을 위한<br />체크리스트</h1>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2024년 기준</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2026년 기준</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-clock" style={{ fontSize: 12 }} aria-hidden="true" />읽는 시간 5분</span>
           </div>
         </div>

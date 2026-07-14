@@ -65,8 +65,8 @@ const CATEGORIES: Category[] = [
     key: "welfare",
     title: "복지 서비스",
     emoji: "🏛️",
-    color: "#1B6FC8",
-    bg: "#EFF6FF",
+    color: "#C4621A",
+    bg: "#FDF0E0",
     border: "#BFDBFE",
     items: [
       { id: "w1", label: "장기요양보험 등급 신청 여부를 확인했나요?" },
