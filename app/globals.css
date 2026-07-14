@@ -13,6 +13,16 @@
   --gray-line: #D1CFC8;
 }
 
+/* 둥근 제목 폰트(Jua) — 그림책 느낌의 마지막 조각. 로드 실패 시 Noto Sans로 자연 폴백.
+   Jua는 단일 굵기라 합성 볼드를 끄고 자간을 살짝 벌린다. */
+@layer base {
+  h1, h2 {
+    font-family: "Jua", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

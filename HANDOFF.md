@@ -104,6 +104,14 @@ senior-life/
   클릭 핸들러는 `cardsRef` 미러로 최신 상태를 읽는다(더블탭 레이스 방지 — state 클로저로 되돌리지 말 것).
 - [ ] 오늘의 문제(속담·상식 퀴즈), 순서 기억하기 — 허브에 "만들고 있어요"로 예고됨
 
+### 그림책 비주얼 시스템 (2026-07-14)
+- 제목(h1,h2)은 구글 폰트 **Jua(주아체)** — `globals.css` @layer base. 단일 굵기라 font-weight 400 고정
+- 홈 히어로 배경은 **계절 자동 전환** (`PlaygroundHero.seasonBg`): 기본/가을/겨울 3종,
+  홈은 `revalidate = 86400`(하루 ISR)이라 계절이 하루 안에 반영됨
+- 홈 맨 아래 닫는 컷 `ClosingScene` (노을 든든이 `public/footer-dog.webp`)
+- 그림책 1호 장면 3곳 일러스트 적용 (`public/story-{sms,call,112}.webp`)
+- 만들기 공개 대비 타일 `public/tiles/tile-making.webp` 보관 중
+
 ### 든든이 그림책 (`/stories`) — 공개 중
 - [x] 그림책 엔진 `components/stories/StoryPlayer.tsx` (2026-07-13) — 장면 그림/이모지 + 큰 글씨 +
   [다음 장], 사기 문자 예시 말풍선(`sms`), 고르기 퀴즈(`quiz`, 답 전 다음 잠금·오답도 다정하게).
