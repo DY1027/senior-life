@@ -45,7 +45,7 @@ export default function FAQSection() {
               {open === i && (
                 <div style={{ padding: "0 22px 20px" }}>
                   <div style={{ borderTop: "1px solid #E8F0FE", paddingTop: 16 }}>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: "#0EA5E9", marginRight: 8 }}>A.</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: "#E67E3F", marginRight: 8 }}>A.</span>
                     <span style={{ fontSize: 15, color: "#4A5568", lineHeight: 1.75 }}>{f.a}</span>
                   </div>
                 </div>

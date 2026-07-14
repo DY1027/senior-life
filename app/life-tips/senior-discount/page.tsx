@@ -4,23 +4,23 @@ import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
 
 export const metadata: Metadata = {
-  title: "시니어 할인 카드 총정리 — 교통·문화·쇼핑 혜택 (2024년)",
+  title: "시니어 할인 카드 총정리 — 교통·문화·쇼핑 혜택 (2026년)",
   description: "65세 이상 어르신이 받을 수 있는 교통·문화시설·쇼핑 할인 혜택을 한눈에 정리했습니다. 지하철 무임승차부터 국립공원 무료 입장까지 확인하세요.",
   alternates: { canonical: "/life-tips/senior-discount" },
 };
 
 const discounts = [
-  { cat: "교통", icon: "ti-train", color: "#EFF6FF", iconColor: "#2563EB", items: [
+  { cat: "교통", icon: "ti-train", color: "#FDF0E0", iconColor: "#2563EB", items: [
     { name: "지하철 무임승차", condition: "만 65세 이상", detail: "전국 도시철도 무료 (수도권·부산·대구·광주·대전 등)" },
     { name: "국내선 항공 할인", condition: "만 65세 이상", detail: "대한항공·아시아나 등 10~30% 할인" },
     { name: "KTX·무궁화 할인", condition: "만 65세 이상", detail: "운임 30% 할인 (주말·공휴일 일부 제외)" },
   ]},
-  { cat: "문화·여가", icon: "ti-ticket", color: "#F5F3FF", iconColor: "#7C3AED", items: [
+  { cat: "문화·여가", icon: "ti-ticket", color: "#FDF0E0", iconColor: "#7C3AED", items: [
     { name: "국립공원 무료 입장", condition: "만 65세 이상", detail: "국립공원관리공단 운영 전국 공원" },
     { name: "국공립 박물관·미술관", condition: "만 65세 이상", detail: "국립중앙박물관·국립현대미술관 등 무료" },
     { name: "영화 할인", condition: "만 65세 이상", detail: "CGV·메가박스·롯데시네마 평일 할인 (약 6,000원)" },
   ]},
-  { cat: "쇼핑·생활", icon: "ti-shopping-cart", color: "#ECFDF5", iconColor: "#059669", items: [
+  { cat: "쇼핑·생활", icon: "ti-shopping-cart", color: "#EFF5E9", iconColor: "#059669", items: [
     { name: "통신요금 할인", condition: "만 65세 이상·기초연금 수급자", detail: "월 최대 11,000원 요금 감면 (통신사별 상이)" },
     { name: "전기요금 할인", condition: "만 65세 이상·기초생활수급자", detail: "월 최대 16,000원 할인" },
     { name: "목욕탕·이발소 할인", condition: "지자체별 상이", detail: "주민센터에서 시니어 목욕 쿠폰 제공 지역 있음" },
@@ -36,16 +36,16 @@ const faqItems = [
 export default function SeniorDiscountPage() {
   return (
     <>
-      <ArticleSchema title="시니어 할인 카드 총정리" description="65세 이상 교통·문화·쇼핑 할인 혜택을 정리합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/life-tips/senior-discount" />
+      <ArticleSchema title="시니어 할인 카드 총정리" description="65세 이상 교통·문화·쇼핑 할인 혜택을 정리합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/life-tips/senior-discount" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "생활팁", href: "/life-tips" }, { label: "시니어 할인 총정리" }]} />
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#F5F3FF", color: "#6D28D9", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #DDD6FE", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#FDF0E0", color: "#C4621A", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #FDDFC0", marginBottom: 14 }}>
             <i className="ti ti-bulb" style={{ fontSize: 11 }} aria-hidden="true" />생활팁
           </div>
           <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>시니어 할인 카드 총정리<br />— 교통·문화·쇼핑 혜택</h1>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2024년 기준</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2026년 기준</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-clock" style={{ fontSize: 12 }} aria-hidden="true" />읽는 시간 5분</span>
           </div>
         </div>

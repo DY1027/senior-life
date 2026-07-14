@@ -3,7 +3,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { track } from "@/lib/track";
+import { useReadAloud } from "@/components/useReadAloud";
 import type { Story, StoryPage } from "@/lib/stories/types";
+
+// 한 장의 내용을 음성용 문장으로 합친다 (그림책 장 + 문자 예시 + 퀴즈)
+function pageToSpeech(page: StoryPage): string {
+  const parts = [page.title];
+  if (page.sms) parts.push(`이런 문자가 왔어요. ${page.sms.body}`);
+  if (page.text) parts.push(page.text.replace(/\n/g, " "));
+  if (page.quiz) {
+    parts.push(page.quiz.question);
+    page.quiz.options.forEach((o, i) => parts.push(`${i + 1}번, ${o.label}.`));
+    parts.push("화면에서 하나를 골라 주세요.");
+  }
+  return parts.join(" ");
+}
 
 // 그림책 뷰어 — 장면 그림 + 큰 글씨 + [다음 장]으로 넘기는 이야기 엔진.
 // 퀴즈 장은 답을 고르기 전에는 다음으로 넘어가지 않는다 (정답이 아니어도 혼내지 않음).
@@ -43,6 +57,7 @@ function PageArt({ page }: { page: StoryPage }) {
 export default function StoryPlayer({ story }: { story: Story }) {
   const [pageNo, setPageNo] = useState(0); // pages.length === finish 화면
   const [picked, setPicked] = useState<number | null>(null);
+  const { read, stop: stopReading, playing } = useReadAloud();
 
   useEffect(() => {
     track("story_start", { story: story.id });
@@ -54,6 +69,7 @@ export default function StoryPlayer({ story }: { story: Story }) {
   const quizAnswered = !page?.quiz || picked !== null;
 
   function go(next: number) {
+    stopReading(); // 장을 넘기면 읽던 소리 중단
     setPicked(null);
     setPageNo(next);
     if (next >= total) track("story_complete", { story: story.id });
@@ -125,6 +141,15 @@ export default function StoryPlayer({ story }: { story: Story }) {
       </div>
 
       <div className="rounded-3xl border-2 border-[#EFDFC0] bg-white px-6 py-8 text-center">
+        <button
+          type="button"
+          onClick={() => read(pageToSpeech(page!), `/audio/stories/${story.id}/${pageNo}.mp3`)}
+          className={`mb-4 inline-flex items-center gap-1.5 rounded-full border-2 px-4 py-2 text-[15px] font-bold transition-transform active:scale-[0.97] ${
+            playing ? "border-[#E67E3F] bg-[#FDF0E0] text-[#C4621A]" : "border-[#EFDFC0] bg-white text-[#6E5C49]"
+          }`}
+        >
+          {playing ? "⏹️ 그만 듣기" : "🔊 읽어 주기"}
+        </button>
         <PageArt page={page!} />
         <h1 className="mt-4 break-keep text-[clamp(22px,5vw,27px)] font-extrabold leading-snug text-[#3B3226]">{page!.title}</h1>
         {page!.sms && <SmsBubble from={page!.sms.from} body={page!.sms.body} />}

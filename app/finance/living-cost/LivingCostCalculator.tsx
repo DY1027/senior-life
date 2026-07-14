@@ -6,7 +6,9 @@ export default function LivingCostCalculator() {
   const [region, setRegion] = useState<"metro" | "city" | "rural">("city");
   const [lifestyle, setLifestyle] = useState<"basic" | "standard" | "rich">("standard");
 
-  const base = type === "couple" ? 2770000 : 1770000;
+  // 국민연금연구원 국민노후보장패널 최신 조사(2026 발표) 적정 노후 생활비:
+  // 부부 월 298만 1천 원 / 개인 월 197만 6천 원
+  const base = type === "couple" ? 2981000 : 1976000;
   const regionMod = region === "metro" ? 1.2 : region === "city" ? 1.0 : 0.82;
   const lifeMod = lifestyle === "basic" ? 0.75 : lifestyle === "standard" ? 1.0 : 1.35;
   const monthly = Math.round((base * regionMod * lifeMod) / 10000) * 10000;
@@ -66,7 +68,7 @@ export default function LivingCostCalculator() {
             <p style={{ fontSize: 15, fontWeight: 700, color: "#E67E3F" }}>{fmt(total20)}원</p>
           </div>
         </div>
-        <p style={{ marginTop: 12, fontSize: 10, color: "#6B6860" }}>* 국민연금공단 적정 생활비 기준. 의료비·물가상승률 미반영</p>
+        <p style={{ marginTop: 12, fontSize: 10, color: "#6B6860" }}>* 국민연금연구원 적정 노후 생활비 최신 조사 기준(2026년 발표). 의료비·물가상승률 미반영</p>
       </div>
     </div>
   );

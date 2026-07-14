@@ -26,24 +26,24 @@ const faqItems = [
 export default function NationalPensionPage() {
   return (
     <>
-      <ArticleSchema title="국민연금 예상 수령액 조회 방법" description="국민연금 예상 수령액을 앱·홈페이지에서 조회하는 방법을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/finance/national-pension" />
+      <ArticleSchema title="국민연금 예상 수령액 조회 방법" description="국민연금 예상 수령액을 앱·홈페이지에서 조회하는 방법을 안내합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/finance/national-pension" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "노후재정", href: "/finance" }, { label: "국민연금 수령액 조회" }]} />
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#EFF6FF", color: "#1D4ED8", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #BFDBFE", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#FDF0E0", color: "#C4621A", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #FDDFC0", marginBottom: 14 }}>
             <i className="ti ti-chart-line" style={{ fontSize: 11 }} aria-hidden="true" />국민연금
           </div>
           <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>국민연금 예상 수령액<br />조회 방법</h1>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2024년 기준</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2026년 기준</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-clock" style={{ fontSize: 12 }} aria-hidden="true" />읽는 시간 3분</span>
           </div>
         </div>
       </div>
 
       <article style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 48px" }}>
-        <div style={{ background: "#EFF6FF", border: "0.5px solid #BFDBFE", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
-          <p style={{ fontSize: 10, fontWeight: 600, color: "#1D4ED8", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
+        <div style={{ background: "#FDF0E0", border: "0.5px solid #FDDFC0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
+          <p style={{ fontSize: 10, fontWeight: 600, color: "#C4621A", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
           <p style={{ fontSize: 14, fontWeight: 500, color: "#1E3A8A", lineHeight: 1.65 }}>국민연금 예상 수령액은 &apos;내 연금&apos; 앱 또는 국민연금공단 홈페이지(nps.or.kr)에서 본인 인증 후 바로 확인할 수 있습니다. 연금액은 가입 기간과 납부 금액에 따라 달라집니다.</p>
         </div>
 

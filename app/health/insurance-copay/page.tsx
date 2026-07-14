@@ -4,7 +4,7 @@ import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
 
 export const metadata: Metadata = {
-  title: "건강보험 본인부담금 계산 방법 — 외래·입원·약국별 정리 (2024년)",
+  title: "건강보험 본인부담금 계산 방법 — 외래·입원·약국별 정리 (2026년)",
   description: "건강보험 본인부담금이란 진료비 중 환자가 직접 부담하는 금액입니다. 외래·입원·약국별 본인부담률과 본인부담상한제 혜택을 쉽게 안내합니다.",
   alternates: { canonical: "/health/insurance-copay" },
 };
@@ -18,7 +18,7 @@ const copayTable = [
 ];
 
 const faqItems = [
-  { question: "본인부담상한제란 무엇인가요?", answer: "연간 본인부담금 총액이 소득에 따라 정해진 상한액을 초과하면 초과분을 건강보험공단에서 돌려주는 제도입니다. 2024년 기준 저소득층(1분위)은 연 87만 원이 상한액으로, 초과분은 자동으로 환급됩니다." },
+  { question: "본인부담상한제란 무엇인가요?", answer: "연간 본인부담금 총액이 소득에 따라 정해진 상한액을 초과하면 초과분을 건강보험공단에서 돌려주는 제도입니다. 2026년 기준 저소득층(1분위)은 연 90만 원이 상한액으로, 초과분은 자동으로 환급됩니다." },
   { question: "65세 이상은 진료비가 얼마인가요?", answer: "65세 이상 노인은 의원 외래 진료 시 본인부담금이 1,500원 정액(진료비 15,000원 이하 시)으로 경감됩니다. 약국 처방조제료도 1,200원 정액이 적용됩니다." },
   { question: "건강보험이 적용되지 않는 비급여 항목은 무엇인가요?", answer: "미용·성형, 라식·라섹, 건강검진 일부, 한방 첩약, 상급 병실료(1~2인실) 등은 비급여로 전액 본인 부담입니다. 비급여 진료비는 병원마다 다르므로 미리 확인이 필요합니다." },
   { question: "진료비 영수증은 왜 꼭 받아야 하나요?", answer: "진료비 영수증에는 급여·비급여 항목이 구분되어 있어 추후 의료비 세액공제나 실손보험 청구 시 반드시 필요합니다. 분실 시 해당 병원에서 재발급을 요청하세요." },
@@ -27,24 +27,24 @@ const faqItems = [
 export default function InsuranceCopayPage() {
   return (
     <>
-      <ArticleSchema title="건강보험 본인부담금 계산 방법" description="외래·입원·약국별 본인부담률과 본인부담상한제 혜택을 안내합니다." datePublished="2024-01-01" dateModified="2024-11-01" url="https://seniordeundun.com/health/insurance-copay" />
+      <ArticleSchema title="건강보험 본인부담금 계산 방법" description="외래·입원·약국별 본인부담률과 본인부담상한제 혜택을 안내합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/health/insurance-copay" />
       <div style={{ background: "#FAFAF8", borderBottom: "0.5px solid #EEECE6", padding: "32px 24px 28px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <BreadcrumbNav items={[{ label: "홈", href: "/" }, { label: "건강·병원", href: "/health" }, { label: "건강보험 본인부담금" }]} />
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#ECFDF5", color: "#065F46", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #A7F3D0", marginBottom: 14 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#EFF5E9", color: "#4F7245", fontSize: 11, fontWeight: 600, padding: "3px 10px", borderRadius: 999, border: "0.5px solid #CFE3C0", marginBottom: 14 }}>
             <i className="ti ti-stethoscope" style={{ fontSize: 11 }} aria-hidden="true" />건강보험
           </div>
           <h1 style={{ fontSize: "clamp(22px,4vw,28px)", fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 12 }}>건강보험 본인부담금<br />계산 방법</h1>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "#9B9890" }}>
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2024년 11월 업데이트</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-calendar" style={{ fontSize: 12 }} aria-hidden="true" />2026년 7월 업데이트</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><i className="ti ti-clock" style={{ fontSize: 12 }} aria-hidden="true" />읽는 시간 4분</span>
           </div>
         </div>
       </div>
 
       <article style={{ maxWidth: 720, margin: "0 auto", padding: "32px 24px 48px" }}>
-        <div style={{ background: "#ECFDF5", border: "0.5px solid #A7F3D0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
-          <p style={{ fontSize: 10, fontWeight: 600, color: "#065F46", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
+        <div style={{ background: "#EFF5E9", border: "0.5px solid #CFE3C0", borderRadius: 12, padding: "16px 20px", marginBottom: 32 }}>
+          <p style={{ fontSize: 10, fontWeight: 600, color: "#4F7245", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 6 }}>핵심 요약</p>
           <p style={{ fontSize: 14, fontWeight: 500, color: "#064E3B", lineHeight: 1.65 }}>본인부담금이란 전체 진료비에서 건강보험이 지원되고 남은 금액으로, 환자가 직접 내는 비용입니다. 외래 기준 진료비의 30~60%이며, 65세 이상 노인은 의원 방문 시 1,500원 정액 혜택을 받을 수 있습니다.</p>
         </div>
 
@@ -75,13 +75,11 @@ export default function InsuranceCopayPage() {
         <section style={{ marginBottom: 32 }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, color: "#1A1A1A", marginBottom: 14, letterSpacing: "-0.3px" }}>본인부담상한제 — 연간 초과분 환급</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8 }}>
+            {/* 2026년 기준 확인된 양 끝 분위만 표기 — 중간 분위는 매년 조정되므로 공단 확인 안내 */}
             {[
-              { tier: "1분위 (저소득)", limit: "연 87만원" },
-              { tier: "2~3분위", limit: "연 108만원" },
-              { tier: "4~5분위", limit: "연 162만원" },
-              { tier: "6~7분위", limit: "연 303만원" },
-              { tier: "8분위", limit: "연 414만원" },
-              { tier: "9~10분위 (고소득)", limit: "연 780만원" },
+              { tier: "1분위 (저소득)", limit: "연 90만원" },
+              { tier: "10분위 (고소득)", limit: "연 843만원" },
+              { tier: "2~9분위", limit: "소득에 따라 그 사이" },
             ].map((item) => (
               <div key={item.tier} style={{ padding: "14px 16px", background: "#FAFAF8", borderRadius: 10, border: "0.5px solid #EEECE6" }}>
                 <p style={{ fontSize: 11, color: "#9B9890", marginBottom: 4 }}>{item.tier}</p>
@@ -89,7 +87,7 @@ export default function InsuranceCopayPage() {
               </div>
             ))}
           </div>
-          <p style={{ marginTop: 10, fontSize: 12, color: "#9B9890" }}>* 상한액 초과분은 다음 해 8월 건강보험공단에서 자동 환급</p>
+          <p style={{ marginTop: 10, fontSize: 12, color: "#9B9890" }}>* 2026년 기준. 내 상한액과 환급금은 건강보험공단(☎ 1577-1000) 또는 The건강보험 앱에서 확인할 수 있어요. 초과분은 다음 해 8월 자동 환급</p>
         </section>
 
         <FAQAccordion items={faqItems} />

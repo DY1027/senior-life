@@ -123,14 +123,14 @@ export default function MedicationSummary() {
     w.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>복용약 요약표</title>
     <style>
       *{box-sizing:border-box;margin:0;padding:0;}
-      body{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;padding:32px;color:#1A1A2E;max-width:900px;margin:0 auto;}
+      body{font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;padding:32px;color:#3B3226;max-width:900px;margin:0 auto;}
       h1{font-size:20px;font-weight:800;color:#059669;margin-bottom:4px;}
-      .sub{font-size:12px;color:#4A5568;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #059669;}
+      .sub{font-size:12px;color:#6B5E4C;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #059669;}
       table{width:100%;border-collapse:collapse;font-size:14px;}
-      th{background:#F0FDF4;color:#065F46;font-size:13px;padding:10px 8px;border:1px solid #A7F3D0;text-align:center;font-weight:700;}
+      th{background:#F0FDF4;color:#4F7245;font-size:13px;padding:10px 8px;border:1px solid #CFE3C0;text-align:center;font-weight:700;}
       td{padding:10px 8px;border:1px solid #D1FAE5;vertical-align:middle;line-height:1.5;}
       tr:nth-child(even) td{background:#F9FAFB;}
-      .disclaimer{margin-top:24px;font-size:11px;color:#9CA3AF;border-top:1px solid #E8F0FE;padding-top:12px;line-height:1.7;}
+      .disclaimer{margin-top:24px;font-size:11px;color:#9CA3AF;border-top:1px solid #F3E7D3;padding-top:12px;line-height:1.7;}
       @media print{body{padding:16px;font-size:13px;}h1{font-size:18px;}}
     </style></head><body>
     <h1>복용약 요약표</h1>
@@ -171,13 +171,13 @@ export default function MedicationSummary() {
       </div>
 
       {/* 입력 폼 */}
-      <div style={{ background: "#F0FDF4", borderRadius: 18, padding: "24px 20px", border: "1.5px solid #A7F3D0", marginBottom: 20 }}>
-        <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E", marginBottom: 16 }}>💊 약 추가하기</p>
+      <div style={{ background: "#F0FDF4", borderRadius: 18, padding: "24px 20px", border: "1.5px solid #CFE3C0", marginBottom: 20 }}>
+        <p style={{ fontSize: 15, fontWeight: 700, color: "#3B3226", marginBottom: 16 }}>💊 약 추가하기</p>
 
         {/* 약 이름 + 용량 */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }} className="med-name-grid">
           <div>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#065F46", marginBottom: 6 }}>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#4F7245", marginBottom: 6 }}>
               약 이름 <span style={{ color: "#DC2626" }}>*</span>
             </label>
             <input
@@ -185,31 +185,31 @@ export default function MedicationSummary() {
               placeholder="예: 아스피린, 혈압약, 메트포르민"
               value={form.name}
               onChange={(e) => { setForm((p) => ({ ...p, name: e.target.value })); setNameError(false); }}
-              style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 16, borderRadius: 12, border: `2px solid ${nameError ? "#DC2626" : "#A7F3D0"}`, outline: "none", background: "#fff", boxSizing: "border-box" }}
+              style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 16, borderRadius: 12, border: `2px solid ${nameError ? "#DC2626" : "#CFE3C0"}`, outline: "none", background: "#fff", boxSizing: "border-box" }}
             />
             {nameError && <p style={{ fontSize: 12, color: "#DC2626", marginTop: 4 }}>약 이름을 입력해주세요</p>}
           </div>
           <div>
-            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#065F46", marginBottom: 6 }}>1회 용량</label>
+            <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#4F7245", marginBottom: 6 }}>1회 용량</label>
             <input
               type="text"
               placeholder="예: 1알, 반 알, 5mg"
               value={form.dosage}
               onChange={(e) => setForm((p) => ({ ...p, dosage: e.target.value }))}
-              style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 16, borderRadius: 12, border: "2px solid #A7F3D0", outline: "none", background: "#fff", boxSizing: "border-box" }}
+              style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 16, borderRadius: 12, border: "2px solid #CFE3C0", outline: "none", background: "#fff", boxSizing: "border-box" }}
             />
           </div>
         </div>
 
         {/* 복용 시간 */}
         <div style={{ marginBottom: 14 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#065F46", marginBottom: 8 }}>복용 시간 (해당하는 것 모두 선택)</p>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#4F7245", marginBottom: 8 }}>복용 시간 (해당하는 것 모두 선택)</p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {TIMES.map((t) => (
               <button
                 key={t}
                 onClick={() => toggleTime(t)}
-                style={{ height: 48, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${form.times.includes(t) ? "#059669" : "#A7F3D0"}`, background: form.times.includes(t) ? "#059669" : "#fff", color: form.times.includes(t) ? "#fff" : "#1A1A2E", cursor: "pointer" }}
+                style={{ height: 48, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${form.times.includes(t) ? "#059669" : "#CFE3C0"}`, background: form.times.includes(t) ? "#059669" : "#fff", color: form.times.includes(t) ? "#fff" : "#3B3226", cursor: "pointer" }}
               >
                 {t}
               </button>
@@ -219,13 +219,13 @@ export default function MedicationSummary() {
 
         {/* 식사 기준 */}
         <div style={{ marginBottom: 14 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, color: "#065F46", marginBottom: 8 }}>식사 기준</p>
+          <p style={{ fontSize: 12, fontWeight: 700, color: "#4F7245", marginBottom: 8 }}>식사 기준</p>
           <div style={{ display: "flex", gap: 8 }}>
             {(["식전", "식후", "상관없음"] as MealTiming[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setForm((p) => ({ ...p, meal: m }))}
-                style={{ height: 48, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${form.meal === m ? "#059669" : "#A7F3D0"}`, background: form.meal === m ? "#059669" : "#fff", color: form.meal === m ? "#fff" : "#1A1A2E", cursor: "pointer" }}
+                style={{ height: 48, padding: "0 18px", fontSize: 15, fontWeight: 600, borderRadius: 12, border: `2px solid ${form.meal === m ? "#059669" : "#CFE3C0"}`, background: form.meal === m ? "#059669" : "#fff", color: form.meal === m ? "#fff" : "#3B3226", cursor: "pointer" }}
               >
                 {m}
               </button>
@@ -235,13 +235,13 @@ export default function MedicationSummary() {
 
         {/* 주의사항 */}
         <div style={{ marginBottom: 18 }}>
-          <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#065F46", marginBottom: 6 }}>주의사항 (선택)</label>
+          <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#4F7245", marginBottom: 6 }}>주의사항 (선택)</label>
           <input
             type="text"
             placeholder="예: 물과 함께 복용, 자몽 주스 금지, 취침 30분 전"
             value={form.notes}
             onChange={(e) => setForm((p) => ({ ...p, notes: e.target.value }))}
-            style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 15, borderRadius: 12, border: "2px solid #A7F3D0", outline: "none", background: "#fff", boxSizing: "border-box" }}
+            style={{ width: "100%", height: 52, padding: "0 14px", fontSize: 15, borderRadius: 12, border: "2px solid #CFE3C0", outline: "none", background: "#fff", boxSizing: "border-box" }}
           />
         </div>
 
@@ -258,11 +258,11 @@ export default function MedicationSummary() {
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, gap: 8, flexWrap: "wrap" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#1A1A2E" }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#3B3226" }}>
                 입력한 약 <span style={{ color: "#059669" }}>{list.length}가지</span>
               </p>
               {savedAt && (
-                <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", background: "#F0FDF4", border: "1px solid #A7F3D0", padding: "2px 8px", borderRadius: 99 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, color: "#059669", background: "#F0FDF4", border: "1px solid #CFE3C0", padding: "2px 8px", borderRadius: 99 }}>
                   💾 저장됨 {savedAt}
                 </span>
               )}
@@ -288,7 +288,7 @@ export default function MedicationSummary() {
               <div key={m.id} style={{ background: "#fff", borderRadius: 14, border: "1.5px solid #D1FAE5", padding: "14px 16px", display: "flex", alignItems: "flex-start", gap: 12 }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", marginBottom: 6 }}>
-                    <p style={{ fontSize: 16, fontWeight: 700, color: "#1A1A2E" }}>{m.name}</p>
+                    <p style={{ fontSize: 16, fontWeight: 700, color: "#3B3226" }}>{m.name}</p>
                     {m.dosage && <span style={{ fontSize: 12, color: "#059669", background: "#F0FDF4", padding: "2px 8px", borderRadius: 6, fontWeight: 600 }}>{m.dosage}</span>}
                     <span style={{ fontSize: 12, color: "#6B7280", background: "#F3F4F6", padding: "2px 8px", borderRadius: 6 }}>{m.meal}</span>
                   </div>
@@ -317,14 +317,14 @@ export default function MedicationSummary() {
       {list.length === 0 && (
         <div style={{ background: "#fff", borderRadius: 14, border: "1.5px dashed #D1FAE5", padding: "32px 24px", textAlign: "center", marginBottom: 20 }}>
           <p style={{ fontSize: 32, marginBottom: 10 }}>💊</p>
-          <p style={{ fontSize: 15, fontWeight: 600, color: "#4A5568", marginBottom: 6 }}>아직 추가된 약이 없습니다</p>
+          <p style={{ fontSize: 15, fontWeight: 600, color: "#6B5E4C", marginBottom: 6 }}>아직 추가된 약이 없습니다</p>
           <p style={{ fontSize: 13, color: "#9CA3AF", lineHeight: 1.65 }}>위 폼에서 복용 중인 약을 하나씩 추가해보세요.<br />2~3가지를 추가하면 요약표를 만들 수 있습니다.</p>
         </div>
       )}
 
       {/* 결과 요약표 */}
       {showResult && list.length > 0 && (
-        <div style={{ background: "#fff", borderRadius: 20, border: "2px solid #A7F3D0", overflow: "hidden", marginBottom: 16 }}>
+        <div style={{ background: "#fff", borderRadius: 20, border: "2px solid #CFE3C0", overflow: "hidden", marginBottom: 16 }}>
           <div style={{ background: "#059669", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>복용약 요약표 — {list.length}가지</p>
             <span style={{ fontSize: 11, color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.15)", padding: "3px 10px", borderRadius: 99 }}>참고용 도구</span>
@@ -335,27 +335,27 @@ export default function MedicationSummary() {
             <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 540 }}>
               <thead>
                 <tr style={{ background: "#F0FDF4" }}>
-                  <th style={{ padding: "10px 12px", fontSize: 13, fontWeight: 700, color: "#065F46", border: "1px solid #A7F3D0", textAlign: "left", whiteSpace: "nowrap" }}>약 이름</th>
-                  <th style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#065F46", border: "1px solid #A7F3D0", textAlign: "center", whiteSpace: "nowrap" }}>용량</th>
+                  <th style={{ padding: "10px 12px", fontSize: 13, fontWeight: 700, color: "#4F7245", border: "1px solid #CFE3C0", textAlign: "left", whiteSpace: "nowrap" }}>약 이름</th>
+                  <th style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#4F7245", border: "1px solid #CFE3C0", textAlign: "center", whiteSpace: "nowrap" }}>용량</th>
                   {TIMES.map((t) => (
-                    <th key={t} style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#065F46", border: "1px solid #A7F3D0", textAlign: "center", whiteSpace: "nowrap" }}>{t}</th>
+                    <th key={t} style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#4F7245", border: "1px solid #CFE3C0", textAlign: "center", whiteSpace: "nowrap" }}>{t}</th>
                   ))}
-                  <th style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#065F46", border: "1px solid #A7F3D0", textAlign: "center", whiteSpace: "nowrap" }}>식사</th>
-                  <th style={{ padding: "10px 12px", fontSize: 13, fontWeight: 700, color: "#065F46", border: "1px solid #A7F3D0", textAlign: "left" }}>주의사항</th>
+                  <th style={{ padding: "10px 8px", fontSize: 13, fontWeight: 700, color: "#4F7245", border: "1px solid #CFE3C0", textAlign: "center", whiteSpace: "nowrap" }}>식사</th>
+                  <th style={{ padding: "10px 12px", fontSize: 13, fontWeight: 700, color: "#4F7245", border: "1px solid #CFE3C0", textAlign: "left" }}>주의사항</th>
                 </tr>
               </thead>
               <tbody>
                 {list.map((m, i) => (
                   <tr key={m.id} style={{ background: i % 2 === 1 ? "#F9FAFB" : "#fff" }}>
-                    <td style={{ padding: "10px 12px", fontSize: 15, fontWeight: 700, color: "#1A1A2E", border: "1px solid #D1FAE5" }}>{m.name}</td>
-                    <td style={{ padding: "10px 8px", fontSize: 14, color: "#4A5568", border: "1px solid #D1FAE5", textAlign: "center" }}>{m.dosage || "─"}</td>
+                    <td style={{ padding: "10px 12px", fontSize: 15, fontWeight: 700, color: "#3B3226", border: "1px solid #D1FAE5" }}>{m.name}</td>
+                    <td style={{ padding: "10px 8px", fontSize: 14, color: "#6B5E4C", border: "1px solid #D1FAE5", textAlign: "center" }}>{m.dosage || "─"}</td>
                     {TIMES.map((t) => (
                       <td key={t} style={{ padding: "10px 8px", fontSize: 18, border: "1px solid #D1FAE5", textAlign: "center", color: m.times.includes(t) ? "#059669" : "#D1D5DB" }}>
                         {m.times.includes(t) ? "○" : "─"}
                       </td>
                     ))}
-                    <td style={{ padding: "10px 8px", fontSize: 13, color: "#4A5568", border: "1px solid #D1FAE5", textAlign: "center", whiteSpace: "nowrap" }}>{m.meal}</td>
-                    <td style={{ padding: "10px 12px", fontSize: 13, color: "#4A5568", border: "1px solid #D1FAE5" }}>{m.notes || "─"}</td>
+                    <td style={{ padding: "10px 8px", fontSize: 13, color: "#6B5E4C", border: "1px solid #D1FAE5", textAlign: "center", whiteSpace: "nowrap" }}>{m.meal}</td>
+                    <td style={{ padding: "10px 12px", fontSize: 13, color: "#6B5E4C", border: "1px solid #D1FAE5" }}>{m.notes || "─"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -375,7 +375,7 @@ export default function MedicationSummary() {
               <button onClick={handleCopy} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#fff", background: "#059669", border: "none", borderRadius: 12, cursor: "pointer" }}>
                 📋 결과 복사하기
               </button>
-              <button onClick={handlePrint} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#059669", background: "#F0FDF4", border: "2px solid #A7F3D0", borderRadius: 12, cursor: "pointer" }}>
+              <button onClick={handlePrint} style={{ flex: 1, height: 52, fontSize: 15, fontWeight: 700, color: "#059669", background: "#F0FDF4", border: "2px solid #CFE3C0", borderRadius: 12, cursor: "pointer" }}>
                 🖨️ 인쇄하기
               </button>
             </div>
@@ -385,7 +385,7 @@ export default function MedicationSummary() {
 
       {/* 상시 면책 */}
       <div style={{ padding: "14px 18px", background: "#fff", borderRadius: 12, border: "1px solid #D1FAE5" }}>
-        <p style={{ fontSize: 12, color: "#4A5568", lineHeight: 1.65 }}>
+        <p style={{ fontSize: 12, color: "#6B5E4C", lineHeight: 1.65 }}>
           ℹ️ 이 도구는 복용약 목록을 <strong>정리해두기 위한 참고용</strong>입니다. 입력한 정보는 이 기기에 자동 저장되어 브라우저를 닫아도 유지됩니다. 약 복용 관련 결정은 의사·약사와 상담하세요.
         </p>
       </div>
