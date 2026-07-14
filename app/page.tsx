@@ -8,6 +8,10 @@ import StoryBanner from "@/components/home/StoryBanner";
 import ToolLinks from "@/components/home/ToolLinks";
 import InfoCategories from "@/components/home/InfoCategories";
 import FAQSection from "@/components/home/FAQSection";
+import ClosingScene from "@/components/home/ClosingScene";
+
+// 계절 배경(PlaygroundHero)이 하루 안에 갱신되도록 매일 재생성한다
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
@@ -37,6 +41,7 @@ export default function HomePage() {
       <ToolLinks />
       <InfoCategories />
       <FAQSection />
+      <ClosingScene />
       <Footer />
     </>
   );

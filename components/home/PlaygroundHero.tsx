@@ -1,5 +1,14 @@
 import Image from "next/image";
 
+// 계절에 따라 마을 풍경이 옷을 갈아입는다 (봄·여름 → 초록, 가을 → 단풍, 겨울 → 눈).
+// 홈 페이지는 하루 단위 ISR(revalidate)이라 계절 전환이 하루 안에 반영된다.
+function seasonBg(): string {
+  const m = new Date().getMonth() + 1;
+  if (m >= 9 && m <= 11) return "/bg-village-autumn.webp";
+  if (m === 12 || m <= 2) return "/bg-village-winter.webp";
+  return "/bg-village.webp";
+}
+
 // 놀이터 홈 히어로 — 그림책 첫 장처럼.
 // 마을 풍경(소유자 제공 일러스트)이 화면을 열고, 그 위에 가족 컷과 인사말이 앉는다.
 // 배경 하단 크림색(#FDF7E7)을 섹션 배경으로 이어 붙여 그림과 화면의 경계를 없앤다.
@@ -9,7 +18,7 @@ export default function PlaygroundHero() {
       {/* 마을 풍경 */}
       <div className="relative h-[220px] w-full overflow-hidden sm:h-[290px] md:h-[350px]">
         <Image
-          src="/bg-village.webp"
+          src={seasonBg()}
           alt=""
           fill
           priority
