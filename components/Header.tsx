@@ -9,6 +9,8 @@ import type { User } from "@supabase/supabase-js";
 const nav = [
   { label: "키오스크 연습", href: "/kiosk" },
   { label: "그림책", href: "/stories" },
+  { label: "두뇌 놀이", href: "/brain" },
+  { label: "만들기", href: "/making" },
   { label: "복지혜택", href: "/welfare" },
   { label: "건강·병원", href: "/health" },
   { label: "노후재정", href: "/finance" },
@@ -38,16 +40,16 @@ export default function Header() {
 
   return (
     <header style={{ background: "#fff", borderBottom: "0.5px solid #EEECE6", position: "sticky", top: 0, zIndex: 50 }}>
-      <div style={{ maxWidth: 1024, margin: "0 auto", padding: "0 24px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 20px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#E67E3F", display: "inline-block" }} />
-          <span style={{ fontSize: 17, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px" }}>시니어 든든</span>
+          <span style={{ fontSize: 17, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px", whiteSpace: "nowrap" }}>시니어 든든</span>
         </Link>
 
         <nav className="hidden md:flex" style={{ gap: 2 }} aria-label="주요 메뉴">
           {nav.map((item) => (
             <Link key={item.href} href={item.href}
-              style={{ padding: "6px 14px", fontSize: 15, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none" }}>
+              style={{ padding: "6px 9px", fontSize: 14, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
               {item.label}
             </Link>
           ))}
@@ -70,10 +72,10 @@ export default function Header() {
             </div>
           ) : (
             <>
-              <Link href="/login" style={{ padding: "7px 16px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
+              <Link href="/login" style={{ padding: "7px 14px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
                 로그인
               </Link>
-              <Link href="/login" style={{ padding: "7px 18px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none" }}>
+              <Link href="/login" style={{ padding: "7px 14px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
                 무료 가입
               </Link>
             </>
