@@ -34,6 +34,15 @@ export const PRACTICES: Practice[] = [
     emoji: "🍔",
   },
   {
+    id: "ticket",
+    title: "기차표 예매",
+    short: "기차표 예매",
+    desc: "행선지·시간·좌석 고르기, 매진 대처, 결제까지",
+    href: "/kiosk/ticket",
+    category: "이동하기",
+    emoji: "🚄",
+  },
+  {
     id: "parking",
     title: "주차요금 정산",
     short: "주차요금 정산",
@@ -65,13 +74,13 @@ export const PRACTICES: Practice[] = [
 
 // 다음에 열릴 연습 예고 — 미완성처럼 보이지 않게 한 번에 하나만 보여준다.
 export const UPCOMING_PRACTICE = {
-  title: "기차표 예매",
-  category: "이동하기" as const,
-  emoji: "🚄",
+  title: "은행 ATM",
+  category: "공공생활" as const,
+  emoji: "🏧",
 };
 
 // 최근에 새로 열린 연습 (홈의 "새로 생긴 연습" 알림에 쓴다)
-export const NEW_PRACTICE_ID = "mart";
+export const NEW_PRACTICE_ID = "ticket";
 
 export function getPractice(id: string): Practice | undefined {
   return PRACTICES.find((p) => p.id === id);
@@ -94,6 +103,8 @@ export const MISSIONS: DailyMission[] = [
   { practiceId: "fastfood", text: "햄버거 단품 말고 세트 메뉴로 주문을 끝내보세요." },
   { practiceId: "mart", text: "마트에서 우유와 과자를 스캔하고 적립은 건너뛰어 보세요." },
   { practiceId: "mart", text: "같은 상품을 두 번 스캔해서 수량을 늘려 보세요." },
+  { practiceId: "ticket", text: "대전 가는 기차표를 창가 자리로 한 장 예매해 보세요." },
+  { practiceId: "ticket", text: "원하는 시간이 매진일 때 다른 시간 표를 예매해 보세요." },
 ];
 
 /** 날짜 기준으로 오늘의 임무를 고른다 (하루에 하나, 매일 바뀜). */
