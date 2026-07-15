@@ -28,12 +28,6 @@ export const AFFILIATE: Record<string, AffiliateProduct> = {
     desc: "미끄러운 욕실·화장실에 다는 어르신 안전 손잡이예요",
     keyword: "욕실 안전손잡이 노인",
   },
-  bpMonitor: {
-    id: "bp-monitor",
-    label: "가정용 자동 혈압계",
-    desc: "집에서 매일 재고, 기록을 병원에 가져가면 진료에 큰 도움이 돼요",
-    keyword: "가정용 자동 혈압계",
-  },
 };
 
 /** API 조회 결과를 카드용 데이터로 합친다 (실패 시 폴백 링크가 있으면 그대로, 없으면 null) */

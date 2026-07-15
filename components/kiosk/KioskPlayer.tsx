@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { KioskScenario, KioskOption } from "@/lib/kiosk/types";
 import { useVoice } from "./useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
+import { recordPracticeComplete } from "@/lib/progress";
 import BigButton from "./BigButton";
 import StepGuide from "./StepGuide";
 import ProgressBar from "./ProgressBar";
@@ -68,6 +69,8 @@ export default function KioskPlayer({ scenario }: { scenario: KioskScenario }) {
       setFinishedAt(new Date().toLocaleString("ko-KR", { month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" }));
       setDone(true);
       trackKiosk("kiosk_complete", { scenario: scenario.id });
+      // 도장판·이어하기용 기록 — 이용자 브라우저에만 저장된다
+      recordPracticeComplete(scenario.id);
     } else {
       setIndex(index + 1);
     }

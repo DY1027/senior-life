@@ -1,0 +1,63 @@
+{
+  "id": "parking",
+  "title": "주차요금 정산기 연습",
+  "place": "주차장",
+  "brand": "든든주차",
+  "emoji": "🅿️",
+  "intro": "마트나 건물 주차장에서 나가기 전에 쓰는 주차요금 정산기를 미리 연습해요. 천천히 눌러도 괜찮아요. 이 화면은 연습용이라, 실제로 결제되지 않아요.",
+  "successTitle": "잘하셨어요! 주차요금 정산 연습을 끝냈어요.",
+  "finishLabel": "결제하기",
+  "unitLabel": "건",
+  "cartEmptyText": "요금을 확인하면 금액이 나와요",
+  "showTicket": false,
+  "receiptTitle": "정산 내역",
+  "receiptNote": "정산이 끝나면 보통 15분 안에 차를 빼야 해요. 출구에서 기계가 차 번호를 자동으로 읽고 차단기가 열립니다. 혹시 차단기가 안 열리면 출구 기계의 호출 버튼을 누르면 직원이 도와드려요.",
+  "steps": [
+    {
+      "id": "plate",
+      "title": "차 번호 뒤 4자리를 눌러요",
+      "guide": "실제 기계에서는 숫자판으로 차 번호 뒤 4자리를 입력해요. 연습이니 아무 번호나 골라 보세요.",
+      "voice": "차량 번호 뒤 네 자리를 입력해 주세요. 연습이니까 아래 번호 중 아무거나 골라 보세요.",
+      "layout": "grid",
+      "options": [
+        { "id": "n3456", "emoji": "🔢", "label": "3 4 5 6", "summaryKey": "차량 번호", "summaryValue": "**가 3456" },
+        { "id": "n7890", "emoji": "🔢", "label": "7 8 9 0", "summaryKey": "차량 번호", "summaryValue": "**나 7890" }
+      ]
+    },
+    {
+      "id": "confirm",
+      "title": "내 차가 맞는지 확인해요",
+      "guide": "번호를 입력하면 차 사진과 들어온 시간이 나와요. 내 차를 골라 주세요.",
+      "voice": "입력한 번호와 비슷한 차들이 나왔어요. 사진과 들어온 시간을 보고 내 차를 골라 주세요.",
+      "note": "내 차가 없으면 당황하지 말고 '이전으로'를 눌러 번호를 다시 입력하면 돼요.",
+      "layout": "list",
+      "options": [
+        { "id": "white", "emoji": "🚗", "label": "흰색 승용차", "sublabel": "오후 2시 10분에 들어옴", "summaryKey": "차량 확인", "summaryValue": "확인 완료" },
+        { "id": "gray", "emoji": "🚙", "label": "회색 승용차", "sublabel": "오후 1시 40분에 들어옴", "summaryKey": "차량 확인", "summaryValue": "확인 완료" }
+      ]
+    },
+    {
+      "id": "fee",
+      "title": "주차 요금을 확인해요",
+      "guide": "주차한 시간만큼 요금이 나와요. 매장 할인 도장이 있으면 눌러서 할인받을 수 있어요.",
+      "voice": "주차 시간은 한 시간 삼십 분이에요. 요금을 확인해 주세요. 매장에서 할인 도장을 받았다면 할인을 누를 수 있어요.",
+      "layout": "list",
+      "options": [
+        { "id": "no-discount", "emoji": "🧾", "label": "할인 없이 정산", "sublabel": "1시간 30분 · 3,000원", "summaryKey": "요금", "summaryValue": "할인 없음", "price": 3000 },
+        { "id": "discount", "emoji": "🎟️", "label": "매장 할인 적용", "sublabel": "1시간 무료 할인 · 2,000원", "summaryKey": "요금", "summaryValue": "매장 할인 적용", "price": 2000 }
+      ]
+    },
+    {
+      "id": "pay",
+      "title": "요금을 어떻게 낼까요?",
+      "guide": "결제 방법을 골라 보세요. 요즘 정산기는 카드만 되는 곳이 많아요.",
+      "voice": "마지막이에요. 결제 방법을 골라 주세요. 카드는 넣거나 갖다 대면 되고, 현금은 지폐 넣는 곳에 넣으면 돼요.",
+      "note": "연습이라 실제로 돈이 나가지 않아요. 카드가 안 읽히면 방향을 돌려서 다시 넣어 보세요.",
+      "layout": "list",
+      "options": [
+        { "id": "card", "emoji": "💳", "label": "카드", "sublabel": "넣거나 갖다 대기", "summaryKey": "계산 방법", "summaryValue": "카드" },
+        { "id": "cash", "emoji": "💵", "label": "현금 (지폐)", "summaryKey": "계산 방법", "summaryValue": "현금" }
+      ]
+    }
+  ]
+}

@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 };
 
 const quickLinks = [
-  { label: "복지 혜택", href: "/welfare" },
-  { label: "건강·병원", href: "/health" },
-  { label: "은퇴 재정", href: "/finance" },
-  { label: "생활 팁", href: "/life-tips" },
+  { label: "생활기기 연습", href: "/kiosk" },
+  { label: "오늘의 놀이터", href: "/play" },
+  { label: "생활안전", href: "/stories" },
+  { label: "이용안내", href: "/guide" },
 ];
 
 export default function NotFound() {
@@ -30,7 +30,7 @@ export default function NotFound() {
             찾으시는 페이지가 없습니다
           </h1>
           <p style={{ color: "#6B6860", fontSize: 17, lineHeight: 1.75, marginBottom: 32 }}>
-            주소가 바뀌었거나 삭제된 페이지일 수 있습니다. 아래 바로가기에서 필요한 정보를 다시 찾아보세요.
+            주소가 바뀌었거나 삭제된 페이지일 수 있습니다. 아래 바로가기에서 다시 찾아보세요.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 34 }}>
             {quickLinks.map((link) => (

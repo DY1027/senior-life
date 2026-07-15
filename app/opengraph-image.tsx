@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "시니어 든든 — 노후자금 계산, 병원 준비, 복지혜택을 한 번에";
+export const alt = "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -24,13 +24,13 @@ export default function Image() {
           <div style={{ fontSize: 34, fontWeight: 700, color: "#1A1A1A" }}>시니어 든든</div>
         </div>
         <div style={{ fontSize: 56, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: -1.5, display: "flex" }}>
-          노후자금 계산, 병원 준비,
+          실제처럼 눌러보는
         </div>
         <div style={{ fontSize: 56, fontWeight: 700, color: "#1A1A1A", lineHeight: 1.3, letterSpacing: -1.5, display: "flex", marginBottom: 28 }}>
-          복지혜택을 한 번에
+          디지털 생활 놀이터
         </div>
         <div style={{ fontSize: 26, color: "#6B6860", display: "flex" }}>
-          기초연금 · 장기요양 · 국민연금 · 건강보험 · 노후재정
+          카페 주문 · 햄버거 주문 · 주차요금 정산 · 서류 발급
         </div>
       </div>
     ),

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import MobileTabBar from "@/components/MobileTabBar";
 import "./globals.css";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -9,28 +10,28 @@ const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
   title: {
-    default: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
+    default: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
     template: "%s | 시니어 든든",
   },
   description:
-    "키오스크 연습, 복지혜택 찾기, 병원 준비, 노후자금 계산까지. 어르신이 눌러보며 배우고 가족이 함께 쓰는 시니어 놀이터입니다. 회원가입 없이 무료로 사용하세요.",
+    "카페 주문부터 주차요금 정산까지, 생활 속 디지털 기기를 실제처럼 연습하는 무료 놀이터입니다. 실제 결제 없이 큰 글씨와 음성 안내로 천천히, 실수해도 다시 해보며 배우세요.",
   alternates: {
     canonical: "/",
   },
-  keywords: ["시니어", "시니어 놀이터", "키오스크 연습", "노인복지", "기초연금", "건강보험", "노후준비", "부모님 정보"],
+  keywords: ["시니어", "시니어 놀이터", "키오스크 연습", "무인민원발급기 연습", "주차요금 정산기", "셀프계산대", "디지털 교육", "어르신 키오스크"],
   authors: [{ name: "시니어 든든" }],
   creator: "시니어 든든",
   openGraph: {
     type: "website",
     locale: "ko_KR",
     siteName: "시니어 든든",
-    title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
-    description: "키오스크 연습·복지혜택·병원 준비·노후재정을 쉽고 재미있게",
+    title: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
+    description: "카페 주문부터 주차요금 정산까지, 실제 결제 없이 마음껏 연습하세요",
   },
   twitter: {
     card: "summary_large_image",
     title: "시니어 든든",
-    description: "눌러보며 배우는 시니어 놀이터",
+    description: "실제처럼 눌러보는 시니어 디지털 놀이터",
   },
   robots: {
     index: true,
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <main className="flex-1">{children}</main>
+        <MobileTabBar />
       </body>
       {gaMeasurementId && <GoogleAnalytics gaId={gaMeasurementId} />}
     </html>
