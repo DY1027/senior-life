@@ -186,6 +186,29 @@ test("든든마트: 같은 상품을 두 번 스캔하면 수량이 합쳐진다
   await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
 });
 
+test("든든기차: 매진을 만나도 다른 시간 표를 예매한다", async ({ page }) => {
+  await page.goto("/kiosk/ticket/ticket-challenge-soldout");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+  await page.getByRole("button", { name: /편도/ }).click();
+
+  // 인기 시간(오전 9시)은 매진 — 눌러도 담기지 않고 안내가 나온다
+  await page.getByRole("button", { name: /오전 9시/ }).click();
+  await expect(page.getByText(/품절이에요/)).toBeVisible();
+
+  // 임무 시간(오전 10시)으로 예매
+  await page.getByRole("button", { name: /대전 · 오전 10시/ }).click();
+  await page.getByRole("button", { name: "복도 자리" }).click();
+  await page.getByRole("button", { name: /담기 ·/ }).click();
+
+  await page.getByRole("button", { name: /주문 확인/ }).click();
+  await page.getByRole("button", { name: /결제하기/ }).click();
+  await page.getByRole("button", { name: /💳 카드/ }).click();
+  await waitPaymentDone(page);
+  await page.getByRole("button", { name: "받기", exact: true }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+});
+
 test("이전 버튼으로 어느 화면에서도 되돌아갈 수 있다", async ({ page }) => {
   await page.goto("/kiosk/cafe/cafe-free");
   await page.getByRole("button", { name: /연습 시작/ }).click();
