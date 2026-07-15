@@ -7,7 +7,7 @@ import { useSyncExternalStore } from "react";
 import { PRACTICES, getPractice } from "@/lib/practices";
 
 export type PracticeProgress = {
-  /** scenarioId → 완료 횟수 */
+  /** 연습(키오스크) id → 완료 횟수 */
   counts: Record<string, number>;
   /** 마지막으로 끝낸 연습 id */
   lastId: string | null;
@@ -15,11 +15,13 @@ export type PracticeProgress = {
   lastAt: string | null;
   /** 최근 완료 시각 목록 — 이번 주 횟수 계산용 (최대 60개 유지) */
   recent: string[];
+  /** 완료한 임무 시나리오 id 목록 (엔진 v2 임무별 기록) */
+  scenarios: string[];
 };
 
 const KEY = "dd-progress-v1";
 
-const EMPTY: PracticeProgress = { counts: {}, lastId: null, lastAt: null, recent: [] };
+const EMPTY: PracticeProgress = { counts: {}, lastId: null, lastAt: null, recent: [], scenarios: [] };
 
 export function readProgress(): PracticeProgress {
   if (typeof window === "undefined") return EMPTY;
@@ -32,13 +34,14 @@ export function readProgress(): PracticeProgress {
       lastId: typeof p.lastId === "string" ? p.lastId : null,
       lastAt: typeof p.lastAt === "string" ? p.lastAt : null,
       recent: Array.isArray(p.recent) ? p.recent.filter((r) => typeof r === "string") : [],
+      scenarios: Array.isArray(p.scenarios) ? p.scenarios.filter((s) => typeof s === "string") : [],
     };
   } catch {
     return EMPTY;
   }
 }
 
-export function recordPracticeComplete(id: string): void {
+export function recordPracticeComplete(id: string, scenarioId?: string): void {
   if (typeof window === "undefined") return;
   try {
     const p = readProgress();
@@ -46,6 +49,7 @@ export function recordPracticeComplete(id: string): void {
     p.lastId = id;
     p.lastAt = new Date().toISOString();
     p.recent = [...p.recent, p.lastAt].slice(-60);
+    if (scenarioId && !p.scenarios.includes(scenarioId)) p.scenarios = [...p.scenarios, scenarioId];
     localStorage.setItem(KEY, JSON.stringify(p));
     cached = p;
     listeners.forEach((l) => l());

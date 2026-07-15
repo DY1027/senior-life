@@ -42,13 +42,66 @@
   하단만 허용, 페이지당 1영역, 상품 2~3개, **가격은 표기하지 않음**(AffiliateCard에서 제거됨).
   광고 표시 문구는 AffiliateCard에 내장. 자세한 원칙은 `/guide#ads`.
 
-### 다음 단계 (소유자 로드맵)
-1. 키오스크 엔진 고도화: 3단계 모드(천천히 배우기/혼자 연습하기/실제처럼 도전), 실수 복구(주문 취소·결제 실패·
-   직원 호출·화면 멈춤), 화면 배치 변형(기본/왼쪽 메뉴/위쪽 메뉴), 임무형 연습
-2. 신규 연습: 마트 셀프계산대(예고 중) → 기차표 예매 → 은행 ATM
-3. 재방문 기능 확장: 주간 도전, 무작위 상황(품절·결제 오류 등)
-4. 연습 완료 화면 아래 준비물(거치대·터치펜 등) 광고 영역, 별도 준비물 페이지
-5. 기관용 모드(복지관 수업용)
+## 키오스크 엔진 v2 (2026-07-15, 기술 명세서 1.0 기반 — 최우선 프로젝트)
+
+소유자가 준 「키오스크 시뮬레이터 고도화 기술 명세서 1.0」의 1~3단계 일부를 구현했다.
+**공통 엔진 + 카탈로그 + 임무 시나리오** 구조이며, 든든카페가 첫 파일럿이다.
+
+### 구조 (명세 11장 폴더 구조를 프로젝트 관례에 맞게 적용)
+- `lib/kiosk-engine/` — 공통 엔진 (키오스크 종류와 무관)
+  - `types.ts` — Catalog(상품·옵션·결제수단) / Scenario(임무·랜덤 이벤트·모드·배치 변형) / MachineState·Event
+  - `machine.ts` — **상태 중심 리듀서** (intro→service→menu→options→cart→payMethod→processing→payError→receipt→done).
+    XState 대신 타입 완전한 리듀서를 썼다(번들 절약, 전환이 한 파일에 명시). 이벤트 유니언이라 XState v5 이관 가능.
+  - `evaluator.ts` — 임무 판정(evaluateMission: 과정 중심 점검표) + 안내 생성(nextGuidance: 다음 행동 1가지 + 강조 대상)
+  - `schemas.ts` — Zod 검증. 카탈로그·시나리오는 모듈 로드 시 검증되므로 **데이터 실수는 빌드가 실패**한다
+- `components/kiosk-engine/KioskRunner.tsx` — 공통 화면(KioskShell 포함).
+  시스템 버튼 고정 배치(왼쪽 위 이전/가운데 단계/오른쪽 도움말/왼쪽 아래 처음부터),
+  결제 지연 연출(1.5초), 카드 인식 실패→재시도, 품절 안내, 직원 호출, 과정 피드백 완료 화면
+- `components/kiosk-engine/MissionList.tsx` — 모드별 임무 목록 + 임무별 완료 도장
+- `content/kiosk-v2/cafe.ts` — 든든카페 카탈로그 + 임무 8종
+- 라우트: `/kiosk/cafe`(임무 허브) → `/kiosk/cafe/[scenarioId]`(generateStaticParams)
+
+### 연습 모드 (명세 6장)
+- `learn` 천천히 배우기: 눌러야 할 버튼 반짝임(kg-target) + 안내 자동 음성
+- `solo` 혼자 연습하기: 강조 없음, 도움말 버튼으로만 안내 (hintsUsed 기록)
+- `challenge` 실제처럼 도전: 화면 배치 변형(layout: "left") + 랜덤 이벤트
+- `free` 자유 연습: 임무·판정 없음
+
+### 랜덤 이벤트 (ErrorEngine, 현재 2종)
+- `cardFailOnce` — 첫 결제 시도 실패 → "카드 다시 넣고 시도" / 다른 결제수단 / 직원 호출
+- `soldOutDecoy` — 임무와 무관한 상품 1개 품절 (품절 만나는 경험)
+- 새 이벤트 추가: types.ts 유니언 → machine.ts(shouldPaymentFail 등) → KioskRunner 처리
+
+### 새 임무·새 키오스크 추가 방법 (완료 기준 달성)
+- **새 임무**: `content/kiosk-v2/cafe.ts`의 raw 배열에 JSON 한 덩이 추가 — 끝 (코드 수정 없음)
+- **새 키오스크**: `content/kiosk-v2/{type}.ts`(카탈로그+시나리오) + 허브·시나리오 페이지 2개(카페 것 복사) +
+  `lib/practices.ts` 등록 + sitemap. 엔진·러너는 그대로 재사용
+- 기록: `lib/progress.ts`에 `scenarios: string[]`(임무별 완료) 추가됨 — recordPracticeComplete(kioskType, scenarioId)
+
+### 테스트 (명세 14장)
+- Playwright e2e 4본 (`tests/kiosk-cafe.spec.ts`, `npm run test:e2e`, 모바일 뷰포트):
+  learn 임무 완주 / 카드 오류 해결 / 잘못 담은 메뉴 삭제 / 이전·처음부터 복귀.
+  `playwright.config.ts`가 원격 환경의 사전 설치 Chromium(/opt/pw-browsers/chromium)을 자동 사용
+- 주의: 테스트 셀렉터는 화면 문구에 의존 — 문구 바꾸면 테스트도 갱신
+
+### 이관 현황 (2026-07-15 저녁)
+- **엔진 v2로 완료**: 카페(임무 8종) + 햄버거(6종: 세트 음료·사이드 변경) + 민원(6종: 표시 옵션·수수료).
+  민원은 serviceTypes를 비워 주문 방법 단계를 건너뛰는 첫 사례 — 엔진에 serviceQuestion/checkoutLabel/단계 생략이 추가됨
+- **구 엔진(KioskPlayer)에 남음**: 주차 정산기 하나 — 차량번호 검색·키패드 등 새 조작(명세 7.3)이 필요해서
+  엔진에 검색/키패드 phase를 추가한 뒤 이관할 것. 그 전까지 components/kiosk/KioskPlayer.tsx 삭제 금지
+
+### 남은 단계 (명세 16장 기준)
+1. 주차 정산기 이관 (키패드·차량 검색 phase 신설) → 구 엔진 제거
+2. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류 등)
+3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
+4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
+5. 6단계: PWA·오프라인(Service Worker, IndexedDB 이관 — 현재 기록은 localStorage)
+6. 7단계: 시나리오 편집기 (시나리오 50개 이전엔 JSON 운영)
+7. 광고(준비물 영역), 기관용 모드
+
+### 다음 단계 (소유자 로드맵 — 엔진 외)
+1. 연습 완료 화면 아래 준비물(거치대·터치펜 등) 광고 영역, 별도 준비물 페이지
+2. 기관용 모드(복지관 수업용)
 
 ---
 
