@@ -19,7 +19,7 @@ export default function NewPracticeBanner() {
         <span className="flex-1">
           <span className="inline-block rounded-full bg-[#1B6FC8] px-2.5 py-0.5 text-[12px] font-bold text-white">✨ 새로운 연습이 열렸어요</span>
           <span className="mt-1 block break-keep text-[20px] font-extrabold leading-snug text-[#0C447C]">
-            {fresh.title}기를 눌러보세요
+            {fresh.title} 연습을 눌러 보세요
           </span>
           <span className="block break-keep text-[14px] text-[#4A6E96]">
             다음 연습은 {UPCOMING_PRACTICE.title}입니다.

@@ -28,6 +28,7 @@ export function createInitialState(catalog: Catalog, scenario: Scenario): Machin
     receiptChoice: null,
     achievements: [],
     hintsUsed: 0,
+    scanFailedOnce: false,
     nextUid,
   };
 }
@@ -136,17 +137,35 @@ export function kioskReducer(
       const p = productOf(catalog, event.productId);
       if (!p) return state;
       const editing = { productId: p.id, options: defaultOptions(catalog, p.id), quantity: 1 };
-      // 옵션이 하나도 없는 상품은 바로 담는다
+      // 옵션이 하나도 없는 상품은 바로 담는다 (마트에서는 이게 '스캔'이다)
       if ((p.optionGroupIds ?? []).length === 0) {
-        const item: CartItem = { uid: state.nextUid, productId: p.id, quantity: 1, options: {} };
         // 요금형 기기(주차 등): 하나만 고르는 구조 — 담자마자 결제로 간다
         if (catalog.singleChoice) {
+          const item: CartItem = { uid: state.nextUid, productId: p.id, quantity: 1, options: {} };
           return { ...state, cart: [item], nextUid: state.nextUid + 1, phase: "payMethod" };
         }
-        return { ...state, cart: [...state.cart, item], nextUid: state.nextUid + 1 };
+        // 스캔 실패를 겪은 뒤 다시 스캔에 성공하면 과정 피드백에 남긴다
+        const achievements = state.scanFailedOnce
+          ? add(state.achievements, "바코드가 안 읽혀도 침착하게 다시 스캔했어요")
+          : state.achievements;
+        // 같은 상품을 또 담으면(중복 스캔) 새 줄 대신 수량을 합친다 — 실제 셀프계산대와 동일
+        const existing = state.cart.find((it) => it.productId === p.id && Object.keys(it.options).length === 0);
+        if (existing) {
+          return {
+            ...state,
+            achievements,
+            cart: state.cart.map((it) => (it.uid === existing.uid ? { ...it, quantity: Math.min(9, it.quantity + 1) } : it)),
+          };
+        }
+        const item: CartItem = { uid: state.nextUid, productId: p.id, quantity: 1, options: {} };
+        return { ...state, achievements, cart: [...state.cart, item], nextUid: state.nextUid + 1 };
       }
       return { ...state, phase: "options", editing };
     }
+
+    case "SCAN_FAIL":
+      if (state.phase !== "menu") return state;
+      return { ...state, scanFailedOnce: true };
 
     case "SET_OPTION":
       if (state.phase !== "options" || !state.editing) return state;
@@ -267,4 +286,9 @@ export function kioskReducer(
 /** 이번 결제 시도가 실패해야 하는가 (ErrorEngine: cardFailOnce는 첫 시도만 실패) */
 export function shouldPaymentFail(state: MachineState, scenario: Scenario): boolean {
   return (scenario.events ?? []).includes("cardFailOnce") && state.payAttempts === 0;
+}
+
+/** 이번 스캔(옵션 없는 상품 담기)이 실패해야 하는가 (scanFailOnce: 첫 스캔만 실패) */
+export function shouldScanFail(state: MachineState, scenario: Scenario): boolean {
+  return (scenario.events ?? []).includes("scanFailOnce") && !state.scanFailedOnce;
 }

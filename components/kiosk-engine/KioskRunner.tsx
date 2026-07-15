@@ -15,6 +15,7 @@ import {
   itemPrice,
   missingRequiredOption,
   shouldPaymentFail,
+  shouldScanFail,
 } from "@/lib/kiosk-engine/machine";
 import { evaluateMission, nextGuidance } from "@/lib/kiosk-engine/evaluator";
 import { useVoice } from "@/components/kiosk/useVoice";
@@ -323,11 +324,19 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                           key={p.id}
                           type="button"
                           data-guide={`product-${p.id}`}
-                          onClick={() =>
-                            soldOut
-                              ? setNotice(`${p.name}은(는) 품절이에요. 당황하지 말고 다른 메뉴를 고르면 돼요.`)
-                              : send({ type: "OPEN_PRODUCT", productId: p.id })
-                          }
+                          onClick={() => {
+                            if (soldOut) {
+                              setNotice(`${p.name}은(는) 품절이에요. 당황하지 말고 다른 메뉴를 고르면 돼요.`);
+                              return;
+                            }
+                            // ErrorEngine: 첫 스캔이 안 읽히는 상황 — 같은 상품을 다시 누르면 된다
+                            if (shouldScanFail(state, scenario)) {
+                              send({ type: "SCAN_FAIL" });
+                              setNotice("삑! 바코드를 읽지 못했어요. 괜찮아요 — 같은 상품을 한 번 더 눌러(스캔해) 보세요.");
+                              return;
+                            }
+                            send({ type: "OPEN_PRODUCT", productId: p.id });
+                          }}
                           className={`relative flex min-h-[108px] flex-col items-center justify-center gap-1 rounded-2xl border-[2.5px] px-2 py-3 active:scale-[0.98] ${soldOut ? "border-[#E5E7EB] bg-[#F3F4F6] opacity-70" : "border-[#D7E3F0] bg-white"} ${showGuide && guidance.targetId === `product-${p.id}` ? "kg-target" : ""}`}
                         >
                           {soldOut && (
