@@ -17,7 +17,7 @@ export const PRACTICES: Practice[] = [
     id: "cafe",
     title: "카페 주문",
     short: "카페 주문",
-    desc: "매장·포장, 메뉴, 온도, 잔 수, 계산까지",
+    desc: "임무를 고르고 3가지 모드로 연습 — 메뉴 삭제·카드 오류까지",
     href: "/kiosk/cafe",
     category: "먹고 마시기",
     img: "/tiles/kiosk-cafe.webp",

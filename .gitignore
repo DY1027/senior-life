@@ -42,3 +42,7 @@ next-env.d.ts
 
 # audit results
 audit-results/
+
+# playwright
+test-results/
+playwright-report/

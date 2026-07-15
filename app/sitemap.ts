@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cafeScenarios } from "@/content/kiosk-v2/cafe";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://seniordeundun.com";
@@ -8,7 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
     // 생활기기 연습 (핵심)
     { url: `${base}/kiosk`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/kiosk/cafe`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/kiosk/cafe`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    ...cafeScenarios.map((s) => ({
+      url: `${base}/kiosk/cafe/${s.id}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     { url: `${base}/kiosk/fastfood`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/kiosk/parking`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
