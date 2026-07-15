@@ -2,30 +2,30 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PlaygroundHero from "@/components/home/PlaygroundHero";
-import PlayTiles from "@/components/home/PlayTiles";
-import PracticeRow from "@/components/home/PracticeRow";
-import StoryBanner from "@/components/home/StoryBanner";
-import MakingBanner from "@/components/home/MakingBanner";
-import InfoCategories from "@/components/home/InfoCategories";
+import TodayMission from "@/components/home/TodayMission";
+import PracticeGrid from "@/components/home/PracticeGrid";
+import PlayCorner from "@/components/home/PlayCorner";
+import ContinueCard from "@/components/home/ContinueCard";
+import NewPracticeBanner from "@/components/home/NewPracticeBanner";
 import FAQSection from "@/components/home/FAQSection";
 import ClosingScene from "@/components/home/ClosingScene";
 
-// 계절 배경(PlaygroundHero)이 하루 안에 갱신되도록 매일 재생성한다
+// 계절 배경과 '오늘의 연습' 임무가 하루 안에 갱신되도록 매일 재생성한다
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
-  title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
+  title: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
   description:
-    "키오스크 연습, 복지혜택 찾기, 병원 준비, 노후자금 계산까지. 어르신이 눌러보며 배우고 가족이 함께 쓰는 시니어 놀이터입니다. 회원가입 없이 무료로 사용하세요.",
+    "카페 주문, 햄버거 주문, 주차요금 정산, 서류 발급까지 생활 속 디지털 기기를 실제처럼 연습하세요. 실제 결제 없이 큰 글씨와 음성 안내로, 회원가입 없이 무료입니다.",
   alternates: { canonical: "/" },
-  keywords: ["시니어든든", "시니어 놀이터", "키오스크 연습", "노후자금 계산기", "기초연금", "시니어 복지혜택", "병원 체크리스트"],
+  keywords: ["시니어든든", "시니어 놀이터", "키오스크 연습", "주차요금 정산기 연습", "무인민원발급기 연습", "어르신 디지털 교육"],
   openGraph: {
     type: "website",
     locale: "ko_KR",
     siteName: "시니어 든든",
-    title: "시니어 든든 — 눌러보며 배우는 시니어 놀이터",
-    description: "키오스크 연습, 복지혜택 찾기, 병원 준비까지. 회원가입 없이 무료로 사용하세요.",
+    title: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
+    description: "카페 주문부터 주차요금 정산까지. 실제 결제 없이 마음껏 연습하세요.",
   },
   robots: { index: true, follow: true },
 };
@@ -35,11 +35,11 @@ export default function HomePage() {
     <>
       <Header />
       <PlaygroundHero />
-      <PlayTiles />
-      <PracticeRow />
-      <StoryBanner />
-      <MakingBanner />
-      <InfoCategories />
+      <TodayMission />
+      <PracticeGrid />
+      <PlayCorner />
+      <ContinueCard />
+      <NewPracticeBanner />
       <FAQSection />
       <ClosingScene />
       <Footer />

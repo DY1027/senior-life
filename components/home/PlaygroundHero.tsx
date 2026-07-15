@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { todayMission, getPractice } from "@/lib/practices";
 
 // 계절에 따라 마을 풍경이 옷을 갈아입는다 (봄·여름 → 초록, 가을 → 단풍, 겨울 → 눈).
 // 홈 페이지는 하루 단위 ISR(revalidate)이라 계절 전환이 하루 안에 반영된다.
@@ -9,10 +11,11 @@ function seasonBg(): string {
   return "/bg-village.webp";
 }
 
-// 놀이터 홈 히어로 — 그림책 첫 장처럼.
-// 마을 풍경(소유자 제공 일러스트)이 화면을 열고, 그 위에 가족 컷과 인사말이 앉는다.
-// 배경 하단 크림색(#FDF7E7)을 섹션 배경으로 이어 붙여 그림과 화면의 경계를 없앤다.
+// 놀이터 홈 히어로 — 첫 화면은 광고·정보 없이 "무엇을 하는 곳인지"와 시작 버튼만.
 export default function PlaygroundHero() {
+  const mission = todayMission();
+  const missionHref = getPractice(mission.practiceId)?.href ?? "/kiosk";
+
   return (
     <section className="bg-[#FDF7E7]">
       {/* 마을 풍경 */}
@@ -41,16 +44,32 @@ export default function PlaygroundHero() {
         </div>
         <div className="dd-rise mx-auto mt-4 max-w-[720px]">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FDDFC0] px-4 py-1.5 text-[15px] font-bold text-[#C4621A]">
-            🛝 시니어 놀이터
+            🛝 시니어 디지털 놀이터
           </span>
-          <h1 className="mt-3 text-[clamp(30px,6vw,44px)] font-extrabold leading-[1.25] tracking-[-0.5px] text-[#3B3226]">
-            오늘은 뭘 해볼까요?
+          <h1 className="mt-3 text-[clamp(28px,5.5vw,42px)] font-extrabold leading-[1.25] tracking-[-0.5px] text-[#3B3226]">
+            실제처럼 눌러보는
+            <br />
+            디지털 생활 놀이터
           </h1>
           <p className="mt-3 text-[clamp(17px,2.5vw,19px)] leading-relaxed text-[#6E5C49]">
-            눌러보고, 배워보고, 확인해 보세요.
+            카페 주문부터 주차요금 정산까지.
             <br />
-            회원가입 없이 <strong className="text-[#C4621A]">전부 무료</strong>입니다.
+            실제 결제 없이, <strong className="text-[#C4621A]">큰 글씨와 음성 안내</strong>로 천천히 연습하세요.
           </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href={missionHref}
+              className="inline-flex min-h-[56px] items-center justify-center rounded-full bg-[#E67E3F] px-8 text-[18px] font-extrabold text-white no-underline transition-transform active:scale-[0.97]"
+            >
+              오늘의 연습 시작 →
+            </Link>
+            <Link
+              href="/kiosk"
+              className="inline-flex min-h-[56px] items-center justify-center rounded-full border-2 border-[#EFDFC0] bg-white px-8 text-[18px] font-bold text-[#3B3226] no-underline transition-transform active:scale-[0.97]"
+            >
+              모든 연습 둘러보기
+            </Link>
+          </div>
         </div>
       </div>
 

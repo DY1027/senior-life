@@ -87,7 +87,7 @@ const BENEFITS: Benefit[] = [
     amount: "본인부담 30% 수준 (기존 전액 자비 → 대폭 절감)",
     description: "만 65세 이상이면 틀니(완전·부분)와 임플란트에 건강보험이 적용되어 본인부담금이 크게 줄어듭니다. 별도 신청 없이 치과에서 바로 적용됩니다.",
     how: "치과 방문 시 신분증 지참 — 건강보험증 있으면 자동 적용",
-    href: "/health/insurance-copay",
+    href: null,
     conditions: { age: ["65to69", "70plus"], income: ["basic", "near-basic", "medium50", "other"] },
   },
   {
@@ -98,7 +98,7 @@ const BENEFITS: Benefit[] = [
     amount: "무료 (일반건강검진 포함)",
     description: "만 66세가 되는 해에 생애전환기 건강검진을 무료로 받을 수 있습니다. 암검진, 인지기능장애 검사 등이 포함됩니다. 짝수·홀수 출생 연도에 따라 검진 연도가 다릅니다.",
     how: "건강보험공단 안내문 수령 후 지정 검진기관 방문 (☎ 1577-1000)",
-    href: "/health/checkup",
+    href: null,
     conditions: { age: ["65to69", "70plus"], income: ["basic", "near-basic", "medium50", "other"] },
   },
   {

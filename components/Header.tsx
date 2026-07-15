@@ -1,42 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { getClient } from "@/lib/supabase";
-import { useIsAdmin } from "@/components/useIsAdmin";
+import { useState } from "react";
 import BigTextToggle from "@/components/BigTextToggle";
-import type { User } from "@supabase/supabase-js";
 
+// 상단 메뉴는 다섯 개로 고정 — 연습 중심 사이트라는 게 메뉴만 봐도 드러나야 한다.
 const nav = [
-  { label: "키오스크 연습", href: "/kiosk" },
-  { label: "그림책", href: "/stories" },
-  { label: "두뇌 놀이", href: "/brain" },
-  { label: "만들기", href: "/making" },
-  { label: "복지혜택", href: "/welfare" },
-  { label: "건강·병원", href: "/health" },
-  { label: "노후재정", href: "/finance" },
-  { label: "생활팁", href: "/life-tips" },
+  { label: "생활기기 연습", href: "/kiosk" },
+  { label: "오늘의 놀이터", href: "/play" },
+  { label: "생활안전", href: "/stories" },
+  { label: "이용안내", href: "/guide" },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const isAdmin = useIsAdmin(!!user);
-
-  useEffect(() => {
-    const sb = getClient();
-    if (!sb) return;
-    sb.auth.getUser().then((res) => setUser(res.data.user));
-    const { data: { subscription } } = sb.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  async function handleSignOut() {
-    const sb = getClient();
-    await sb?.auth.signOut();
-    setUser(null);
-  }
 
   return (
     <header style={{ background: "#fff", borderBottom: "0.5px solid #EEECE6", position: "sticky", top: 0, zIndex: 50 }}>
@@ -49,75 +25,36 @@ export default function Header() {
         <nav className="hidden md:flex" style={{ gap: 2 }} aria-label="주요 메뉴">
           {nav.map((item) => (
             <Link key={item.href} href={item.href}
-              style={{ padding: "6px 9px", fontSize: 14, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
+              style={{ padding: "6px 11px", fontSize: 15, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
               {item.label}
             </Link>
           ))}
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <BigTextToggle />
-        <div className="hidden md:flex" style={{ alignItems: "center", gap: 8 }}>
-          {user ? (
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {isAdmin && (
-                <Link href="/admin" style={{ padding: "6px 12px", background: "#1A1A2E", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
-                  관리자
-                </Link>
-              )}
-              <span style={{ fontSize: 12, color: "#4A5568" }}>{user.email?.split("@")[0]}님</span>
-              <button onClick={handleSignOut} style={{ padding: "6px 14px", background: "transparent", color: "#6B7280", border: "1px solid #E5E7EB", borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
-                로그아웃
-              </button>
-            </div>
-          ) : (
-            <>
-              <Link href="/login" style={{ padding: "7px 14px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
-                로그인
-              </Link>
-              <Link href="/login" style={{ padding: "7px 14px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 12, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
-                무료 가입
-              </Link>
-            </>
-          )}
-        </div>
+          <BigTextToggle />
+          <Link
+            href="/"
+            className="hidden md:inline-flex"
+            style={{ padding: "7px 14px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 13, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}
+          >
+            처음으로
+          </Link>
 
-        <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="메뉴 열기" style={{ background: "none", border: "none", padding: 6, color: "#1A1A1A" }}>
-          <i className={`ti ${open ? "ti-x" : "ti-menu-2"}`} style={{ fontSize: 22 }} />
-        </button>
+          <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="메뉴 열기" style={{ background: "none", border: "none", padding: 6, color: "#1A1A1A" }}>
+            <i className={`ti ${open ? "ti-x" : "ti-menu-2"}`} style={{ fontSize: 22 }} />
+          </button>
         </div>
       </div>
 
       {open && (
         <nav style={{ background: "#fff", borderTop: "0.5px solid #EEECE6", padding: "12px 24px 16px" }} aria-label="모바일 메뉴">
-          {nav.map((item) => (
+          {[{ label: "홈", href: "/" }, ...nav, { label: "내 기록", href: "/records" }].map((item) => (
             <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
               style={{ display: "block", padding: "12px 0", fontSize: 16, fontWeight: 500, color: "#1A1A1A", borderBottom: "0.5px solid #EEECE6", textDecoration: "none" }}>
               {item.label}
             </Link>
           ))}
-          {user && isAdmin && (
-            <Link href="/admin" onClick={() => setOpen(false)}
-              style={{ display: "block", padding: "12px 0", fontSize: 16, fontWeight: 700, color: "#1A1A2E", borderBottom: "0.5px solid #EEECE6", textDecoration: "none" }}>
-              🔧 관리자
-            </Link>
-          )}
-          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-            {user ? (
-              <button onClick={handleSignOut} style={{ flex: 1, padding: "12px", background: "transparent", color: "#6B7280", border: "1px solid #E5E7EB", borderRadius: 999, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
-                로그아웃
-              </button>
-            ) : (
-              <>
-                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, textAlign: "center", padding: "12px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
-                  로그인
-                </Link>
-                <Link href="/login" onClick={() => setOpen(false)} style={{ flex: 1, textAlign: "center", padding: "12px", background: "#E67E3F", color: "#fff", borderRadius: 999, fontSize: 14, fontWeight: 600, textDecoration: "none" }}>
-                  무료 가입
-                </Link>
-              </>
-            )}
-          </div>
         </nav>
       )}
     </header>

@@ -35,14 +35,12 @@ export default function AffiliateCard({ product, heading }: { product: Affiliate
           />
         )}
         <span className="mt-1 block break-keep text-[14px] leading-relaxed text-[#8A7660]">{product.desc}</span>
-        {product.price ? (
-          <span className="mt-1.5 block text-center">
-            <span className="text-[18px] font-extrabold text-[#C4621A]">{product.price.toLocaleString("ko-KR")}원</span>
-            <span className="ml-1.5 text-[12px] text-[#9B8B76]">· 가격은 변동될 수 있어요</span>
-          </span>
-        ) : null}
+        {/* 가격은 수시로 바뀌므로 사이트에 고정 표기하지 않는다 (쿠팡 페이지에서 확인) */}
+        <span className="mt-1.5 block text-center text-[12px] text-[#9B8B76]">
+          가격과 배송 조건은 쿠팡 상품 페이지에서 확인하세요
+        </span>
         <span className="mt-3 flex h-[44px] items-center justify-center rounded-full bg-[#E67E3F] text-[15px] font-bold text-white">
-          쿠팡에서 보기 →
+          쿠팡에서 상품 보기 →
         </span>
       </a>
     </div>

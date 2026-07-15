@@ -1,102 +1,49 @@
 import Link from "next/link";
 
-const footerLinks = [
-  {
-    title: "복지혜택",
-    links: [
-      { label: "기초연금 신청방법", href: "/welfare/basic-pension" },
-      { label: "장기요양보험 등급", href: "/welfare/long-term-care" },
-    ],
-  },
-  {
-    title: "건강·병원",
-    links: [
-      { label: "건강보험 본인부담금", href: "/health/insurance-copay" },
-      { label: "노인 무료 건강검진", href: "/health/checkup" },
-    ],
-  },
-  {
-    title: "노후재정",
-    links: [
-      { label: "국민연금 수령액 조회", href: "/finance/national-pension" },
-      { label: "노후 생활비 계산기", href: "/finance/living-cost" },
-    ],
-  },
-  {
-    title: "생활팁",
-    links: [
-      { label: "시니어 할인 카드", href: "/life-tips/senior-discount" },
-      { label: "가족 돌봄 가이드", href: "/life-tips/family-care" },
-    ],
-  },
-];
-
-const sources = [
-  { label: "복지로", href: "https://www.bokjiro.go.kr" },
-  { label: "국민건강보험공단", href: "https://www.nhis.or.kr" },
-  { label: "국민연금공단", href: "https://www.nps.or.kr" },
-  { label: "보건복지부", href: "https://www.mohw.go.kr" },
+// 푸터는 최소한으로 — 연습 사이트라는 정체성과 법적 고지만 남긴다.
+const legalLinks = [
+  { label: "이용약관", href: "/legal/terms" },
+  { label: "개인정보처리방침", href: "/legal/privacy" },
+  { label: "광고·제휴 안내", href: "/guide#ads" },
+  { label: "콘텐츠 이용안내", href: "/guide" },
 ];
 
 export default function Footer() {
   return (
     <footer style={{ background: "#fff", borderTop: "0.5px solid #EEECE6", marginTop: 0 }}>
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 24px" }}>
-        {/* 로고 */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "36px 24px 40px" }}>
+        {/* 로고 + 한 줄 정의 */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#E67E3F", display: "inline-block" }} />
           <span style={{ fontSize: 14, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px" }}>
             시니어 든든
           </span>
         </div>
-
-        {/* 링크 그리드 */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 24, marginBottom: 32 }}>
-          {footerLinks.map((col) => (
-            <div key={col.title}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: "#1A1A1A", marginBottom: 10 }}>{col.title}</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {col.links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    style={{ fontSize: 12, color: "#9B9890", textDecoration: "none" }}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <p style={{ fontSize: 13, color: "#6B6860", marginBottom: 20 }}>
+          실제처럼 눌러보는 시니어 디지털 놀이터
+        </p>
 
         {/* 약관/정책 링크 */}
-        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 16 }}>
-          <Link href="/legal/terms" style={{ fontSize: 11, color: "#6B6860", textDecoration: "none" }}>이용약관</Link>
-          <Link href="/legal/privacy" style={{ fontSize: 11, color: "#6B6860", fontWeight: 700, textDecoration: "none" }}>개인정보처리방침</Link>
-          <Link href="/legal/refund" style={{ fontSize: 11, color: "#6B6860", textDecoration: "none" }}>환불규정</Link>
+        <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 18 }}>
+          {legalLinks.map((l) => (
+            <Link key={l.label} href={l.href} style={{ fontSize: 12, color: "#6B6860", textDecoration: "none", fontWeight: l.label === "개인정보처리방침" ? 700 : 500 }}>
+              {l.label}
+            </Link>
+          ))}
+          <a href="mailto:eoduq07@naver.com" style={{ fontSize: 12, color: "#6B6860", textDecoration: "none" }}>문의하기</a>
         </div>
 
-        {/* 구분선 */}
-        <div style={{ borderTop: "0.5px solid #EEECE6", paddingTop: 20, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-          <p style={{ fontSize: 11, color: "#9B9890" }}>
-          © 2026 시니어 든든. 본 정보는 참고용이며 정확한 내용은 관련 기관에 문의하세요.
+        <div style={{ borderTop: "0.5px solid #EEECE6", paddingTop: 16 }}>
+          <p style={{ fontSize: 12, color: "#9B9890", lineHeight: 1.7 }}>
+            모든 연습은 모의 화면이며 실제 주문·결제·발급·송금이 이루어지지 않습니다.
+            <br />
+            실제 기기의 화면과 절차는 장소와 기기에 따라 달라질 수 있습니다.
           </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {sources.map((src) => (
-              <a
-                key={src.label}
-                href={src.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 11, color: "#9B9890", textDecoration: "underline" }}
-              >
-                {src.label}
-              </a>
-            ))}
-          </div>
+          <p style={{ fontSize: 11, color: "#9B9890", marginTop: 10 }}>© 2026 시니어든든.</p>
         </div>
       </div>
+      {/* 모바일 하단 메뉴에 가리지 않도록 여백 */}
+      <div className="h-16 md:hidden" />
     </footer>
   );
 }
