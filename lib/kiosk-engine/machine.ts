@@ -15,6 +15,8 @@ export function createInitialState(catalog: Catalog, scenario: Scenario): Machin
   return {
     phase: "intro",
     serviceType: null,
+    keypadValue: "",
+    carId: null,
     activeCategoryId: catalog.categories[0].id,
     editing: null,
     cart,
@@ -96,8 +98,29 @@ export function kioskReducer(
 
     case "START":
       if (state.phase !== "intro") return state;
-      // 매장/포장 개념이 없는 기기(민원발급기 등)는 주문 방법 단계를 건너뛴다
+      // 기기 종류에 따라 시작 단계가 다르다: 키패드(주차) → 주문 방법(카페) → 메뉴(발급기)
+      if (catalog.keypad) return { ...state, phase: "keypad" };
       return { ...state, phase: catalog.serviceTypes.length > 0 ? "service" : "menu" };
+
+    case "KEYPAD_PRESS": {
+      if (state.phase !== "keypad" || !catalog.keypad) return state;
+      if (state.keypadValue.length >= catalog.keypad.length) return state;
+      if (!/^\d$/.test(event.digit)) return state;
+      return { ...state, keypadValue: state.keypadValue + event.digit };
+    }
+
+    case "KEYPAD_CLEAR":
+      if (state.phase !== "keypad") return state;
+      return { ...state, keypadValue: "" };
+
+    case "KEYPAD_DONE":
+      if (state.phase !== "keypad" || !catalog.keypad) return state;
+      if (state.keypadValue.length < catalog.keypad.length) return state; // UI가 안내
+      return { ...state, phase: catalog.carSelect ? "carSelect" : "menu" };
+
+    case "SELECT_CAR":
+      if (state.phase !== "carSelect") return state;
+      return { ...state, carId: event.carId, phase: "menu" };
 
     case "SELECT_SERVICE":
       if (state.phase !== "service") return state;
@@ -115,11 +138,12 @@ export function kioskReducer(
       const editing = { productId: p.id, options: defaultOptions(catalog, p.id), quantity: 1 };
       // 옵션이 하나도 없는 상품은 바로 담는다
       if ((p.optionGroupIds ?? []).length === 0) {
-        return {
-          ...state,
-          cart: [...state.cart, { uid: state.nextUid, productId: p.id, quantity: 1, options: {} }],
-          nextUid: state.nextUid + 1,
-        };
+        const item: CartItem = { uid: state.nextUid, productId: p.id, quantity: 1, options: {} };
+        // 요금형 기기(주차 등): 하나만 고르는 구조 — 담자마자 결제로 간다
+        if (catalog.singleChoice) {
+          return { ...state, cart: [item], nextUid: state.nextUid + 1, phase: "payMethod" };
+        }
+        return { ...state, cart: [...state.cart, item], nextUid: state.nextUid + 1 };
       }
       return { ...state, phase: "options", editing };
     }
@@ -209,16 +233,23 @@ export function kioskReducer(
     case "BACK": {
       // 모든 화면에서 이전으로 — 막히는 상태가 없어야 한다 (명세 14장 상태 머신 테스트 기준)
       switch (state.phase) {
+        case "keypad":
+          return { ...state, phase: "intro", keypadValue: "" };
+        case "carSelect":
+          return { ...state, phase: "keypad", carId: null };
         case "service":
           return { ...state, phase: "intro" };
         case "menu":
+          if (catalog.carSelect) return { ...state, phase: "carSelect" };
+          if (catalog.keypad) return { ...state, phase: "keypad" };
           return { ...state, phase: catalog.serviceTypes.length > 0 ? "service" : "intro" };
         case "options":
           return { ...state, phase: "menu", editing: null };
         case "cart":
           return { ...state, phase: "menu" };
         case "payMethod":
-          return { ...state, phase: "cart" };
+          // 요금형 기기는 장바구니를 거치지 않으므로 메뉴(요금 화면)로 돌아간다
+          return { ...state, phase: catalog.singleChoice ? "menu" : "cart" };
         case "payError":
           return { ...state, phase: "payMethod" }; // 결제 수단부터 다시 고를 수 있게
         case "receipt":

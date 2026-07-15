@@ -84,15 +84,15 @@
   `playwright.config.ts`가 원격 환경의 사전 설치 Chromium(/opt/pw-browsers/chromium)을 자동 사용
 - 주의: 테스트 셀렉터는 화면 문구에 의존 — 문구 바꾸면 테스트도 갱신
 
-### 이관 현황 (2026-07-15 저녁)
-- **엔진 v2로 완료**: 카페(임무 8종) + 햄버거(6종: 세트 음료·사이드 변경) + 민원(6종: 표시 옵션·수수료).
-  민원은 serviceTypes를 비워 주문 방법 단계를 건너뛰는 첫 사례 — 엔진에 serviceQuestion/checkoutLabel/단계 생략이 추가됨
-- **구 엔진(KioskPlayer)에 남음**: 주차 정산기 하나 — 차량번호 검색·키패드 등 새 조작(명세 7.3)이 필요해서
-  엔진에 검색/키패드 phase를 추가한 뒤 이관할 것. 그 전까지 components/kiosk/KioskPlayer.tsx 삭제 금지
+### 이관 현황 (2026-07-15 밤) — **4종 전부 엔진 v2 완료, 구 엔진 삭제됨**
+- 카페(8종) + 햄버거(6종) + 민원(6종) + **주차(5종)** = 임무 25종
+- 주차 이관을 위해 엔진에 새 phase 추가: `keypad`(숫자 입력, catalog.keypad) → `carSelect`(내 차 확인,
+  catalog.carSelect) → menu. `singleChoice: true`면 요금을 고르는 순간 장바구니를 건너뛰고 결제로 간다
+- 구 엔진(KioskPlayer·BigButton·StepGuide·ProgressBar·ResultCard·lib/kiosk/types·content/kiosk/)은 삭제됨.
+  `components/kiosk/useVoice.ts`와 `lib/kiosk/track.ts`만 v2가 계속 쓴다
 
 ### 남은 단계 (명세 16장 기준)
-1. 주차 정산기 이관 (키패드·차량 검색 phase 신설) → 구 엔진 제거
-2. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류 등)
+1. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류 등)
 3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
 4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
 5. 6단계: PWA·오프라인(Service Worker, IndexedDB 이관 — 현재 기록은 localStorage)

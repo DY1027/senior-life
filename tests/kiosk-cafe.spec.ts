@@ -122,6 +122,28 @@ test("든든민원: 주문 방법 단계 없이 서류를 발급한다", async (
   await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
 });
 
+test("든든주차: 키패드로 차 번호를 입력하고 요금을 정산한다", async ({ page }) => {
+  await page.goto("/kiosk/parking/parking-learn-card");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+
+  // 숫자판으로 4자리 입력 → 확인
+  for (const d of ["1", "2", "3", "4"]) {
+    await page.getByRole("button", { name: d, exact: true }).click();
+  }
+  await page.getByRole("button", { name: "확인", exact: true }).click();
+
+  // 내 차 고르기 → 요금 고르면 바로 결제로
+  await page.getByRole("button", { name: /흰색 승용차/ }).click();
+  await page.getByRole("button", { name: /할인 없이 정산/ }).click();
+  await expect(page.getByRole("heading", { name: /어떻게 계산할까요/ })).toBeVisible();
+
+  await page.getByRole("button", { name: /💳 카드/ }).click();
+  await waitPaymentDone(page);
+  await page.getByRole("button", { name: "받지 않기" }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+});
+
 test("이전 버튼으로 어느 화면에서도 되돌아갈 수 있다", async ({ page }) => {
   await page.goto("/kiosk/cafe/cafe-free");
   await page.getByRole("button", { name: /연습 시작/ }).click();

@@ -77,6 +77,18 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
     case "intro":
       return { text: "아래의 '연습 시작' 버튼을 눌러 보세요.", targetId: "start" };
 
+    case "keypad": {
+      const kp = catalog.keypad;
+      if (!kp) return { text: "숫자를 눌러 보세요." };
+      if (state.keypadValue.length < kp.length) {
+        return { text: kp.guide ?? `숫자판에서 ${kp.length}자리를 눌러 보세요. 연습이니 아무 숫자나 괜찮아요.`, targetId: "keypad" };
+      }
+      return { text: "다 입력했어요. '확인' 버튼을 눌러 보세요.", targetId: "keypad-done" };
+    }
+
+    case "carSelect":
+      return { text: catalog.carSelect?.guide ?? "사진과 들어온 시간을 보고 내 차를 골라 보세요. 연습이니 아무 차나 괜찮아요." };
+
     case "service": {
       if (!mission?.serviceType) return { text: "매장에서 드실지, 가져가실지 골라 보세요." };
       const svc = catalog.serviceTypes.find((s) => s.id === mission.serviceType);
@@ -84,6 +96,15 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
     }
 
     case "menu": {
+      // 요금형 기기(주차): 하나를 고르면 바로 결제로 넘어간다
+      if (catalog.singleChoice) {
+        const want = mission?.items[0];
+        if (want) {
+          const p = catalog.products.find((pp) => pp.id === want.productId);
+          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 결제로 넘어가요.`, targetId: `product-${want.productId}` };
+        }
+        return { text: "원하는 항목을 눌러 보세요. 누르면 결제로 넘어가요." };
+      }
       if (!mission) return { text: "원하는 메뉴를 눌러 자유롭게 담아 보세요." };
       // 아직 안 담긴 임무 항목 → 카테고리 → 상품 순으로 안내
       const missing = mission.items.find((it) => {

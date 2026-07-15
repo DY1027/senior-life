@@ -54,6 +54,12 @@ export type Catalog = {
   unitLabel: string;
   /** 장바구니의 결제 버튼 문구 (기본 "결제하기") — 민원은 "수수료 결제하기" */
   checkoutLabel?: string;
+  /** 숫자 입력 단계 (주차 정산기의 차량 번호 등). 지정하면 시작 직후 키패드가 나온다 */
+  keypad?: { title: string; guide?: string; length: number };
+  /** 키패드 다음의 확인 단계 (내 차 고르기 등) */
+  carSelect?: { title: string; guide?: string; cars: { id: string; label: string; sublabel?: string; emoji: string }[] };
+  /** 요금처럼 하나만 고르는 기기 — 상품을 고르면 장바구니를 건너뛰고 바로 결제로 간다 */
+  singleChoice?: boolean;
 };
 
 // ── 임무 시나리오 ───────────────────────────────────────────────
@@ -109,6 +115,8 @@ export type CartItem = {
 
 export type Phase =
   | "intro" // 시작 안내 (임무 확인)
+  | "keypad" // 숫자 입력 (차량 번호 등 — catalog.keypad가 있을 때)
+  | "carSelect" // 입력 결과에서 내 차 고르기 (catalog.carSelect가 있을 때)
   | "service" // 매장/포장
   | "menu" // 메뉴 탐색 (카테고리 + 상품)
   | "options" // 상품 옵션·수량 선택
@@ -122,6 +130,10 @@ export type Phase =
 export type MachineState = {
   phase: Phase;
   serviceType: string | null;
+  /** 키패드에 지금까지 입력한 숫자 */
+  keypadValue: string;
+  /** carSelect에서 고른 차 */
+  carId: string | null;
   activeCategoryId: string;
   /** options 단계에서 편집 중인 상품 */
   editing: { productId: string; options: Record<string, string>; quantity: number } | null;
@@ -139,6 +151,10 @@ export type MachineState = {
 
 export type MachineEvent =
   | { type: "START" }
+  | { type: "KEYPAD_PRESS"; digit: string }
+  | { type: "KEYPAD_CLEAR" }
+  | { type: "KEYPAD_DONE" }
+  | { type: "SELECT_CAR"; carId: string }
   | { type: "SELECT_SERVICE"; serviceType: string }
   | { type: "SELECT_CATEGORY"; categoryId: string }
   | { type: "OPEN_PRODUCT"; productId: string }

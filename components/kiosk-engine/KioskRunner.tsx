@@ -23,6 +23,8 @@ import { recordPracticeComplete } from "@/lib/progress";
 
 const PHASE_LABEL: Record<Phase, string> = {
   intro: "연습 준비",
+  keypad: "번호 입력",
+  carSelect: "차량 확인",
   service: "주문 방법",
   menu: "메뉴 고르기",
   options: "옵션 선택",
@@ -200,6 +202,78 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
               </div>
             )}
 
+            {state.phase === "keypad" && catalog.keypad && (
+              <div className="text-center">
+                <h2 className="text-[20px] font-extrabold text-[#1A1A2E]">{catalog.keypad.title}</h2>
+                {/* 입력 칸 */}
+                <div className="mt-4 flex justify-center gap-2" aria-label="입력한 번호">
+                  {Array.from({ length: catalog.keypad.length }).map((_, i) => (
+                    <span
+                      key={i}
+                      className={`flex h-[58px] w-[48px] items-center justify-center rounded-xl border-2 text-[26px] font-extrabold ${state.keypadValue[i] ? "border-[#1B6FC8] bg-[#EAF3FC] text-[#0C447C]" : "border-[#D7E3F0] bg-white text-[#C9D8E8]"}`}
+                    >
+                      {state.keypadValue[i] ?? "·"}
+                    </span>
+                  ))}
+                </div>
+                {/* 숫자판 */}
+                <div className={`mx-auto mt-4 grid max-w-[300px] grid-cols-3 gap-2 ${showGuide && guidance.targetId === "keypad" ? "kg-target p-1.5" : ""}`} data-guide="keypad">
+                  {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
+                    <button key={d} type="button" onClick={() => send({ type: "KEYPAD_PRESS", digit: d })} className="h-[60px] rounded-xl border-2 border-[#D7E3F0] bg-white text-[24px] font-extrabold text-[#1A1A2E] active:scale-[0.96]">
+                      {d}
+                    </button>
+                  ))}
+                  <button type="button" onClick={() => send({ type: "KEYPAD_CLEAR" })} className="h-[60px] rounded-xl border-2 border-[#FECACA] bg-[#FEF2F2] text-[16px] font-bold text-[#B91C1C]">
+                    지우기
+                  </button>
+                  <button type="button" onClick={() => send({ type: "KEYPAD_PRESS", digit: "0" })} className="h-[60px] rounded-xl border-2 border-[#D7E3F0] bg-white text-[24px] font-extrabold text-[#1A1A2E] active:scale-[0.96]">
+                    0
+                  </button>
+                  <button
+                    type="button"
+                    data-guide="keypad-done"
+                    onClick={() => {
+                      if (state.keypadValue.length < catalog.keypad!.length) {
+                        setNotice(`${catalog.keypad!.length}자리를 모두 눌러 주세요. 연습이니 아무 숫자나 괜찮아요.`);
+                        return;
+                      }
+                      send({ type: "KEYPAD_DONE" });
+                    }}
+                    className={`h-[60px] rounded-xl bg-[#1B6FC8] text-[17px] font-extrabold text-white active:scale-[0.96] ${showGuide && guidance.targetId === "keypad-done" ? "kg-target" : ""}`}
+                  >
+                    확인
+                  </button>
+                </div>
+                <p className="mt-3 text-[13px] text-[#9CA3AF]">연습용이라 아무 숫자나 입력해도 돼요.</p>
+              </div>
+            )}
+
+            {state.phase === "carSelect" && catalog.carSelect && (
+              <div className="flex flex-col gap-3">
+                <h2 className="text-center text-[20px] font-extrabold text-[#1A1A2E]">{catalog.carSelect.title}</h2>
+                <p className="text-center text-[14px] leading-relaxed text-[#6B7280]">
+                  입력한 번호(끝 {state.keypadValue})와 비슷한 차들이에요.
+                </p>
+                {catalog.carSelect.cars.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => send({ type: "SELECT_CAR", carId: c.id })}
+                    className="flex min-h-[72px] items-center gap-4 rounded-2xl border-[2.5px] border-[#D7E3F0] bg-white px-4 text-left active:scale-[0.98]"
+                  >
+                    <span className="text-[34px]" aria-hidden="true">{c.emoji}</span>
+                    <span>
+                      <span className="block text-[18px] font-extrabold text-[#1A1A2E]">{c.label}</span>
+                      {c.sublabel && <span className="block text-[14px] font-semibold text-[#6B7280]">{c.sublabel}</span>}
+                    </span>
+                  </button>
+                ))}
+                <p className="text-center text-[13px] leading-relaxed text-[#9CA3AF]">
+                  내 차가 없으면 <strong>이전</strong>을 눌러 번호를 다시 입력하면 돼요.
+                </p>
+              </div>
+            )}
+
             {state.phase === "service" && (
               <div className="flex flex-col gap-3.5">
                 <h2 className="text-center text-[21px] font-extrabold text-[#1A1A2E]">{catalog.serviceQuestion ?? "어디에서 드시겠어요?"}</h2>
@@ -220,8 +294,8 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
 
             {state.phase === "menu" && (
               <div className={leftLayout ? "flex gap-3" : ""}>
-                {/* 카테고리 — 배치 변형: 위쪽(기본) 또는 왼쪽 */}
-                <div className={leftLayout ? "flex w-[104px] flex-shrink-0 flex-col gap-2" : "mb-3 flex gap-2 overflow-x-auto"}>
+                {/* 카테고리 — 배치 변형: 위쪽(기본) 또는 왼쪽. 하나뿐이면 숨긴다 */}
+                <div className={catalog.categories.length < 2 ? "hidden" : leftLayout ? "flex w-[104px] flex-shrink-0 flex-col gap-2" : "mb-3 flex gap-2 overflow-x-auto"}>
                   {catalog.categories.map((c) => {
                     const active = c.id === state.activeCategoryId;
                     return (
@@ -507,7 +581,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
               >
                 ⟲ 처음부터
               </button>
-              {state.phase === "menu" && (
+              {state.phase === "menu" && !catalog.singleChoice && (
                 <button
                   type="button"
                   data-guide="open-cart"
