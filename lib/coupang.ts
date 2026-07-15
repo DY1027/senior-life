@@ -29,6 +29,25 @@ function authHeader(method: string, path: string, query: string): string | null 
   return `CEA algorithm=HmacSHA256, access-key=${accessKey}, signed-date=${datetime}, signature=${signature}`;
 }
 
+/** 진단용: 키 존재 여부와 쿠팡 응답 상태를 반환 (키·서명 값은 절대 포함하지 않음) */
+export async function debugSearch(keyword: string): Promise<Record<string, unknown>> {
+  const path = "/v2/providers/affiliate_open_api/apis/openapi/v1/products/search";
+  const query = `keyword=${encodeURIComponent(keyword)}&limit=1`;
+  const auth = authHeader("GET", path, query);
+  const info: Record<string, unknown> = {
+    hasAccessKey: Boolean(process.env.COUPANG_ACCESS_KEY),
+    hasSecretKey: Boolean(process.env.COUPANG_SECRET_KEY),
+  };
+  if (!auth) return { ...info, reason: "키 없음" };
+  try {
+    const res = await fetch(`${HOST}${path}?${query}`, { headers: { Authorization: auth }, cache: "no-store" });
+    const body = await res.text();
+    return { ...info, status: res.status, body: body.slice(0, 400) };
+  } catch (e) {
+    return { ...info, fetchError: String(e).slice(0, 200) };
+  }
+}
+
 /** 키워드로 상품 1개를 검색한다. 키가 없거나 실패하면 null (호출부에서 폴백). */
 export async function searchProduct(keyword: string): Promise<CoupangProduct | null> {
   const path = "/v2/providers/affiliate_open_api/apis/openapi/v1/products/search";
