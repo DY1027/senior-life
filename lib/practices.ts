@@ -37,7 +37,7 @@ export const PRACTICES: Practice[] = [
     id: "parking",
     title: "주차요금 정산",
     short: "주차요금 정산",
-    desc: "차량 번호 찾기, 요금 확인, 카드 결제",
+    desc: "숫자판으로 차 번호 입력, 할인 적용, 결제 오류까지",
     href: "/kiosk/parking",
     category: "이동하기",
     emoji: "🅿️",

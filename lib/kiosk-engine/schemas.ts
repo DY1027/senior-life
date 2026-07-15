@@ -40,6 +40,15 @@ export const catalogSchema = z.object({
   paymentMethods: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string(), hint: z.string().optional() })).min(1),
   unitLabel: z.string().min(1),
   checkoutLabel: z.string().min(1).optional(),
+  keypad: z.object({ title: z.string().min(1), guide: z.string().optional(), length: z.number().int().min(1).max(8) }).optional(),
+  carSelect: z
+    .object({
+      title: z.string().min(1),
+      guide: z.string().optional(),
+      cars: z.array(z.object({ id: z.string(), label: z.string(), sublabel: z.string().optional(), emoji: z.string() })).min(1),
+    })
+    .optional(),
+  singleChoice: z.boolean().optional(),
 });
 
 const missionItemSchema = z.object({
