@@ -3,6 +3,12 @@ import BreadcrumbNav from "@/components/BreadcrumbNav";
 import ArticleSchema from "@/components/ArticleSchema";
 import FAQAccordion from "@/components/FAQAccordion";
 import ParentChecklistTool from "@/components/life-tips/ParentChecklistTool";
+import AffiliateCard from "@/components/AffiliateCard";
+import { AFFILIATE, mergeProduct } from "@/content/affiliate";
+import { searchProduct } from "@/lib/coupang";
+
+// 파트너스 상품 정보(사진·가격)를 1시간마다 서버에서 갱신
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "부모님 돌봄 가족을 위한 체크리스트 — 재가 돌봄 가이드",
@@ -24,7 +30,8 @@ const faqItems = [
   { question: "가족이 직접 요양보호사가 될 수 있나요?", answer: "장기요양 등급을 받은 어르신의 가족이 요양보호사 자격을 취득하면 가족 요양보호사로 등록해 급여를 받을 수 있습니다. 단, 동거 가족은 수급자 1인당 하루 60분 이내로 제한됩니다." },
 ];
 
-export default function FamilyCarePage() {
+export default async function FamilyCarePage() {
+  const safetyProduct = mergeProduct(AFFILIATE.safetyGrab, await searchProduct(AFFILIATE.safetyGrab.keyword!));
   return (
     <>
       <ArticleSchema title="부모님 돌봄 가족을 위한 체크리스트" description="재가 돌봄 시 확인 항목과 위급 상황 대처법을 안내합니다." datePublished="2024-01-01" dateModified="2026-07-14" url="https://seniordeundun.com/life-tips/family-care" />
@@ -90,6 +97,13 @@ export default function FamilyCarePage() {
             ))}
           </div>
         </section>
+
+        {/* 점검에서 위험 항목을 확인한 가족을 위한 안전용품 (페이지당 광고 1개 원칙) */}
+        {safetyProduct && (
+          <div style={{ marginBottom: 32 }}>
+            <AffiliateCard product={safetyProduct} heading="🛠️ 점검 후 바로 챙기면 좋은 것" />
+          </div>
+        )}
 
         <FAQAccordion items={faqItems} />
         <div style={{ marginTop: 24, padding: "12px 16px", background: "#F7F6F3", borderRadius: 10, display: "flex", alignItems: "center", gap: 8 }}>
