@@ -233,3 +233,9 @@ npm run dev        # http://localhost:3000
 ---
 
 *이 문서는 마지막 배포 시점 기준이다. 작업 후 변경사항을 반영하여 업데이트할 것.*
+
+### 쿠팡 파트너스 연동 (2026-07-15)
+- 수익화 카드: `content/affiliate.ts`(상품 레지스트리) + `components/AffiliateCard.tsx`(광고 표시·대가성 문구 내장)
+- Open API: `lib/coupang.ts` — Vercel 환경변수 `COUPANG_ACCESS_KEY`/`COUPANG_SECRET_KEY` (Production).
+  달력 페이지가 1시간 ISR로 공식 사진·가격을 조회, 실패 시 수동 링크 카드로 자동 폴백.
+- 광고 원칙: 홈·놀이터 과정에는 광고 금지, 페이지당 1개, 맥락 일치 상품만. 현재 1곳(달력 완성 화면).
