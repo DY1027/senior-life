@@ -5,7 +5,7 @@ import Link from "next/link";
 import { track } from "@/lib/track";
 import { getHoliday } from "@/lib/making/holidays";
 import AffiliateCard from "@/components/AffiliateCard";
-import { AFFILIATE } from "@/content/affiliate";
+import { AFFILIATE, type AffiliateProduct } from "@/content/affiliate";
 
 // 사진 달력 만들기 — 만들기 놀이 1호.
 // 사진은 서버로 보내지 않고 브라우저 안에서만 처리한다 (업로드 API 없음).
@@ -112,7 +112,7 @@ function drawCalendar(
   ctx.fillText("시니어 든든에서 정성으로 만들었어요 · seniordeundun.com", CANVAS_W / 2, CANVAS_H - 46);
 }
 
-export default function CalendarMaker() {
+export default function CalendarMaker({ printerProduct }: { printerProduct?: AffiliateProduct | null }) {
   const now = new Date();
   const [step, setStep] = useState<Step>("photo");
   const [photo, setPhoto] = useState<HTMLImageElement | null>(null);
@@ -347,7 +347,7 @@ export default function CalendarMaker() {
               <br />
               가까운 <strong>편의점 인쇄기</strong>에서 몇백 원에 뽑을 수 있어요.
             </p>
-            <AffiliateCard product={AFFILIATE.photoPrinter} heading="🖨️ 집에서 자주 뽑고 싶다면" />
+            <AffiliateCard product={printerProduct ?? AFFILIATE.photoPrinter} heading="🖨️ 집에서 자주 뽑고 싶다면" />
           </div>
 
           <div className="mt-4 flex flex-col gap-3">

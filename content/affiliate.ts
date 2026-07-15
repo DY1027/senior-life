@@ -6,6 +6,11 @@ export type AffiliateProduct = {
   label: string;
   desc: string;
   href: string;
+  /** Open API 검색 키워드 — 서버에서 공식 사진·가격을 가져올 때 사용 */
+  keyword?: string;
+  /** 아래 둘은 API 조회 성공 시에만 채워짐 (쿠팡 공식 데이터) */
+  image?: string;
+  price?: number;
 };
 
 export const AFFILIATE: Record<string, AffiliateProduct> = {
@@ -14,5 +19,6 @@ export const AFFILIATE: Record<string, AffiliateProduct> = {
     label: "가정용 포토프린터",
     desc: "만든 달력과 가족 사진을 집에서 바로 뽑을 수 있어요",
     href: "https://link.coupang.com/a/fnzNnLtOiy",
+    keyword: "가정용 포토프린터",
   },
 };
