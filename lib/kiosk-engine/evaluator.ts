@@ -119,7 +119,8 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
     }
 
     case "cart": {
-      if (!mission) return { text: "내역을 확인하고 '결제하기'를 눌러 보세요.", targetId: "checkout" };
+      const checkoutLabel = catalog.checkoutLabel ?? "결제하기";
+      if (!mission) return { text: `내역을 확인하고 '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
       const extra = state.cart.filter((c) => !mission.items.some((m) => findMatch([c], m)));
       if (extra.length > 0) {
         const name = productName(catalog, extra[0].productId);
@@ -132,7 +133,7 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
       if (missing) {
         return { text: "아직 임무 메뉴가 다 담기지 않았어요. '메뉴로 돌아가기'를 눌러 보세요.", targetId: "close-cart" };
       }
-      return { text: "주문 내역이 맞아요. '결제하기'를 눌러 보세요.", targetId: "checkout" };
+      return { text: `주문 내역이 맞아요. '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
     }
 
     case "payMethod": {

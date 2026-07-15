@@ -96,7 +96,8 @@ export function kioskReducer(
 
     case "START":
       if (state.phase !== "intro") return state;
-      return { ...state, phase: "service" };
+      // 매장/포장 개념이 없는 기기(민원발급기 등)는 주문 방법 단계를 건너뛴다
+      return { ...state, phase: catalog.serviceTypes.length > 0 ? "service" : "menu" };
 
     case "SELECT_SERVICE":
       if (state.phase !== "service") return state;
@@ -211,7 +212,7 @@ export function kioskReducer(
         case "service":
           return { ...state, phase: "intro" };
         case "menu":
-          return { ...state, phase: "service" };
+          return { ...state, phase: catalog.serviceTypes.length > 0 ? "service" : "intro" };
         case "options":
           return { ...state, phase: "menu", editing: null };
         case "cart":

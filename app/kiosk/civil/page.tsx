@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import KioskPlayer from "@/components/kiosk/KioskPlayer";
-import type { KioskScenario } from "@/lib/kiosk/types";
-import civilData from "@/content/kiosk/civil.json";
+import KioskHub from "@/components/kiosk-engine/KioskHub";
+import { civilCatalog, civilScenarios } from "@/content/kiosk-v2/civil";
 
 export const metadata: Metadata = {
-  title: "무인민원발급기 연습 — 등본·가족관계증명서 미리 눌러보기",
+  title: "무인민원발급기 연습 — 임무 고르기",
   description:
-    "주민센터·지하철역 무인민원발급기를 집에서 미리 연습하세요. 주민등록등본, 초본, 가족관계증명서 발급과 지문 본인 확인까지 큰 버튼과 음성 안내로 따라 하면 됩니다. 실제 발급은 되지 않습니다.",
+    "든든민원 발급기에서 등본·초본·가족관계증명서 발급을 실제처럼 연습하세요. 주민등록번호 표시 선택, 수수료 결제, 카드 오류 해결까지 — 실제 발급은 되지 않습니다.",
   alternates: { canonical: "/kiosk/civil" },
 };
 
-// content/kiosk/civil.json 은 KioskScenario 형태를 따른다.
-const scenario = civilData as unknown as KioskScenario;
-
-export default function CivilKioskPage() {
-  return <KioskPlayer scenario={scenario} />;
+export default function CivilMissionHubPage() {
+  return (
+    <KioskHub
+      catalog={civilCatalog}
+      scenarios={civilScenarios}
+      heading={`${civilCatalog.brand} 발급 연습`}
+      intro={"주민센터나 지하철역의 무인발급기를 미리 연습해요.\n실제 서류는 발급되지 않고, 주민등록번호도 입력하지 않아요."}
+    />
+  );
 }

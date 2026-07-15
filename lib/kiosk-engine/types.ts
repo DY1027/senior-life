@@ -42,13 +42,18 @@ export type Catalog = {
   brand: string; // "든든카페" (가상 브랜드만 사용)
   emoji: string;
   place: string; // "카페" — 안내 문장용
-  serviceTypes: { id: string; label: string; emoji: string }[]; // 매장/포장
+  /** 매장/포장 등. 비어 있으면 주문 방법 단계를 건너뛴다 (민원발급기 등) */
+  serviceTypes: { id: string; label: string; emoji: string }[];
+  /** 주문 방법 화면의 질문 (기본 "어디에서 드시겠어요?") */
+  serviceQuestion?: string;
   categories: { id: string; label: string }[];
   products: Product[];
   optionGroups: OptionGroup[];
   paymentMethods: { id: string; label: string; emoji: string; hint?: string }[];
   /** 수량 단위 (잔/개/통) */
   unitLabel: string;
+  /** 장바구니의 결제 버튼 문구 (기본 "결제하기") — 민원은 "수수료 결제하기" */
+  checkoutLabel?: string;
 };
 
 // ── 임무 시나리오 ───────────────────────────────────────────────

@@ -32,12 +32,14 @@ export const catalogSchema = z.object({
   brand: z.string().min(1),
   emoji: z.string().min(1),
   place: z.string().min(1),
-  serviceTypes: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string() })).min(1),
+  serviceTypes: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string() })), // 비어 있으면 단계 생략
+  serviceQuestion: z.string().min(1).optional(),
   categories: z.array(z.object({ id: z.string(), label: z.string() })).min(1),
   products: z.array(productSchema).min(1),
   optionGroups: z.array(optionGroupSchema),
   paymentMethods: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string(), hint: z.string().optional() })).min(1),
   unitLabel: z.string().min(1),
+  checkoutLabel: z.string().min(1).optional(),
 });
 
 const missionItemSchema = z.object({

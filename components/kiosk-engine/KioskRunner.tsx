@@ -202,7 +202,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
 
             {state.phase === "service" && (
               <div className="flex flex-col gap-3.5">
-                <h2 className="text-center text-[21px] font-extrabold text-[#1A1A2E]">어디에서 드시겠어요?</h2>
+                <h2 className="text-center text-[21px] font-extrabold text-[#1A1A2E]">{catalog.serviceQuestion ?? "어디에서 드시겠어요?"}</h2>
                 {catalog.serviceTypes.map((s) => (
                   <button
                     key={s.id}
@@ -398,7 +398,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                     onClick={() => send({ type: "CHECKOUT" })}
                     className={`h-[60px] flex-[2] rounded-2xl bg-[#1B6FC8] text-[19px] font-extrabold text-white disabled:bg-[#EDEDED] disabled:text-[#9CA3AF] ${showGuide && guidance.targetId === "checkout" ? "kg-target" : ""}`}
                   >
-                    결제하기 →
+                    {catalog.checkoutLabel ?? "결제하기"} →
                   </button>
                 </div>
               </div>

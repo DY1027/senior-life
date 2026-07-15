@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { cafeScenarios } from "@/content/kiosk-v2/cafe";
+import { burgerScenarios } from "@/content/kiosk-v2/burger";
+import { civilScenarios } from "@/content/kiosk-v2/civil";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://seniordeundun.com";
@@ -10,15 +12,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // 생활기기 연습 (핵심)
     { url: `${base}/kiosk`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/kiosk/cafe`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    ...cafeScenarios.map((s) => ({
-      url: `${base}/kiosk/cafe/${s.id}`,
+    { url: `${base}/kiosk/fastfood`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kiosk/parking`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    ...[
+      ...cafeScenarios.map((s) => `/kiosk/cafe/${s.id}`),
+      ...burgerScenarios.map((s) => `/kiosk/fastfood/${s.id}`),
+      ...civilScenarios.map((s) => `/kiosk/civil/${s.id}`),
+    ].map((path) => ({
+      url: `${base}${path}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
-    { url: `${base}/kiosk/fastfood`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/kiosk/parking`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     // 오늘의 놀이터 + 생활안전
     { url: `${base}/play`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/brain`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },

@@ -85,6 +85,43 @@ test("혼자 연습하기: 잘못 담긴 메뉴를 삭제하고 임무를 완수
   await expect(page.getByText("잘못 담긴 메뉴를 직접 삭제했어요")).toBeVisible();
 });
 
+test("든든버거: 세트 음료를 사이다로 바꾸고 임무를 완수한다", async ({ page }) => {
+  await page.goto("/kiosk/fastfood/burger-solo-change-drink");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+  await page.getByRole("button", { name: /매장에서 먹기/ }).click();
+
+  await page.getByRole("button", { name: /새우버거 세트/ }).click();
+  await page.getByRole("button", { name: "사이다" }).click(); // 콜라(기본) → 사이다
+  await page.getByRole("button", { name: /담기 ·/ }).click();
+
+  await page.getByRole("button", { name: /주문 확인/ }).click();
+  await page.getByRole("button", { name: /결제하기/ }).click();
+  await page.getByRole("button", { name: /💵 현금/ }).click();
+  await waitPaymentDone(page);
+  await page.getByRole("button", { name: "받지 않기" }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+  await expect(page.getByText(/새우버거 세트 \(사이다\)/)).toBeVisible();
+});
+
+test("든든민원: 주문 방법 단계 없이 서류를 발급한다", async ({ page }) => {
+  await page.goto("/kiosk/civil/civil-learn-deungbon");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+
+  // 발급기는 주문 방법 단계를 건너뛰고 바로 서류 선택으로 간다
+  await page.getByRole("button", { name: /주민등록등본/ }).click();
+  await page.getByRole("button", { name: /뒷자리 가리기/ }).click();
+  await page.getByRole("button", { name: /담기 ·/ }).click();
+
+  await page.getByRole("button", { name: /주문 확인/ }).click();
+  await page.getByRole("button", { name: /수수료 결제하기/ }).click();
+  await page.getByRole("button", { name: /💵 현금/ }).click();
+  await waitPaymentDone(page);
+  await page.getByRole("button", { name: "받지 않기" }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+});
+
 test("이전 버튼으로 어느 화면에서도 되돌아갈 수 있다", async ({ page }) => {
   await page.goto("/kiosk/cafe/cafe-free");
   await page.getByRole("button", { name: /연습 시작/ }).click();
