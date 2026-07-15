@@ -61,6 +61,15 @@ export const PRACTICES: Practice[] = [
     emoji: "🛒",
   },
   {
+    id: "atm",
+    title: "은행 ATM",
+    short: "은행 ATM",
+    desc: "카드 넣기, 연습 비밀번호, 출금·잔액 확인, 피싱 경고까지",
+    href: "/kiosk/atm",
+    category: "공공생활",
+    emoji: "🏧",
+  },
+  {
     id: "civil",
     title: "서류 발급",
     short: "서류 발급",
@@ -74,13 +83,13 @@ export const PRACTICES: Practice[] = [
 
 // 다음에 열릴 연습 예고 — 미완성처럼 보이지 않게 한 번에 하나만 보여준다.
 export const UPCOMING_PRACTICE = {
-  title: "은행 ATM",
-  category: "공공생활" as const,
-  emoji: "🏧",
+  title: "푸드코트 주문",
+  category: "먹고 마시기" as const,
+  emoji: "🍽️",
 };
 
 // 최근에 새로 열린 연습 (홈의 "새로 생긴 연습" 알림에 쓴다)
-export const NEW_PRACTICE_ID = "ticket";
+export const NEW_PRACTICE_ID = "atm";
 
 export function getPractice(id: string): Practice | undefined {
   return PRACTICES.find((p) => p.id === id);
@@ -105,6 +114,8 @@ export const MISSIONS: DailyMission[] = [
   { practiceId: "mart", text: "같은 상품을 두 번 스캔해서 수량을 늘려 보세요." },
   { practiceId: "ticket", text: "대전 가는 기차표를 창가 자리로 한 장 예매해 보세요." },
   { practiceId: "ticket", text: "원하는 시간이 매진일 때 다른 시간 표를 예매해 보세요." },
+  { practiceId: "atm", text: "ATM에서 연습 비밀번호로 3만원을 찾아 보세요." },
+  { practiceId: "atm", text: "ATM에서 잔액을 확인하고 명세표를 받아 보세요." },
 ];
 
 /** 날짜 기준으로 오늘의 임무를 고른다 (하루에 하나, 매일 바뀜). */
