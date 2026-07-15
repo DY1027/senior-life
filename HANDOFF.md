@@ -84,15 +84,18 @@
   `playwright.config.ts`가 원격 환경의 사전 설치 Chromium(/opt/pw-browsers/chromium)을 자동 사용
 - 주의: 테스트 셀렉터는 화면 문구에 의존 — 문구 바꾸면 테스트도 갱신
 
-### 이관 현황 (2026-07-15 밤) — **4종 전부 엔진 v2 완료, 구 엔진 삭제됨**
-- 카페(8종) + 햄버거(6종) + 민원(6종) + **주차(5종)** = 임무 25종
-- 주차 이관을 위해 엔진에 새 phase 추가: `keypad`(숫자 입력, catalog.keypad) → `carSelect`(내 차 확인,
-  catalog.carSelect) → menu. `singleChoice: true`면 요금을 고르는 순간 장바구니를 건너뛰고 결제로 간다
-- 구 엔진(KioskPlayer·BigButton·StepGuide·ProgressBar·ResultCard·lib/kiosk/types·content/kiosk/)은 삭제됨.
-  `components/kiosk/useVoice.ts`와 `lib/kiosk/track.ts`만 v2가 계속 쓴다
+### 이관 현황 — **키오스크 5종 전부 엔진 v2, 구 엔진 삭제됨**
+- 카페(8종) + 햄버거(6종) + 민원(6종) + 주차(5종) + **마트 셀프계산대(7종, 2026-07-15 신규)** = 임무 32종
+- 주차용 phase: `keypad`(숫자 입력) → `carSelect`(내 차 확인). `singleChoice: true`면 장바구니 생략하고 결제로
+- 마트용 동작: 옵션 없는 상품 담기 = '스캔'. **같은 상품 재탭 시 수량 합침**(중복 스캔),
+  `scanFailOnce` 이벤트(첫 스캔 실패 → 재스캔, 과정 피드백 기록), 회원 적립 건너뛰기는 serviceTypes로 물음
+  (전화번호 등 실제 입력 없음)
+- 구 엔진(KioskPlayer 등)은 삭제됨. `components/kiosk/useVoice.ts`·`lib/kiosk/track.ts`만 v2가 계속 쓴다
+- 예고(UPCOMING_PRACTICE)는 기차표 예매로 교체, 홈 새 연습 알림은 마트
 
 ### 남은 단계 (명세 16장 기준)
-1. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류 등)
+1. 4단계 나머지: 표 예매(출발지·좌석 선택 — 새 phase 필요) → ATM(보이스피싱 경고 중심)
+2. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류, 무게 불일치, 성인 확인 등)
 3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
 4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
 5. 6단계: PWA·오프라인(Service Worker, IndexedDB 이관 — 현재 기록은 localStorage)

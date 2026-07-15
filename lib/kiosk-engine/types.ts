@@ -84,7 +84,8 @@ export type MissionSpec = {
 /** 실제 기기에서 생길 수 있는 상황 (ErrorEngine이 주입) */
 export type RandomEvent =
   | "cardFailOnce" // 첫 결제 시 카드 인식 실패 → 다시 시도
-  | "soldOutDecoy"; // 임무와 무관한 상품 1개 품절 (품절 표시를 경험)
+  | "soldOutDecoy" // 임무와 무관한 상품 1개 품절 (품절 표시를 경험)
+  | "scanFailOnce"; // 첫 스캔(옵션 없는 상품 담기)이 안 읽힘 → 같은 상품 다시 스캔
 
 export type PracticeMode = "learn" | "solo" | "challenge" | "free";
 
@@ -146,6 +147,8 @@ export type MachineState = {
   achievements: string[];
   /** 도움말 사용 횟수 (기록용) */
   hintsUsed: number;
+  /** scanFailOnce 이벤트가 이미 발생했는가 */
+  scanFailedOnce: boolean;
   nextUid: number;
 };
 
@@ -158,6 +161,7 @@ export type MachineEvent =
   | { type: "SELECT_SERVICE"; serviceType: string }
   | { type: "SELECT_CATEGORY"; categoryId: string }
   | { type: "OPEN_PRODUCT"; productId: string }
+  | { type: "SCAN_FAIL" } // 바코드 인식 실패 연출 (ErrorEngine)
   | { type: "SET_OPTION"; groupId: string; choiceId: string }
   | { type: "SET_QTY"; quantity: number }
   | { type: "CONFIRM_ITEM" } // 편집 중 상품을 장바구니에 담기

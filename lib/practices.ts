@@ -43,6 +43,15 @@ export const PRACTICES: Practice[] = [
     emoji: "🅿️",
   },
   {
+    id: "mart",
+    title: "마트 셀프계산",
+    short: "마트 셀프계산",
+    desc: "상품 스캔, 봉투·적립 선택, 바코드 오류 대처까지",
+    href: "/kiosk/mart",
+    category: "장보고 이용하기",
+    emoji: "🛒",
+  },
+  {
     id: "civil",
     title: "서류 발급",
     short: "서류 발급",
@@ -56,13 +65,13 @@ export const PRACTICES: Practice[] = [
 
 // 다음에 열릴 연습 예고 — 미완성처럼 보이지 않게 한 번에 하나만 보여준다.
 export const UPCOMING_PRACTICE = {
-  title: "마트 셀프계산대",
-  category: "장보고 이용하기" as const,
-  emoji: "🛒",
+  title: "기차표 예매",
+  category: "이동하기" as const,
+  emoji: "🚄",
 };
 
 // 최근에 새로 열린 연습 (홈의 "새로 생긴 연습" 알림에 쓴다)
-export const NEW_PRACTICE_ID = "parking";
+export const NEW_PRACTICE_ID = "mart";
 
 export function getPractice(id: string): Practice | undefined {
   return PRACTICES.find((p) => p.id === id);
@@ -83,6 +92,8 @@ export const MISSIONS: DailyMission[] = [
   { practiceId: "parking", text: "할인 도장을 적용해서 주차요금을 정산해보세요." },
   { practiceId: "civil", text: "가족관계증명서 한 통을 발급해보세요." },
   { practiceId: "fastfood", text: "햄버거 단품 말고 세트 메뉴로 주문을 끝내보세요." },
+  { practiceId: "mart", text: "마트에서 우유와 과자를 스캔하고 적립은 건너뛰어 보세요." },
+  { practiceId: "mart", text: "같은 상품을 두 번 스캔해서 수량을 늘려 보세요." },
 ];
 
 /** 날짜 기준으로 오늘의 임무를 고른다 (하루에 하나, 매일 바뀜). */

@@ -3,6 +3,7 @@ import { cafeScenarios } from "@/content/kiosk-v2/cafe";
 import { burgerScenarios } from "@/content/kiosk-v2/burger";
 import { civilScenarios } from "@/content/kiosk-v2/civil";
 import { parkingScenarios } from "@/content/kiosk-v2/parking";
+import { martScenarios } from "@/content/kiosk-v2/mart";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://seniordeundun.com";
@@ -16,11 +17,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/kiosk/fastfood`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${base}/kiosk/parking`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/kiosk/mart`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     ...[
       ...cafeScenarios.map((s) => `/kiosk/cafe/${s.id}`),
       ...burgerScenarios.map((s) => `/kiosk/fastfood/${s.id}`),
       ...civilScenarios.map((s) => `/kiosk/civil/${s.id}`),
       ...parkingScenarios.map((s) => `/kiosk/parking/${s.id}`),
+      ...martScenarios.map((s) => `/kiosk/mart/${s.id}`),
     ].map((path) => ({
       url: `${base}${path}`,
       lastModified: now,
