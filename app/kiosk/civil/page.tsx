@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function CivilMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={civilCatalog}
-      scenarios={civilScenarios}
-      heading={`${civilCatalog.brand} 발급 연습`}
-      intro={"주민센터나 지하철역의 무인발급기를 미리 연습해요.\n실제 서류는 발급되지 않고, 주민등록번호도 입력하지 않아요."}
-    />
-  );
+  return <KioskHub catalog={civilCatalog} scenarios={civilScenarios} />;
 }

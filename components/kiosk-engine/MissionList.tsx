@@ -2,30 +2,33 @@
 // 임무 선택 목록 — 모드별로 묶고, 이 기기에서 완료한 임무에 ✅ 도장을 붙인다.
 import Link from "next/link";
 import { useProgress } from "@/lib/progress";
+import { getKioskConfig } from "@/lib/kiosk-config";
 import type { PracticeMode, Scenario } from "@/lib/kiosk-engine/types";
 
 const MODES: { mode: PracticeMode; label: string; emoji: string; desc: string }[] = [
   { mode: "learn", label: "천천히 배우기", emoji: "🐢", desc: "눌러야 할 버튼이 반짝이고, 음성이 한 단계씩 알려드려요." },
   { mode: "solo", label: "혼자 연습하기", emoji: "💪", desc: "안내 없이 스스로! 막히면 도움말 버튼을 누르면 돼요." },
-  { mode: "challenge", label: "실제처럼 도전", emoji: "🔥", desc: "화면 배치가 다르고, 품절이나 카드 오류가 생길 수 있어요." },
+  { mode: "challenge", label: "실제처럼 도전", emoji: "🔥", desc: "" },
   { mode: "free", label: "자유 연습", emoji: "🎈", desc: "임무 없이 모든 메뉴를 마음껏 눌러 보세요." },
 ];
 
 export default function MissionList({ kioskType, scenarios }: { kioskType: string; scenarios: Scenario[] }) {
   const progress = useProgress();
   const done = new Set(progress?.scenarios ?? []);
+  const config = getKioskConfig(kioskType);
 
   return (
     <div className="flex flex-col gap-7">
       {MODES.map(({ mode, label, emoji, desc }) => {
         const items = scenarios.filter((s) => s.mode === mode);
+        const modeDescription = mode === "challenge" ? config.challengeDescription : desc;
         if (items.length === 0) return null;
         return (
           <section key={mode}>
             <h2 className="ml-1 text-[20px] font-extrabold text-[#3B3226]">
               {emoji} {label}
             </h2>
-            <p className="mb-2.5 ml-1 text-[14px] leading-relaxed text-[#8A7660]">{desc}</p>
+            <p className="mb-2.5 ml-1 break-keep text-[14px] leading-relaxed text-[#8A7660]">{modeDescription}</p>
             <div className="flex flex-col gap-2.5">
               {items.map((s) => (
                 <Link

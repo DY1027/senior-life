@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { todayMission, getPractice } from "@/lib/practices";
+import { dailyMissionUrl, todayMission } from "@/lib/daily-missions";
 
 // 계절에 따라 마을 풍경이 옷을 갈아입는다 (봄·여름 → 초록, 가을 → 단풍, 겨울 → 눈).
 // 홈 페이지는 하루 단위 ISR(revalidate)이라 계절 전환이 하루 안에 반영된다.
@@ -14,7 +14,7 @@ function seasonBg(): string {
 // 놀이터 홈 히어로 — 첫 화면은 광고·정보 없이 "무엇을 하는 곳인지"와 시작 버튼만.
 export default function PlaygroundHero() {
   const mission = todayMission();
-  const missionHref = getPractice(mission.practiceId)?.href ?? "/kiosk";
+  const missionHref = dailyMissionUrl(mission);
 
   return (
     <section className="bg-[#FDF7E7]">

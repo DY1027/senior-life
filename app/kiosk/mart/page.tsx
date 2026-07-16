@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function MartMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={martCatalog}
-      scenarios={martScenarios}
-      heading={`${martCatalog.brand} 셀프계산 연습`}
-      intro={"마트 셀프계산대를 미리 연습해요. 상품을 누르는 게 곧 '스캔'이에요.\n같은 상품을 두 번 누르면 수량이 늘어나요. 실제 결제는 되지 않아요."}
-    />
-  );
+  return <KioskHub catalog={martCatalog} scenarios={martScenarios} />;
 }

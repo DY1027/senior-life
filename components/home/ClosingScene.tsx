@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-// 홈 맨 아래를 닫는 그림책 "뒷표지" — 노을 언덕에 앉은 든든이 뒷모습.
+// 홈 맨 아래를 닫는 따뜻한 마무리 장면 — 노을 언덕에 앉은 든든이 뒷모습.
 export default function ClosingScene() {
   return (
     <section aria-hidden="true">

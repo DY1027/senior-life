@@ -75,7 +75,10 @@ export type Catalog = {
 // ── 임무 시나리오 ───────────────────────────────────────────────
 
 export type MissionItem = {
+  /** 우선 선택 상품. 품절 대체 임무에서는 이 상품이 품절될 수 있다. */
   productId: string;
+  /** productId 대신 골라도 임무를 충족하는 대체 상품들 (either-of 의미론) */
+  alternativeProductIds?: string[];
   quantity: number;
   /** optionGroupId → choiceId. 지정한 옵션만 판정한다 */
   options?: Record<string, string>;
@@ -95,6 +98,7 @@ export type MissionSpec = {
 export type RandomEvent =
   | "cardFailOnce" // 첫 결제 시 카드 인식 실패 → 다시 시도
   | "soldOutDecoy" // 임무와 무관한 상품 1개 품절 (품절 표시를 경험)
+  | "soldOutAlternative" // 임무의 우선 상품이 품절 → 허용된 대체 상품 중 하나 선택
   | "scanFailOnce" // 첫 스캔(옵션 없는 상품 담기)이 안 읽힘 → 같은 상품 다시 스캔
   | "printerFailOnce" // 영수증을 받기로 했는데 안 나옴 → 다시 출력/그냥 진행/직원 호출
   | "timeoutOnce"; // 메뉴에서 잠시 멈추면 "아직 계신가요?" 안내 (실제 시간 초과 경험)

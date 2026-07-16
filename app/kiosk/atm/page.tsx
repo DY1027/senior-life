@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function AtmMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={atmCatalog}
-      scenarios={atmScenarios}
-      heading={`${atmCatalog.brand} 연습`}
-      intro={"은행 현금인출기를 미리 연습해요. 비밀번호는 화면이 알려주는\n연습 번호(1234)만 써요 — 진짜 비밀번호는 절대 입력하지 마세요."}
-    />
-  );
+  return <KioskHub catalog={atmCatalog} scenarios={atmScenarios} />;
 }

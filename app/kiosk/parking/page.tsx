@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function ParkingMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={parkingCatalog}
-      scenarios={parkingScenarios}
-      heading={`${parkingCatalog.brand} 정산 연습`}
-      intro={"마트·건물 주차장에서 나가기 전에 쓰는 정산기를 미리 연습해요.\n숫자판으로 차 번호를 입력하는 것부터 시작해요. 실제 결제는 되지 않아요."}
-    />
-  );
+  return <KioskHub catalog={parkingCatalog} scenarios={parkingScenarios} />;
 }

@@ -1,7 +1,7 @@
 // 든든기차 표 예매 — 엔진 v2 카탈로그 + 임무 시나리오 (명세 8.5).
 // 기차·고속버스 예매의 공통 흐름을 재구성한다 (실제 예매·결제 없음, 실명 입력 없음).
 // 엔진 기능 조합만으로 구성: 편도/왕복=serviceTypes, 행선지=카테고리, 열차 시간=상품,
-// 좌석 등급·위치=옵션, 매수=수량, 인기 시간 매진=soldOutDecoy.
+// 좌석 등급·위치=옵션, 매수=수량, 인기 시간 매진=soldOutAlternative + 대체 시간 either-of.
 // 연습 단순화를 위해 출발지는 서울로 고정한다.
 import { validateCatalog, validateScenario } from "@/lib/kiosk-engine/schemas";
 import type { Scenario } from "@/lib/kiosk-engine/types";
@@ -113,13 +113,13 @@ const raw: unknown[] = [
     kioskType: "ticket",
     title: "원하는 시간이 매진이어도",
     mode: "challenge",
-    missionText: "대전행 오전 10시 표를 일반실 복도 자리로 예매하고 영수증을 받으세요. 인기 시간은 매진일 수 있어요 — 당황하지 말고 다른 시간을 확인해요.",
+    missionText: "대전행 오전 9시가 매진이면 오전 10시나 오후 2시 표를 일반실 복도 자리로 예매하고 영수증을 받으세요.",
     mission: {
       serviceType: "oneway",
-      items: [{ productId: "d10", quantity: 1, options: { trainClass: "normal", seatPos: "aisle" } }],
+      items: [{ productId: "d9", alternativeProductIds: ["d10", "d14"], quantity: 1, options: { trainClass: "normal", seatPos: "aisle" } }],
       receipt: true,
     },
-    events: ["soldOutDecoy"],
+    events: ["soldOutAlternative"],
     layout: "left",
   },
   {

@@ -3,6 +3,8 @@
 // - nextGuidance: 지금 상태에서 임무를 이루려면 무엇을 하면 되는지 한 가지 행동만 제안.
 //   천천히 배우기 모드는 이 결과의 targetId로 버튼을 강조하고, 다른 모드는 도움말 버튼에서만 쓴다.
 import type { Catalog, MachineState, MissionItem, Scenario } from "./types";
+import { missionAcceptsProduct, missionProductIds } from "./mission";
+import { getKioskConfig } from "@/lib/kiosk-config";
 
 export type MissionCheck = { label: string; pass: boolean };
 
@@ -19,9 +21,15 @@ function productName(catalog: Catalog, id: string): string {
 function findMatch(cart: MachineState["cart"], item: MissionItem) {
   return cart.find(
     (c) =>
-      c.productId === item.productId &&
+      missionAcceptsProduct(item, c.productId) &&
       Object.entries(item.options ?? {}).every(([g, v]) => c.options[g] === v)
   );
+}
+
+/** 품절되지 않은 우선 상품 또는 첫 대체 상품을 안내 대상으로 고른다. */
+function availableProduct(catalog: Catalog, state: MachineState, item: MissionItem) {
+  const id = missionProductIds(item).find((productId) => !state.soldOutIds.includes(productId)) ?? item.productId;
+  return catalog.products.find((p) => p.id === id);
 }
 
 export function evaluateMission(state: MachineState, scenario: Scenario, catalog: Catalog): MissionCheck[] {
@@ -38,7 +46,8 @@ export function evaluateMission(state: MachineState, scenario: Scenario, catalog
     const optionText = Object.entries(item.options ?? {})
       .map(([g, v]) => optionLabel(catalog, g, v))
       .join(" · ");
-    const name = `${productName(catalog, item.productId)}${optionText ? ` (${optionText})` : ""} ${item.quantity}${catalog.unitLabel}`;
+    const productText = missionProductIds(item).map((id) => productName(catalog, id)).join(" 또는 ");
+    const name = `${productText}${optionText ? ` (${optionText})` : ""} ${item.quantity}${catalog.unitLabel}`;
     const match = findMatch(state.cart, item);
     checks.push({ label: `${name} 담기`, pass: !!match && match.quantity === item.quantity });
   }
@@ -72,6 +81,7 @@ export type Guidance = {
 
 export function nextGuidance(state: MachineState, scenario: Scenario, catalog: Catalog): Guidance {
   const mission = scenario.mission;
+  const flow = getKioskConfig(catalog.kioskType).flowLabels;
 
   switch (state.phase) {
     case "intro":
@@ -100,10 +110,10 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
       if (catalog.singleChoice) {
         const want = mission?.items[0];
         if (want) {
-          const p = catalog.products.find((pp) => pp.id === want.productId);
-          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 결제로 넘어가요.`, targetId: `product-${want.productId}` };
+          const p = availableProduct(catalog, state, want);
+          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 ${flow.paymentStep} 화면으로 넘어가요.`, targetId: `product-${p?.id}` };
         }
-        return { text: "원하는 항목을 눌러 보세요. 누르면 결제로 넘어가요." };
+        return { text: `원하는 항목을 눌러 보세요. 누르면 ${flow.paymentStep} 화면으로 넘어가요.` };
       }
       if (!mission) return { text: "원하는 메뉴를 눌러 자유롭게 담아 보세요." };
       // 아직 안 담긴 임무 항목 → 카테고리 → 상품 순으로 안내
@@ -112,20 +122,20 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
         return !match || match.quantity !== it.quantity;
       });
       if (missing) {
-        const p = catalog.products.find((pp) => pp.id === missing.productId);
+        const p = availableProduct(catalog, state, missing);
         if (p && p.categoryId !== state.activeCategoryId) {
           const cat = catalog.categories.find((c) => c.id === p.categoryId);
           return { text: `'${cat?.label}' 칸을 눌러 보세요. ${p.name}이(가) 거기 있어요.`, targetId: `category-${p.categoryId}` };
         }
-        return { text: `'${p?.name}'을(를) 눌러 보세요.`, targetId: `product-${missing.productId}` };
+        return { text: `'${p?.name}'을(를) 눌러 보세요.`, targetId: `product-${p?.id}` };
       }
       // 다 담았으면 장바구니로
-      return { text: "다 담았어요. '주문 확인' 버튼을 눌러 주문 내역을 확인해 보세요.", targetId: "open-cart" };
+      return { text: `다 골랐어요. '${flow.reviewButton}' 버튼을 눌러 선택한 내용을 확인해 보세요.`, targetId: "open-cart" };
     }
 
     case "options": {
       if (!state.editing) return { text: "옵션을 골라 보세요." };
-      const item = mission?.items.find((it) => it.productId === state.editing!.productId);
+      const item = mission?.items.find((it) => missionAcceptsProduct(it, state.editing!.productId));
       // 임무 옵션과 다른 것부터 안내
       for (const [gid, want] of Object.entries(item?.options ?? {})) {
         if (state.editing.options[gid] !== want) {
@@ -154,17 +164,17 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
       if (missing) {
         return { text: "아직 임무 메뉴가 다 담기지 않았어요. '메뉴로 돌아가기'를 눌러 보세요.", targetId: "close-cart" };
       }
-      return { text: `주문 내역이 맞아요. '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
+      return { text: `선택한 내용이 맞아요. '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
     }
 
     case "payMethod": {
-      if (!mission?.paymentMethod) return { text: "결제 방법을 골라 보세요." };
+      if (!mission?.paymentMethod) return { text: flow.paymentPrompt };
       const m = catalog.paymentMethods.find((mm) => mm.id === mission.paymentMethod);
       return { text: `'${m?.label}'를 눌러 보세요.`, targetId: `pay-${mission.paymentMethod}` };
     }
 
     case "processing":
-      return { text: "결제 정보를 확인하고 있어요. 잠시만 기다려 주세요." };
+      return { text: `${flow.processingMessage}. 잠시만 기다려 주세요.` };
 
     case "payError":
       return { text: "괜찮아요, 실제로도 자주 있는 일이에요. '다시 시도'를 눌러 보세요.", targetId: "retry-pay" };

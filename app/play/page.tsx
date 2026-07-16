@@ -26,7 +26,7 @@ const plays = [
     img: "/mascot-cheer.webp",
     alt: "앞발을 내밀며 다정하게 알려주는 든든이",
     title: "보이스피싱 문자 구별하기",
-    desc: "가짜 문자와 진짜 문자를 구별하는 법, 그림책으로 2분이면 배워요.",
+    desc: "가짜 문자와 진짜 문자를 구별하는 법을 그림과 쉬운 설명으로 확인해요.",
     href: "/stories/phishing",
     tag: "생활안전",
   },

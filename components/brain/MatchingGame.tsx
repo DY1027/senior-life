@@ -114,7 +114,7 @@ export default function MatchingGame() {
         await navigator.share({ title: "두뇌 놀이 완료", text });
       } else if (typeof navigator !== "undefined" && navigator.clipboard) {
         await navigator.clipboard.writeText(text);
-        alert("결과를 복사했어요. 자녀나 가족에게 붙여넣어 보내보세요.");
+        alert("결과를 복사했어요. 가족이나 지인에게 붙여넣어 보내보세요.");
       }
     } catch {
       /* 공유 취소는 무시 */

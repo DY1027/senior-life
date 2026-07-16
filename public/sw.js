@@ -2,7 +2,7 @@
 // 배포마다 VERSION을 올리면 이전 캐시가 정리된다 (activate에서 삭제).
 // 설계: 페이지는 network-first(항상 최신 우선, 끊기면 저장본), 정적 파일은
 // cache-first(해시가 붙어 있어 영원히 유효), 외부 도메인·API는 건드리지 않는다.
-const VERSION = "v2";
+const VERSION = "v4";
 const PAGES = `dd-pages-${VERSION}`;
 const ASSETS = `dd-assets-${VERSION}`;
 const OFFLINE_URL = "/offline";

@@ -2,7 +2,8 @@
 // 모든 데이터는 화면에 쓰이기 전에 validateCatalog/validateScenario를 통과해야 한다.
 // 데이터 실수(없는 상품, 없는 옵션, 0 이하 수량)는 빌드·개발 단계에서 잡는 게 목적.
 import { z } from "zod";
-import type { Catalog, Scenario } from "./types";
+import { missionProductIds } from "./mission";
+import type { Catalog, MissionItem, Scenario } from "./types";
 
 const optionChoiceSchema = z.object({
   id: z.string().min(1),
@@ -60,6 +61,7 @@ export const catalogSchema = z.object({
 
 const missionItemSchema = z.object({
   productId: z.string().min(1),
+  alternativeProductIds: z.array(z.string().min(1)).min(1).optional(),
   quantity: z.number().int().positive(),
   options: z.record(z.string(), z.string()).optional(),
 });
@@ -79,7 +81,9 @@ export const scenarioSchema = z.object({
     })
     .optional(),
   preloadCart: z.array(missionItemSchema).optional(),
-  events: z.array(z.enum(["cardFailOnce", "soldOutDecoy", "scanFailOnce", "printerFailOnce", "timeoutOnce"])).optional(),
+  events: z
+    .array(z.enum(["cardFailOnce", "soldOutDecoy", "soldOutAlternative", "scanFailOnce", "printerFailOnce", "timeoutOnce"]))
+    .optional(),
   layout: z.enum(["top", "left"]).optional(),
 });
 
@@ -106,14 +110,20 @@ export function validateScenario(raw: unknown, catalog: Catalog): Scenario {
   }
   const productById = new Map(catalog.products.map((p) => [p.id, p]));
   const groupById = new Map(catalog.optionGroups.map((g) => [g.id, g]));
-  const checkItems = (items: { productId: string; options?: Record<string, string> }[], where: string) => {
+  const checkItems = (items: MissionItem[], where: string) => {
     for (const item of items) {
-      const p = productById.get(item.productId);
-      if (!p) throw new Error(`[scenario:${sc.id}] ${where}의 상품 ${item.productId} 없음`);
-      for (const [gid, cid] of Object.entries(item.options ?? {})) {
-        if (!(p.optionGroupIds ?? []).includes(gid)) throw new Error(`[scenario:${sc.id}] 상품 ${p.id}에 없는 옵션 그룹 ${gid}`);
-        const g = groupById.get(gid);
-        if (!g?.choices.some((c) => c.id === cid)) throw new Error(`[scenario:${sc.id}] 옵션 ${gid}에 없는 선택지 ${cid}`);
+      const acceptedIds = missionProductIds(item);
+      if (new Set(acceptedIds).size !== acceptedIds.length) {
+        throw new Error(`[scenario:${sc.id}] ${where}의 우선·대체 상품 id가 중복됨`);
+      }
+      for (const productId of acceptedIds) {
+        const p = productById.get(productId);
+        if (!p) throw new Error(`[scenario:${sc.id}] ${where}의 상품 ${productId} 없음`);
+        for (const [gid, cid] of Object.entries(item.options ?? {})) {
+          if (!(p.optionGroupIds ?? []).includes(gid)) throw new Error(`[scenario:${sc.id}] 상품 ${p.id}에 없는 옵션 그룹 ${gid}`);
+          const g = groupById.get(gid);
+          if (!g?.choices.some((c) => c.id === cid)) throw new Error(`[scenario:${sc.id}] 옵션 ${gid}에 없는 선택지 ${cid}`);
+        }
       }
     }
   };
@@ -127,5 +137,8 @@ export function validateScenario(raw: unknown, catalog: Catalog): Scenario {
     }
   }
   if (sc.preloadCart) checkItems(sc.preloadCart, "preloadCart");
+  if (sc.events?.includes("soldOutAlternative") && !sc.mission?.items.some((item) => (item.alternativeProductIds?.length ?? 0) > 0)) {
+    throw new Error(`[scenario:${sc.id}] soldOutAlternative 이벤트에는 alternativeProductIds가 필요`);
+  }
   return sc;
 }
