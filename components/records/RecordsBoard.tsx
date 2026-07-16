@@ -100,11 +100,11 @@ export default function RecordsBoard() {
                 <Link
                   key={p.id}
                   href={p.href}
-                  style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "1.5px solid #EFE3CC", borderRadius: 16, padding: "16px 18px", textDecoration: "none" }}
+                  style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "6px 14px", background: "#fff", border: "1.5px solid #EFE3CC", borderRadius: 16, padding: "16px 18px", textDecoration: "none" }}
                 >
                   <span style={{ fontSize: 26 }} aria-hidden="true">{p.emoji}</span>
-                  <span style={{ flex: 1, fontSize: 17, fontWeight: 800, color: "#3B3226" }}>{p.title}</span>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: c > 0 ? "#4F7245" : "#9B9890" }}>
+                  <span style={{ flex: 1, minWidth: 120, fontSize: 17, fontWeight: 800, color: "#3B3226", wordBreak: "keep-all" }}>{p.title}</span>
+                  <span style={{ fontSize: 15, fontWeight: 700, whiteSpace: "nowrap", color: c > 0 ? "#4F7245" : "#9B9890" }}>
                     {c > 0 ? `✅ ${c}회 완료` : "아직 안 해봤어요"}
                   </span>
                 </Link>
