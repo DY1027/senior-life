@@ -107,9 +107,20 @@
   KioskRunner가 래퍼(카드 상태)+KioskMachine(기계, key 리마운트) 구조로 분리됨
 - progress에 `log: {id, at}[]` 추가(최대 100) — 주간 판정용. localStorage 스키마는 하위 호환
 
+### 6단계 PWA·오프라인 (2026-07-16)
+- `app/manifest.ts`(설치 매니페스트) + `app/pwa-icon/[size]/route.ts`(192/512 PNG, ImageResponse 정적 생성)
+- `public/sw.js` — 직접 작성한 서비스워커 (Workbox 없이): 페이지 network-first(끊기면 저장본→/offline),
+  `/_next/static`·이미지 cache-first, 외부 도메인·/api는 관여 안 함.
+  **배포 시 캐시를 갈아치우려면 sw.js의 VERSION을 올릴 것** (activate에서 이전 캐시 삭제)
+- `components/PwaSetup.tsx` — SW 등록(프로덕션만)·오프라인 상단 배너·새 버전 안내(새로고침 버튼).
+  ⚠️ controllerchange 새로고침은 "원래 컨트롤러가 있던 경우"에만 — 첫 설치에서 리로드하면 화면이 뚝 끊긴다(수정됨)
+- 오프라인에서는 AffiliateCard(쿠팡 광고)가 숨겨진다 (`lib/useOnline.ts`)
+- e2e는 서비스워커가 켜진 프로덕션 서버 위에서 돌므로 SW 회귀도 함께 잡는다
+
 ### 남은 단계 (명세 16장 기준)
-1. ~~4단계 (핵심 키오스크 7종)~~ / ~~5단계 핵심(주간 도전·상황 카드)~~ **완료**
+1. ~~4단계~~ / ~~5단계~~ / ~~6단계(PWA·오프라인)~~ **완료**
 2. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류, 무게 불일치, 성인 확인 등)
+3. 7단계: 시나리오 편집기 (시나리오 50개 이전에는 JSON 운영 원칙)
 3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
 4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
 5. 6단계: PWA·오프라인(Service Worker, IndexedDB 이관 — 현재 기록은 localStorage)
