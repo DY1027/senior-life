@@ -20,3 +20,6 @@
 - **07-16 · Claude(웹)** — 오류 이벤트 확대: printerFailOnce(영수증 미출력→다시 출력/건너뛰기/직원 호출),
   timeoutOnce("아직 계신가요?" 오버레이, 벌칙 없음). 임무 47종·상황 카드 5종. e2e 14본 통과.
   린트 정리, sw.js VERSION v2, 인수인계 문서(CODEX_HANDOFF.md·이 파일) 신설. 검증: 빌드✅ tsc✅ lint✅ e2e 14/14✅
+- **07-17 · Codex** — 품절 대체 선택 구현: `alternativeProductIds` either-of 임무 판정과
+  `soldOutAlternative` 이벤트를 추가하고, 기차표 매진 임무를 오전 10시/오후 2시 대체 선택으로 고도화.
+  상황 카드 후보 추가, sw.js VERSION v3. 검증: 빌드✅ tsc✅ lint 0오류(기존 경고 1)✅ e2e 14/14✅

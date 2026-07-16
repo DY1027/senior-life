@@ -191,11 +191,11 @@ test("든든기차: 매진을 만나도 다른 시간 표를 예매한다", asyn
   await page.getByRole("button", { name: /연습 시작/ }).click();
   await page.getByRole("button", { name: /편도/ }).click();
 
-  // 인기 시간(오전 9시)은 매진 — 눌러도 담기지 않고 안내가 나온다
+  // 임무의 우선 선택(오전 9시)은 매진 — 눌러도 담기지 않고 안내가 나온다
   await page.getByRole("button", { name: /오전 9시/ }).click();
   await expect(page.getByText(/품절이에요/)).toBeVisible();
 
-  // 임무 시간(오전 10시)으로 예매
+  // 허용된 대체 시간 중 오전 10시를 선택해 예매
   await page.getByRole("button", { name: /대전 · 오전 10시/ }).click();
   await page.getByRole("button", { name: "복도 자리" }).click();
   await page.getByRole("button", { name: /담기 ·/ }).click();
@@ -207,6 +207,7 @@ test("든든기차: 매진을 만나도 다른 시간 표를 예매한다", asyn
   await page.getByRole("button", { name: "받기", exact: true }).click();
 
   await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+  await expect(page.getByText(/오전 9시.*오전 10시.*오후 2시.*1장 담기/)).toBeVisible();
 });
 
 test("든든ATM: 연습 비밀번호로 출금하고 카드 회수 안내를 본다", async ({ page }) => {

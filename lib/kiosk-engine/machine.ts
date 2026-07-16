@@ -3,6 +3,7 @@
 // UI는 이벤트를 보내기만 하고, 어떤 상태에서 어떤 이벤트가 가능한지는 여기서 판단한다.
 // (허용되지 않는 이벤트는 조용히 무시 — 잘못 눌러도 아무 일도 생기지 않아야 한다)
 import type { Catalog, CartItem, MachineEvent, MachineState, Scenario } from "./types";
+import { missionProductIds } from "./mission";
 
 export function createInitialState(catalog: Catalog, scenario: Scenario): MachineState {
   let nextUid = 1;
@@ -20,9 +21,7 @@ export function createInitialState(catalog: Catalog, scenario: Scenario): Machin
     activeCategoryId: catalog.categories[0].id,
     editing: null,
     cart,
-    // soldOutDecoy: 임무·미리 담긴 항목과 무관한 상품 하나를 품절 처리해
-    // "품절 표시를 만나도 당황하지 않는" 경험을 만든다.
-    soldOutIds: scenario.events?.includes("soldOutDecoy") ? [pickDecoy(catalog, scenario)] : [],
+    soldOutIds: pickSoldOutProducts(catalog, scenario),
     payMethod: null,
     payAttempts: 0,
     receiptChoice: null,
@@ -37,11 +36,23 @@ export function createInitialState(catalog: Catalog, scenario: Scenario): Machin
 
 function pickDecoy(catalog: Catalog, scenario: Scenario): string {
   const used = new Set([
-    ...(scenario.mission?.items ?? []).map((i) => i.productId),
+    ...(scenario.mission?.items ?? []).flatMap(missionProductIds),
     ...(scenario.preloadCart ?? []).map((i) => i.productId),
   ]);
   const candidate = catalog.products.find((p) => !used.has(p.id));
   return candidate?.id ?? "";
+}
+
+function pickSoldOutProducts(catalog: Catalog, scenario: Scenario): string[] {
+  const ids: string[] = [];
+  // 기존 decoy는 임무와 무관한 상품을 품절 처리한다.
+  if (scenario.events?.includes("soldOutDecoy")) ids.push(pickDecoy(catalog, scenario));
+  // 대체 선택 이벤트는 alternativeProductIds가 있는 첫 임무 항목의 우선 상품을 품절 처리한다.
+  if (scenario.events?.includes("soldOutAlternative")) {
+    const target = scenario.mission?.items.find((item) => (item.alternativeProductIds?.length ?? 0) > 0);
+    if (target) ids.push(target.productId);
+  }
+  return [...new Set(ids.filter(Boolean))];
 }
 
 function productOf(catalog: Catalog, id: string) {

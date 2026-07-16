@@ -3,6 +3,7 @@
 // - nextGuidance: 지금 상태에서 임무를 이루려면 무엇을 하면 되는지 한 가지 행동만 제안.
 //   천천히 배우기 모드는 이 결과의 targetId로 버튼을 강조하고, 다른 모드는 도움말 버튼에서만 쓴다.
 import type { Catalog, MachineState, MissionItem, Scenario } from "./types";
+import { missionAcceptsProduct, missionProductIds } from "./mission";
 
 export type MissionCheck = { label: string; pass: boolean };
 
@@ -19,9 +20,15 @@ function productName(catalog: Catalog, id: string): string {
 function findMatch(cart: MachineState["cart"], item: MissionItem) {
   return cart.find(
     (c) =>
-      c.productId === item.productId &&
+      missionAcceptsProduct(item, c.productId) &&
       Object.entries(item.options ?? {}).every(([g, v]) => c.options[g] === v)
   );
+}
+
+/** 품절되지 않은 우선 상품 또는 첫 대체 상품을 안내 대상으로 고른다. */
+function availableProduct(catalog: Catalog, state: MachineState, item: MissionItem) {
+  const id = missionProductIds(item).find((productId) => !state.soldOutIds.includes(productId)) ?? item.productId;
+  return catalog.products.find((p) => p.id === id);
 }
 
 export function evaluateMission(state: MachineState, scenario: Scenario, catalog: Catalog): MissionCheck[] {
@@ -38,7 +45,8 @@ export function evaluateMission(state: MachineState, scenario: Scenario, catalog
     const optionText = Object.entries(item.options ?? {})
       .map(([g, v]) => optionLabel(catalog, g, v))
       .join(" · ");
-    const name = `${productName(catalog, item.productId)}${optionText ? ` (${optionText})` : ""} ${item.quantity}${catalog.unitLabel}`;
+    const productText = missionProductIds(item).map((id) => productName(catalog, id)).join(" 또는 ");
+    const name = `${productText}${optionText ? ` (${optionText})` : ""} ${item.quantity}${catalog.unitLabel}`;
     const match = findMatch(state.cart, item);
     checks.push({ label: `${name} 담기`, pass: !!match && match.quantity === item.quantity });
   }
@@ -100,8 +108,8 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
       if (catalog.singleChoice) {
         const want = mission?.items[0];
         if (want) {
-          const p = catalog.products.find((pp) => pp.id === want.productId);
-          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 결제로 넘어가요.`, targetId: `product-${want.productId}` };
+          const p = availableProduct(catalog, state, want);
+          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 결제로 넘어가요.`, targetId: `product-${p?.id}` };
         }
         return { text: "원하는 항목을 눌러 보세요. 누르면 결제로 넘어가요." };
       }
@@ -112,12 +120,12 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
         return !match || match.quantity !== it.quantity;
       });
       if (missing) {
-        const p = catalog.products.find((pp) => pp.id === missing.productId);
+        const p = availableProduct(catalog, state, missing);
         if (p && p.categoryId !== state.activeCategoryId) {
           const cat = catalog.categories.find((c) => c.id === p.categoryId);
           return { text: `'${cat?.label}' 칸을 눌러 보세요. ${p.name}이(가) 거기 있어요.`, targetId: `category-${p.categoryId}` };
         }
-        return { text: `'${p?.name}'을(를) 눌러 보세요.`, targetId: `product-${missing.productId}` };
+        return { text: `'${p?.name}'을(를) 눌러 보세요.`, targetId: `product-${p?.id}` };
       }
       // 다 담았으면 장바구니로
       return { text: "다 담았어요. '주문 확인' 버튼을 눌러 주문 내역을 확인해 보세요.", targetId: "open-cart" };
@@ -125,7 +133,7 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
 
     case "options": {
       if (!state.editing) return { text: "옵션을 골라 보세요." };
-      const item = mission?.items.find((it) => it.productId === state.editing!.productId);
+      const item = mission?.items.find((it) => missionAcceptsProduct(it, state.editing!.productId));
       // 임무 옵션과 다른 것부터 안내
       for (const [gid, want] of Object.entries(item?.options ?? {})) {
         if (state.editing.options[gid] !== want) {

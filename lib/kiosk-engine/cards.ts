@@ -3,6 +3,7 @@
 // 이미 완료한 키오스크에도 다시 들어올 이유를 만드는 장치.
 // 천천히 배우기(learn) 모드에는 보여주지 않는다 (처음 배우는 사람 배려).
 import type { Catalog, RandomEvent, Scenario } from "./types";
+import { missionProductIds } from "./mission";
 
 export type SituationCard = {
   id: string;
@@ -27,7 +28,7 @@ export function availableCards(catalog: Catalog, scenario: Scenario): SituationC
 
   // 품절 카드는 임무·미리 담긴 것 외의 상품이 있어야 한다 (decoy 대상 필요)
   const used = new Set([
-    ...(scenario.mission?.items ?? []).map((i) => i.productId),
+    ...(scenario.mission?.items ?? []).flatMap(missionProductIds),
     ...(scenario.preloadCart ?? []).map((i) => i.productId),
   ]);
   if (!has.has("soldOutDecoy") && catalog.products.some((p) => !used.has(p.id))) {
@@ -36,6 +37,16 @@ export function availableCards(catalog: Catalog, scenario: Scenario): SituationC
       label: "🚫 오늘은 품절!",
       desc: "메뉴 하나가 품절이에요. 당황하지 말고 다른 것을 살펴보세요.",
       event: "soldOutDecoy",
+    });
+  }
+
+  // 우선 상품과 허용된 대체 상품이 정의된 임무에서만 뽑을 수 있다.
+  if (!has.has("soldOutAlternative") && scenario.mission?.items.some((item) => (item.alternativeProductIds?.length ?? 0) > 0)) {
+    cards.push({
+      id: "soldout-alternative",
+      label: "🔁 매진이면 다른 선택!",
+      desc: "원하는 상품이 품절이에요. 안내된 대체 상품 중 하나를 골라 보세요.",
+      event: "soldOutAlternative",
     });
   }
 

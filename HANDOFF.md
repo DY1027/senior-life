@@ -1,6 +1,6 @@
 # 시니어 든든 — 에이전트 인수인계 문서
 
-> 최종 업데이트: 2026-07-15 (연습 놀이터 전면 전환)
+> 최종 업데이트: 2026-07-17 (품절 대체 선택 either-of 의미론 추가)
 > 저장소: https://github.com/DY1027/senior-life
 
 ---
@@ -53,6 +53,7 @@
   - `machine.ts` — **상태 중심 리듀서** (intro→service→menu→options→cart→payMethod→processing→payError→receipt→done).
     XState 대신 타입 완전한 리듀서를 썼다(번들 절약, 전환이 한 파일에 명시). 이벤트 유니언이라 XState v5 이관 가능.
   - `evaluator.ts` — 임무 판정(evaluateMission: 과정 중심 점검표) + 안내 생성(nextGuidance: 다음 행동 1가지 + 강조 대상)
+  - `mission.ts` — 우선 상품 + `alternativeProductIds`를 하나의 either-of 임무 항목으로 판정하는 공통 헬퍼
   - `schemas.ts` — Zod 검증. 카탈로그·시나리오는 모듈 로드 시 검증되므로 **데이터 실수는 빌드가 실패**한다
 - `components/kiosk-engine/KioskRunner.tsx` — 공통 화면(KioskShell 포함).
   시스템 버튼 고정 배치(왼쪽 위 이전/가운데 단계/오른쪽 도움말/왼쪽 아래 처음부터),
@@ -67,9 +68,13 @@
 - `challenge` 실제처럼 도전: 화면 배치 변형(layout: "left") + 랜덤 이벤트
 - `free` 자유 연습: 임무·판정 없음
 
-### 랜덤 이벤트 (ErrorEngine, 현재 2종)
+### 랜덤 이벤트 (ErrorEngine, 현재 6종)
 - `cardFailOnce` — 첫 결제 시도 실패 → "카드 다시 넣고 시도" / 다른 결제수단 / 직원 호출
 - `soldOutDecoy` — 임무와 무관한 상품 1개 품절 (품절 만나는 경험)
+- `soldOutAlternative` — 임무의 우선 상품 품절 → `alternativeProductIds` 중 하나를 골라도 임무 충족
+- `scanFailOnce` — 첫 바코드 스캔 실패 → 같은 상품 재스캔
+- `printerFailOnce` — 영수증 미출력 → 다시 출력 / 영수증 없이 진행 / 직원 호출
+- `timeoutOnce` — 메뉴에서 15초 멈추면 안내 오버레이, 벌칙 없이 이어서 진행
 - 새 이벤트 추가: types.ts 유니언 → machine.ts(shouldPaymentFail 등) → KioskRunner 처리
 
 ### 새 임무·새 키오스크 추가 방법 (완료 기준 달성)
@@ -85,9 +90,10 @@
 - 주의: 테스트 셀렉터는 화면 문구에 의존 — 문구 바꾸면 테스트도 갱신
 
 ### 이관 현황 — **명세 4단계 완료: 키오스크 7종 전부 엔진 v2**
-- 카페(8) + 햄버거(6) + 민원(6) + 주차(5) + 마트(7) + 기차표(7) + **ATM(6, 2026-07-15 신규)** = 임무 45종
-- 기차표(든든기차): 새 엔진 기능 없이 기존 조합만으로 구성 (편도/왕복=serviceTypes, 행선지=카테고리,
-  열차=상품, 좌석=옵션, 매진=soldOutDecoy). 출발지는 서울 고정 — 출발지 선택·좌석 배치도는 추후 확장
+- 카페(8) + 햄버거(7) + 민원(6) + 주차(5) + 마트(8) + 기차표(7) + **ATM(6, 2026-07-15 신규)** = 임무 47종
+- 기차표(든든기차): 편도/왕복=serviceTypes, 행선지=카테고리, 열차=상품, 좌석=옵션.
+  매진 임무는 `soldOutAlternative`로 우선 시간(d9)이 매진되면 대체 시간(d10/d14) 중 하나를 허용한다.
+  출발지는 서울 고정 — 출발지 선택·좌석 배치도는 추후 확장
 - ATM(든든은행): **안전 제한 준수** — 실제 은행 로고·계좌·비밀번호 사용 금지, 연습 비밀번호(1234)만 안내,
   키패드는 mask로 ●표시, 입력값 저장·검증 안 함, 송금 대신 출금·잔액확인 + 보이스피싱 경고(payNote 상시).
   카탈로그 문구 커스터마이즈 필드 추가: startLabel/payQuestion/payNote/receiptQuestion/doneNote/keypad.mask
@@ -103,7 +109,7 @@
   매주 월요일 기준으로 연습 3가지를 결정적으로 선정, 이 기기 기록(`progress.log`)으로 주간 완료 판정,
   3개 완료 시 주간 도장(🗓️, stamps()의 "weekly")
 - **무작위 상황 카드** (`lib/kiosk-engine/cards.ts`): 연습 시작 화면에서 한 장 뽑으면 그 판에
-  호환되는 이벤트(카드 오류·품절·바코드)가 추가됨. learn 모드 제외, 한 판에 한 장.
+  호환되는 이벤트(카드 오류·품절·품절 대체·바코드·프린터·시간 초과)가 추가됨. learn 모드 제외, 한 판에 한 장.
   KioskRunner가 래퍼(카드 상태)+KioskMachine(기계, key 리마운트) 구조로 분리됨
 - progress에 `log: {id, at}[]` 추가(최대 100) — 주간 판정용. localStorage 스키마는 하위 호환
 
@@ -111,27 +117,24 @@
 - `app/manifest.ts`(설치 매니페스트) + `app/pwa-icon/[size]/route.ts`(192/512 PNG, ImageResponse 정적 생성)
 - `public/sw.js` — 직접 작성한 서비스워커 (Workbox 없이): 페이지 network-first(끊기면 저장본→/offline),
   `/_next/static`·이미지 cache-first, 외부 도메인·/api는 관여 안 함.
-  **배포 시 캐시를 갈아치우려면 sw.js의 VERSION을 올릴 것** (activate에서 이전 캐시 삭제)
+  **배포 시 캐시를 갈아치우려면 sw.js의 VERSION을 올릴 것** (activate에서 이전 캐시 삭제, 현재 v3)
 - `components/PwaSetup.tsx` — SW 등록(프로덕션만)·오프라인 상단 배너·새 버전 안내(새로고침 버튼).
   ⚠️ controllerchange 새로고침은 "원래 컨트롤러가 있던 경우"에만 — 첫 설치에서 리로드하면 화면이 뚝 끊긴다(수정됨)
 - 오프라인에서는 AffiliateCard(쿠팡 광고)가 숨겨진다 (`lib/useOnline.ts`)
 - e2e는 서비스워커가 켜진 프로덕션 서버 위에서 돌므로 SW 회귀도 함께 잡는다
 
-### 오류 이벤트 5종 (ErrorEngine, 2026-07-16 확대)
+### 오류 이벤트 6종 (ErrorEngine, 2026-07-17 확대)
 - `cardFailOnce`(카드 인식 실패→재시도) / `soldOutDecoy`(품절) / `scanFailOnce`(바코드 재스캔)
+- `soldOutAlternative` — 우선 상품 매진 → 허용된 대체 상품 중 하나 선택. 임무 점검표와 도움말도 either-of로 안내
 - `printerFailOnce` — 영수증 받기 선택 시 미출력 → printerFail phase (다시 출력/영수증 없이 진행/직원 호출)
 - `timeoutOnce` — 메뉴에서 15초 멈추면 "아직 계신가요?" 오버레이 (한 번만, 벌칙 없음 — 명세 원칙:
-  시간 제한 기본 미적용). 상황 카드에도 프린터·시간 초과 2종이 추가돼 카드는 총 5종
+  시간 제한 기본 미적용). 호환 시 뽑을 수 있는 상황 카드 후보도 최대 6종
 
 ### 남은 단계 (명세 16장 기준)
-1. ~~4단계~~ / ~~5단계~~ / ~~6단계(PWA·오프라인)~~ / ~~오류 확대(핵심 5종)~~ **완료**
-2. 잔여 오류 아이디어: 품절 대체 선택(임무 either-of 의미론 필요), 무게 불일치, 성인 확인
+1. ~~4단계~~ / ~~5단계~~ / ~~6단계(PWA·오프라인)~~ / ~~오류 확대(6종)~~ **완료**
+2. 잔여 오류 아이디어: 무게 불일치, 성인 확인
 3. 7단계: 시나리오 편집기 (시나리오 50개 이전에는 JSON 운영 원칙 — 현재 47종)
-3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
-4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
-5. 6단계: PWA·오프라인(Service Worker, IndexedDB 이관 — 현재 기록은 localStorage)
-6. 7단계: 시나리오 편집기 (시나리오 50개 이전엔 JSON 운영)
-7. 광고(준비물 영역), 기관용 모드
+4. 광고(준비물 영역), 기관용 모드
 
 ### 다음 단계 (소유자 로드맵 — 엔진 외)
 1. 연습 완료 화면 아래 준비물(거치대·터치펜 등) 광고 영역, 별도 준비물 페이지
@@ -147,7 +150,7 @@
 | React | 19.2.4 |
 | TypeScript | 5.x |
 | CSS | Tailwind 4 + 인라인 스타일 혼용 |
-| 테스트 | Playwright (설치되어 있으나 테스트 파일 미작성) |
+| 테스트 | Playwright 모바일 E2E 14본 |
 
 **주의**: Next.js 16은 기존 버전과 API가 다르다. 코드 작성 전 반드시 `node_modules/next/dist/docs/`의 가이드를 참고할 것.
 
