@@ -209,6 +209,30 @@ test("든든기차: 매진을 만나도 다른 시간 표를 예매한다", asyn
   await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
 });
 
+test("든든ATM: 연습 비밀번호로 출금하고 카드 회수 안내를 본다", async ({ page }) => {
+  await page.goto("/kiosk/atm/atm-learn-withdraw");
+  await page.getByRole("button", { name: /카드 넣기/ }).click();
+
+  // 연습 비밀번호 1234 — 화면에는 ●로 가려진다
+  for (const d of ["1", "2", "3", "4"]) {
+    await page.getByRole("button", { name: d, exact: true }).click();
+  }
+  await expect(page.getByLabel("입력한 번호")).toContainText("●");
+  await page.getByRole("button", { name: "확인", exact: true }).click();
+
+  // 업무 선택(3만원 찾기) → 확인 화면(보이스피싱 경고 노출)
+  await page.getByRole("button", { name: /3만원 찾기/ }).click();
+  await expect(page.getByText(/거래 내용을 확인해 주세요/)).toBeVisible();
+  await expect(page.getByText(/112에 전화하세요/)).toBeVisible();
+  await page.getByRole("button", { name: /확인하고 진행하기/ }).click();
+
+  await expect(page.getByRole("heading", { name: /명세표를 받으시겠어요/ })).toBeVisible({ timeout: 8000 });
+  await page.getByRole("button", { name: "받지 않기" }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+  await expect(page.getByText(/카드를 잊지 말고 꼭 챙기세요/)).toBeVisible();
+});
+
 test("이전 버튼으로 어느 화면에서도 되돌아갈 수 있다", async ({ page }) => {
   await page.goto("/kiosk/cafe/cafe-free");
   await page.getByRole("button", { name: /연습 시작/ }).click();

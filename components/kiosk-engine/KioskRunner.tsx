@@ -197,7 +197,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                   onClick={() => send({ type: "START" })}
                   className={`mt-5 h-[64px] w-full rounded-2xl bg-[#1B6FC8] text-[20px] font-extrabold text-white ${g("start").className ?? ""}`}
                 >
-                  연습 시작 →
+                  {catalog.startLabel ?? "연습 시작"} →
                 </button>
                 <p className="mt-3 text-[13px] text-[#9CA3AF]">실제 주문·결제는 되지 않아요.</p>
               </div>
@@ -213,7 +213,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                       key={i}
                       className={`flex h-[58px] w-[48px] items-center justify-center rounded-xl border-2 text-[26px] font-extrabold ${state.keypadValue[i] ? "border-[#1B6FC8] bg-[#EAF3FC] text-[#0C447C]" : "border-[#D7E3F0] bg-white text-[#C9D8E8]"}`}
                     >
-                      {state.keypadValue[i] ?? "·"}
+                      {state.keypadValue[i] ? (catalog.keypad?.mask ? "●" : state.keypadValue[i]) : "·"}
                     </span>
                   ))}
                 </div>
@@ -490,8 +490,11 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
             {state.phase === "payMethod" && (
               <div className="flex flex-col gap-3.5">
                 <h2 className="text-center text-[20px] font-extrabold text-[#1A1A2E]">
-                  {total.toLocaleString()}원, 어떻게 계산할까요?
+                  {catalog.payQuestion ?? `${total.toLocaleString()}원, 어떻게 계산할까요?`}
                 </h2>
+                {catalog.payQuestion && (
+                  <p className="text-center text-[17px] font-extrabold text-[#1B6FC8]">{total.toLocaleString()}원</p>
+                )}
                 {catalog.paymentMethods.map((m) => (
                   <button
                     key={m.id}
@@ -504,6 +507,11 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                     {m.hint && <span className="mt-0.5 text-[13px] font-semibold text-[#6B7280]">{m.hint}</span>}
                   </button>
                 ))}
+                {catalog.payNote && (
+                  <p className="break-keep rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-4 py-3 text-center text-[14px] font-bold leading-relaxed text-[#92400E]">
+                    {catalog.payNote}
+                  </p>
+                )}
                 <p className="text-center text-[13px] text-[#9CA3AF]">연습이라 실제로 돈이 나가지 않아요.</p>
               </div>
             )}
@@ -552,8 +560,8 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
             {state.phase === "receipt" && (
               <div className="text-center">
                 <p className="text-[44px]" aria-hidden="true">🧾</p>
-                <h2 className="mt-1 text-[20px] font-extrabold text-[#1A1A2E]">영수증을 받으시겠어요?</h2>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#6B7280]">영수증에는 주문 내용과 낸 금액이 적혀 있어요.</p>
+                <h2 className="mt-1 text-[20px] font-extrabold text-[#1A1A2E]">{catalog.receiptQuestion ?? "영수증을 받으시겠어요?"}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#6B7280]">거래 내용과 금액이 적힌 종이예요.</p>
                 <div className="mt-5 flex gap-2.5">
                   <button
                     type="button"
@@ -670,6 +678,13 @@ function DoneScreen({
             <p key={a} className="py-0.5 text-[15px] font-bold text-[#0C447C]">👏 {a}</p>
           ))}
         </div>
+      )}
+
+      {/* 완료 안내 (카드 회수 등) */}
+      {catalog.doneNote && (
+        <p className="mt-3 break-keep rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-4 py-3 text-[15px] font-extrabold leading-relaxed text-[#92400E]">
+          {catalog.doneNote}
+        </p>
       )}
 
       {/* 주문 요약 */}

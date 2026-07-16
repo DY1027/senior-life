@@ -54,12 +54,22 @@ export type Catalog = {
   unitLabel: string;
   /** 장바구니의 결제 버튼 문구 (기본 "결제하기") — 민원은 "수수료 결제하기" */
   checkoutLabel?: string;
-  /** 숫자 입력 단계 (주차 정산기의 차량 번호 등). 지정하면 시작 직후 키패드가 나온다 */
-  keypad?: { title: string; guide?: string; length: number };
+  /** 시작 버튼 문구 (기본 "연습 시작") — ATM은 "카드 넣기" */
+  startLabel?: string;
+  /** 숫자 입력 단계 (차량 번호·연습 비밀번호 등). mask면 ●로 가려 보여준다 */
+  keypad?: { title: string; guide?: string; length: number; mask?: boolean };
   /** 키패드 다음의 확인 단계 (내 차 고르기 등) */
   carSelect?: { title: string; guide?: string; cars: { id: string; label: string; sublabel?: string; emoji: string }[] };
   /** 요금처럼 하나만 고르는 기기 — 상품을 고르면 장바구니를 건너뛰고 바로 결제로 간다 */
   singleChoice?: boolean;
+  /** 결제 화면 질문 (기본 "{합계}원, 어떻게 계산할까요?") — ATM은 "내용을 확인하고 진행해요" */
+  payQuestion?: string;
+  /** 결제 화면 하단 경고·안내 (ATM의 보이스피싱 경고 등) */
+  payNote?: string;
+  /** 영수증 화면 질문 (기본 "영수증을 받으시겠어요?") — ATM은 명세표 */
+  receiptQuestion?: string;
+  /** 완료 화면 하단 안내 (ATM의 "카드를 잊지 말고 챙기세요" 등) */
+  doneNote?: string;
 };
 
 // ── 임무 시나리오 ───────────────────────────────────────────────

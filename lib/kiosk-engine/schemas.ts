@@ -40,7 +40,10 @@ export const catalogSchema = z.object({
   paymentMethods: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string(), hint: z.string().optional() })).min(1),
   unitLabel: z.string().min(1),
   checkoutLabel: z.string().min(1).optional(),
-  keypad: z.object({ title: z.string().min(1), guide: z.string().optional(), length: z.number().int().min(1).max(8) }).optional(),
+  startLabel: z.string().min(1).optional(),
+  keypad: z
+    .object({ title: z.string().min(1), guide: z.string().optional(), length: z.number().int().min(1).max(8), mask: z.boolean().optional() })
+    .optional(),
   carSelect: z
     .object({
       title: z.string().min(1),
@@ -49,6 +52,10 @@ export const catalogSchema = z.object({
     })
     .optional(),
   singleChoice: z.boolean().optional(),
+  payQuestion: z.string().min(1).optional(),
+  payNote: z.string().min(1).optional(),
+  receiptQuestion: z.string().min(1).optional(),
+  doneNote: z.string().min(1).optional(),
 });
 
 const missionItemSchema = z.object({
