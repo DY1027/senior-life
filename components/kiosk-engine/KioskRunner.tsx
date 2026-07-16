@@ -35,6 +35,7 @@ const PHASE_LABEL: Record<Phase, string> = {
   processing: "결제 중",
   payError: "결제 확인",
   receipt: "영수증",
+  printerFail: "영수증 확인",
   done: "완료",
 };
 
@@ -114,6 +115,14 @@ function KioskMachine({
     speak(guidance.text);
   }, [state.phase, scenario.mode, guidance.text, speak]);
 
+  // ErrorEngine: 시간 초과 안내 — 메뉴에서 잠시 멈추면 "아직 계신가요?" (한 번만)
+  useEffect(() => {
+    if (state.phase !== "menu" || state.timeoutWarned) return;
+    if (!(scenario.events ?? []).includes("timeoutOnce")) return;
+    const t = setTimeout(() => dispatch({ type: "TIMEOUT_SHOW" }), 15000);
+    return () => clearTimeout(t);
+  }, [state.phase, state.timeoutWarned, scenario.events]);
+
   // 완료 기록 (도장판·이어하기)
   useEffect(() => {
     if (state.phase !== "done" || doneRecorded.current) return;
@@ -166,7 +175,28 @@ function KioskMachine({
         )}
 
         {/* 키오스크 기계 프레임 */}
-        <div className="overflow-hidden rounded-[30px] border-[9px] border-[#1A1A2E] bg-white shadow-[0_12px_34px_rgba(26,26,46,0.28)]">
+        <div className="relative overflow-hidden rounded-[30px] border-[9px] border-[#1A1A2E] bg-white shadow-[0_12px_34px_rgba(26,26,46,0.28)]">
+          {/* 시간 초과 안내 (ErrorEngine: timeoutOnce) — 실제 기계의 '계속하시겠어요?' 창 */}
+          {state.timeoutActive && (
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#1A1A2E]/55 p-5">
+              <div className="w-full max-w-[340px] rounded-2xl bg-white p-6 text-center shadow-xl">
+                <p className="text-[40px]" aria-hidden="true">⏰</p>
+                <p className="mt-1 text-[19px] font-extrabold text-[#1A1A2E]">아직 계신가요?</p>
+                <p className="mt-2 break-keep text-[15px] leading-relaxed text-[#4A5568]">
+                  실제 기계는 잠시 멈추면 처음 화면으로 돌아가요.
+                  <br />
+                  여기는 연습이니 천천히 하셔도 괜찮아요.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => send({ type: "TIMEOUT_DISMISS" })}
+                  className="mt-4 h-[56px] w-full rounded-2xl bg-[#1B6FC8] text-[18px] font-extrabold text-white"
+                >
+                  네, 이어서 할게요
+                </button>
+              </div>
+            </div>
+          )}
           {/* 브랜드 헤더 */}
           <div className="flex items-center justify-between bg-[#1B6FC8] px-4 py-3 text-white">
             <span className="text-[19px] font-extrabold">{catalog.emoji} {catalog.brand}</span>
@@ -179,7 +209,7 @@ function KioskMachine({
               <button
                 type="button"
                 onClick={() => send({ type: "BACK" })}
-                disabled={state.phase === "intro" || state.phase === "processing" || state.phase === "receipt"}
+                disabled={state.phase === "intro" || state.phase === "processing" || state.phase === "receipt" || state.phase === "printerFail"}
                 className="min-h-[44px] rounded-xl border-[1.5px] border-[#C9D8E8] bg-white px-3.5 text-[15px] font-bold text-[#3D5A78] disabled:opacity-40"
               >
                 ← 이전
@@ -631,6 +661,39 @@ function KioskMachine({
                     받지 않기
                   </button>
                 </div>
+              </div>
+            )}
+
+            {state.phase === "printerFail" && (
+              <div className="text-center">
+                <p className="text-[44px]" aria-hidden="true">🖨️</p>
+                <h2 className="mt-1 text-[20px] font-extrabold text-[#1A1A2E]">영수증이 나오지 않아요</h2>
+                <p className="mx-auto mt-2 max-w-[360px] break-keep text-[16px] leading-relaxed text-[#4A5568]">
+                  괜찮아요, 종이가 걸리거나 떨어지면 생기는 일이에요.<br />
+                  다시 출력해 보거나, 급하지 않으면 그냥 진행해도 돼요.
+                </p>
+                <button
+                  type="button"
+                  data-guide="retry-print"
+                  onClick={() => send({ type: "PRINT_RETRY" })}
+                  className={`mt-5 h-[64px] w-full rounded-2xl bg-[#1B6FC8] text-[19px] font-extrabold text-white ${showGuide && guidance.targetId === "retry-print" ? "kg-target" : ""}`}
+                >
+                  🖨️ 다시 출력하기
+                </button>
+                <button
+                  type="button"
+                  onClick={() => send({ type: "PRINT_SKIP" })}
+                  className="mt-2.5 h-[52px] w-full rounded-2xl border-[1.5px] border-[#D7E3F0] bg-white text-[16px] font-bold text-[#3D5A78]"
+                >
+                  영수증 없이 진행하기
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNotice("직원을 불렀어요. 실제 매장에서는 잠시 기다리면 직원이 와서 도와드려요.")}
+                  className="mt-2.5 h-[52px] w-full rounded-2xl border-[1.5px] border-[#F5D9A8] bg-[#FDF4DF] text-[16px] font-bold text-[#C4621A]"
+                >
+                  🙋 직원 호출 (도움 요청)
+                </button>
               </div>
             )}
 

@@ -95,7 +95,9 @@ export type MissionSpec = {
 export type RandomEvent =
   | "cardFailOnce" // 첫 결제 시 카드 인식 실패 → 다시 시도
   | "soldOutDecoy" // 임무와 무관한 상품 1개 품절 (품절 표시를 경험)
-  | "scanFailOnce"; // 첫 스캔(옵션 없는 상품 담기)이 안 읽힘 → 같은 상품 다시 스캔
+  | "scanFailOnce" // 첫 스캔(옵션 없는 상품 담기)이 안 읽힘 → 같은 상품 다시 스캔
+  | "printerFailOnce" // 영수증을 받기로 했는데 안 나옴 → 다시 출력/그냥 진행/직원 호출
+  | "timeoutOnce"; // 메뉴에서 잠시 멈추면 "아직 계신가요?" 안내 (실제 시간 초과 경험)
 
 export type PracticeMode = "learn" | "solo" | "challenge" | "free";
 
@@ -136,6 +138,7 @@ export type Phase =
   | "processing" // 결제 처리 중 (지연 연출)
   | "payError" // 카드 인식 실패 등 → 재시도
   | "receipt" // 영수증 선택
+  | "printerFail" // 영수증이 안 나옴 → 다시 출력/그냥 진행
   | "done"; // 완료
 
 export type MachineState = {
@@ -159,6 +162,9 @@ export type MachineState = {
   hintsUsed: number;
   /** scanFailOnce 이벤트가 이미 발생했는가 */
   scanFailedOnce: boolean;
+  /** timeoutOnce: "아직 계신가요?" 안내가 이미 나왔는가 / 지금 떠 있는가 */
+  timeoutWarned: boolean;
+  timeoutActive: boolean;
   nextUid: number;
 };
 
@@ -185,6 +191,10 @@ export type MachineEvent =
   | { type: "PAY_RESULT"; ok: boolean } // PaymentSimulator가 지연 후 발행
   | { type: "RETRY_PAY" }
   | { type: "SELECT_RECEIPT"; want: boolean }
+  | { type: "PRINT_RETRY" } // 영수증 다시 출력 (성공 → 완료)
+  | { type: "PRINT_SKIP" } // 영수증 없이 진행 → 완료
+  | { type: "TIMEOUT_SHOW" } // 시간 초과 안내 표시 (Runner의 타이머가 발행)
+  | { type: "TIMEOUT_DISMISS" } // "이어서 할게요"
   | { type: "FINISH" }
   | { type: "BACK" }
   | { type: "RESTART" }

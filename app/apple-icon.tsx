@@ -24,7 +24,6 @@ export default function AppleIcon() {
           background: "linear-gradient(135deg,#1B6FC8,#0EA5E9)",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           width={120}
           height={120}

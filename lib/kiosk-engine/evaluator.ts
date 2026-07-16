@@ -176,6 +176,9 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
         : { text: "이번 임무는 영수증을 받지 않는 거예요. '받지 않기'를 눌러 보세요.", targetId: "receipt-no" };
     }
 
+    case "printerFail":
+      return { text: "괜찮아요, 종이가 걸리면 생기는 일이에요. '다시 출력하기'를 눌러 보세요.", targetId: "retry-print" };
+
     case "done":
       return { text: "연습을 끝냈어요!" };
   }
