@@ -123,3 +123,18 @@ export function todayMission(date = new Date()): DailyMission {
   const dayNumber = Math.floor(date.getTime() / 86400000);
   return MISSIONS[dayNumber % MISSIONS.length];
 }
+
+/** 이번 주(월요일 시작) 번호 — 주간 도전 선정용 */
+export function weekNumber(date = new Date()): number {
+  const day = (date.getDay() + 6) % 7; // 월=0
+  const monday = new Date(date.getFullYear(), date.getMonth(), date.getDate() - day);
+  return Math.floor(monday.getTime() / (7 * 86400000));
+}
+
+/** 이번 주 도전 — 매주 다른 연습 3가지 (서버·클라이언트 동일하게 결정적) */
+export function weeklyChallenge(date = new Date()): Practice[] {
+  const w = weekNumber(date);
+  const n = PRACTICES.length;
+  // 간격 2씩 벌려 뽑으면 n이 홀수일 때 항상 서로 다른 3개가 나온다
+  return [w % n, (w + 2) % n, (w + 4) % n].map((i) => PRACTICES[i]);
+}

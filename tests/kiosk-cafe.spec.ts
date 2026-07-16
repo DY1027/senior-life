@@ -233,6 +233,17 @@ test("든든ATM: 연습 비밀번호로 출금하고 카드 회수 안내를 본
   await expect(page.getByText(/카드를 잊지 말고 꼭 챙기세요/)).toBeVisible();
 });
 
+test("상황 카드를 뽑으면 이번 판에 상황이 추가된다", async ({ page }) => {
+  // 자유 연습에서 카드 뽑기 — 어떤 카드가 나와도 안내문이 표시돼야 한다
+  await page.goto("/kiosk/cafe/cafe-free");
+  await page.getByRole("button", { name: /상황 카드 뽑기/ }).click();
+  await expect(page.getByText(/오늘의 상황 카드/)).toBeVisible();
+  // 뽑은 뒤에는 다시 뽑기 버튼이 사라진다 (한 판에 한 장)
+  await expect(page.getByRole("button", { name: /상황 카드 뽑기/ })).toBeHidden();
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+  await expect(page.getByRole("button", { name: /매장에서 먹기/ })).toBeVisible();
+});
+
 test("이전 버튼으로 어느 화면에서도 되돌아갈 수 있다", async ({ page }) => {
   await page.goto("/kiosk/cafe/cafe-free");
   await page.getByRole("button", { name: /연습 시작/ }).click();

@@ -5,6 +5,7 @@ import PlaygroundHero from "@/components/home/PlaygroundHero";
 import TodayMission from "@/components/home/TodayMission";
 import PracticeGrid from "@/components/home/PracticeGrid";
 import PlayCorner from "@/components/home/PlayCorner";
+import WeeklyChallenge from "@/components/home/WeeklyChallenge";
 import ContinueCard from "@/components/home/ContinueCard";
 import NewPracticeBanner from "@/components/home/NewPracticeBanner";
 import FAQSection from "@/components/home/FAQSection";
@@ -38,6 +39,7 @@ export default function HomePage() {
       <TodayMission />
       <PracticeGrid />
       <PlayCorner />
+      <WeeklyChallenge />
       <ContinueCard />
       <NewPracticeBanner />
       <FAQSection />
