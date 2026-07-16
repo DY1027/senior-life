@@ -6,7 +6,7 @@ import { track } from "@/lib/track";
 import { useReadAloud } from "@/components/useReadAloud";
 import type { Story, StoryPage } from "@/lib/stories/types";
 
-// 한 장의 내용을 음성용 문장으로 합친다 (그림책 장 + 문자 예시 + 퀴즈)
+// 한 장의 내용을 음성용 문장으로 합친다 (생활안전 장면 + 문자 예시 + 퀴즈)
 function pageToSpeech(page: StoryPage): string {
   const parts = [page.title];
   if (page.sms) parts.push(`이런 문자가 왔어요. ${page.sms.body}`);
@@ -19,7 +19,7 @@ function pageToSpeech(page: StoryPage): string {
   return parts.join(" ");
 }
 
-// 그림책 뷰어 — 장면 그림 + 큰 글씨 + [다음 장]으로 넘기는 이야기 엔진.
+// 생활안전 뷰어 — 장면 그림 + 큰 글씨 + [다음 장]으로 넘기는 이야기 엔진.
 // 퀴즈 장은 답을 고르기 전에는 다음으로 넘어가지 않는다 (정답이 아니어도 혼내지 않음).
 
 function SmsBubble({ from, body }: { from: string; body: string }) {
@@ -116,7 +116,7 @@ export default function StoryPlayer({ story }: { story: Story }) {
             🔁 처음부터 다시 보기
           </button>
           <Link href="/stories" className="flex h-[52px] items-center justify-center text-[16px] font-bold text-[#8A7660] no-underline">
-            다른 그림책 보러 가기
+            다른 생활안전 보기
           </Link>
         </div>
       </div>

@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "든든이 그림책 — 그림으로 쉽게 배우는 생활 안전",
+  title: "그림으로 배우는 생활안전",
   description:
-    "보이스피싱 구별법 등 어르신에게 꼭 필요한 생활 지식을 그림책처럼 한 장씩 넘기며 배워요. 큰 글씨와 쉬운 말로, 회원가입 없이 무료입니다.",
+    "어렵고 위험한 상황을 그림과 쉬운 설명으로 한 장씩 확인해보세요. 큰 글씨와 음성 안내를 제공하며 회원가입 없이 무료입니다.",
   alternates: { canonical: "/stories" },
 };
 
@@ -25,13 +25,13 @@ export default function StoriesHubPage() {
     <div className="mx-auto max-w-[720px] px-5 pb-14 pt-8">
       <div className="text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FDDFC0] px-4 py-1.5 text-[15px] font-bold text-[#C4621A]">
-          📖 든든이 그림책
+          🛡️ 그림으로 배우는 생활안전
         </span>
         <h1 className="mt-3 text-[clamp(26px,5vw,34px)] font-extrabold leading-snug tracking-[-0.5px] text-[#3B3226]">
-          그림으로 쉽게 배워요
+          어렵고 위험한 상황을 쉽게 확인해요
         </h1>
         <p className="mt-2 break-keep text-[17px] leading-relaxed text-[#6E5C49]">
-          어려운 이야기를 그림책처럼 한 장씩.
+          어렵고 위험한 상황을 그림과 쉬운 설명으로 한 장씩 확인해보세요.
           <br />
           천천히 넘기며 읽어 보세요.
         </p>
@@ -63,7 +63,7 @@ export default function StoriesHubPage() {
             className="h-auto w-[100px] flex-shrink-0 rounded-2xl"
           />
           <span className="flex-1">
-            <span className="block text-[19px] font-extrabold text-[#6B6860]">다음 그림책을 만들고 있어요</span>
+            <span className="block text-[19px] font-extrabold text-[#6B6860]">다음 생활안전 콘텐츠를 만들고 있어요</span>
             <span className="mt-1 block break-keep text-[15px] text-[#9B9890]">🔨 키오스크, 무서워하지 않아도 돼요</span>
             <span className="mt-1 block break-keep text-[15px] text-[#9B9890]">🔨 스마트폰 안전하게 쓰는 법</span>
           </span>

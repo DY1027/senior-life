@@ -3,10 +3,10 @@ import type { MetadataRoute } from "next";
 // PWA 매니페스트 — 홈 화면에 설치하면 주소창 없는 전체화면 앱처럼 열린다.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "시니어 든든 — 디지털 생활 놀이터",
-    short_name: "시니어 든든",
+    name: "시니어든든 | 디지털 생활 놀이터",
+    short_name: "시니어든든",
     description:
-      "카페 주문부터 ATM까지, 생활 속 디지털 기기를 실제처럼 연습하는 무료 놀이터. 실제 결제 없이 마음껏 연습하세요.",
+      "카페 주문, 기차표 예매, 주차 정산, 마트 셀프계산대와 ATM까지 실제처럼 눌러보며 연습하는 무료 시니어 디지털 놀이터입니다.",
     start_url: "/",
     display: "standalone",
     orientation: "any",

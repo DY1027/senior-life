@@ -2,19 +2,19 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MissionList from "@/components/kiosk-engine/MissionList";
+import KioskSafetyNotice from "@/components/kiosk-engine/KioskSafetyNotice";
+import { getKioskConfig } from "@/lib/kiosk-config";
 import type { Catalog, Scenario } from "@/lib/kiosk-engine/types";
 
 export default function KioskHub({
   catalog,
   scenarios,
-  heading,
-  intro,
 }: {
   catalog: Catalog;
   scenarios: Scenario[];
-  heading: string;
-  intro: string;
 }) {
+  const config = getKioskConfig(catalog.kioskType);
+
   return (
     <>
       <Header />
@@ -22,10 +22,15 @@ export default function KioskHub({
         <div className="mb-7 text-center">
           <p className="text-[44px]" aria-hidden="true">{catalog.emoji}</p>
           <h1 className="mt-1 text-[clamp(24px,5vw,32px)] font-extrabold leading-tight tracking-[-0.5px] text-[#3B3226]">
-            {heading}
+            {config.name} · {config.accentLabel}
           </h1>
-          <p className="mt-2 whitespace-pre-line text-[16px] leading-relaxed text-[#4A5568]">{intro}</p>
+          <p className="mt-2 break-keep text-[16px] leading-relaxed text-[#4A5568]">{config.shortDescription}</p>
         </div>
+        <KioskSafetyNotice
+          message={config.safetyMessage}
+          additionalMessage={config.additionalSafetyMessage}
+          className="mb-7"
+        />
         <MissionList kioskType={catalog.kioskType} scenarios={scenarios} />
       </main>
       <Footer />

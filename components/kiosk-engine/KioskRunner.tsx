@@ -19,6 +19,8 @@ import {
 } from "@/lib/kiosk-engine/machine";
 import { evaluateMission, nextGuidance } from "@/lib/kiosk-engine/evaluator";
 import { availableCards, drawRandomCard, type SituationCard } from "@/lib/kiosk-engine/cards";
+import { getKioskConfig, type KioskConfig } from "@/lib/kiosk-config";
+import KioskSafetyNotice from "@/components/kiosk-engine/KioskSafetyNotice";
 import { useVoice } from "@/components/kiosk/useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
@@ -38,6 +40,15 @@ const PHASE_LABEL: Record<Phase, string> = {
   printerFail: "영수증 확인",
   done: "완료",
 };
+
+function phaseLabel(phase: Phase, config: KioskConfig): string {
+  if (phase === "service") return config.flowLabels.serviceStep;
+  if (phase === "cart") return config.flowLabels.reviewStep;
+  if (phase === "payMethod") return config.flowLabels.paymentStep;
+  if (phase === "processing") return config.flowLabels.processingStep;
+  if (phase === "payError") return config.flowLabels.paymentErrorStep;
+  return PHASE_LABEL[phase];
+}
 
 const MODE_LABEL = { learn: "천천히 배우기", solo: "혼자 연습하기", challenge: "실제처럼 도전", free: "자유 연습" } as const;
 
@@ -152,6 +163,7 @@ function KioskMachine({
   const productById = (id: string) => catalog.products.find((p) => p.id === id);
   const leftLayout = scenario.layout === "left";
   const editingProduct = state.editing ? productById(state.editing.productId) : null;
+  const config = getKioskConfig(catalog.kioskType);
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-[#EAF1F8] px-3 pb-11 pt-5">
@@ -214,7 +226,7 @@ function KioskMachine({
               >
                 ← 이전
               </button>
-              <span className="text-[14px] font-extrabold text-[#3D5A78]">{PHASE_LABEL[state.phase]}</span>
+              <span className="text-[14px] font-extrabold text-[#3D5A78]">{phaseLabel(state.phase, config)}</span>
               <button
                 type="button"
                 onClick={useHint}
@@ -280,7 +292,11 @@ function KioskMachine({
                     🃏 상황 카드 뽑기 — 매번 다른 상황에 도전 (선택)
                   </button>
                 )}
-                <p className="mt-3 text-[13px] text-[#9CA3AF]">실제 주문·결제는 되지 않아요.</p>
+                <KioskSafetyNotice
+                  message={config.safetyMessage}
+                  additionalMessage={config.additionalSafetyMessage}
+                  className="mx-auto mt-3 max-w-[380px]"
+                />
               </div>
             )}
 
@@ -500,7 +516,7 @@ function KioskMachine({
 
             {state.phase === "cart" && (
               <div>
-                <h2 className="text-center text-[20px] font-extrabold text-[#1A1A2E]">주문 내역을 확인해요</h2>
+                <h2 className="text-center text-[20px] font-extrabold text-[#1A1A2E]">{config.flowLabels.reviewTitle}</h2>
                 {state.cart.length === 0 ? (
                   <p className="py-8 text-center text-[16px] text-[#6B7280]">장바구니가 비어 있어요.<br />메뉴로 돌아가 담아 보세요.</p>
                 ) : (
@@ -576,6 +592,10 @@ function KioskMachine({
                 {catalog.payQuestion && (
                   <p className="text-center text-[17px] font-extrabold text-[#1B6FC8]">{total.toLocaleString()}원</p>
                 )}
+                <KioskSafetyNotice
+                  message={config.safetyMessage}
+                  additionalMessage={config.additionalSafetyMessage}
+                />
                 {catalog.paymentMethods.map((m) => (
                   <button
                     key={m.id}
@@ -600,7 +620,7 @@ function KioskMachine({
             {state.phase === "processing" && (
               <div className="py-10 text-center" role="status">
                 <p className="kg-spin mx-auto h-[52px] w-[52px] rounded-full border-4 border-[#D7E3F0] border-t-[#1B6FC8]" aria-hidden="true" />
-                <p className="mt-5 text-[18px] font-extrabold text-[#1A1A2E]">결제 정보를 확인하고 있어요</p>
+                <p className="mt-5 text-[18px] font-extrabold text-[#1A1A2E]">{config.flowLabels.processingMessage}</p>
                 <p className="mt-1 text-[15px] text-[#6B7280]">잠시만 기다려 주세요…</p>
               </div>
             )}
@@ -719,12 +739,20 @@ function KioskMachine({
                   onClick={() => send({ type: "OPEN_CART" })}
                   className={`min-h-[48px] rounded-xl bg-[#1B6FC8] px-5 text-[16px] font-extrabold text-white ${showGuide && guidance.targetId === "open-cart" ? "kg-target" : ""}`}
                 >
-                  🛒 주문 확인 {state.cart.length > 0 ? `(${state.cart.length}) · ${total.toLocaleString()}원` : ""}
+                  🛒 {config.flowLabels.reviewButton} {state.cart.length > 0 ? `(${state.cart.length}) · ${total.toLocaleString()}원` : ""}
                 </button>
               )}
             </div>
           )}
         </div>
+
+        {config.additionalSafetyMessage && state.phase !== "intro" && state.phase !== "payMethod" && (
+          <KioskSafetyNotice
+            message={config.safetyMessage}
+            additionalMessage={config.additionalSafetyMessage}
+            className="mt-3"
+          />
+        )}
 
         <p className="mt-4 text-center text-[14px] leading-relaxed text-[#6B7280]">
           천천히 눌러도 괜찮아요. 잘못 눌러도 <strong>이전</strong>이나 <strong>처음부터</strong>로 언제든 되돌릴 수 있어요.
@@ -759,6 +787,7 @@ function DoneScreen({
   const checks = evaluateMission(state, scenario, catalog);
   const allPass = checks.length > 0 && checks.every((c) => c.pass);
   const passCount = checks.filter((c) => c.pass).length;
+  const config = getKioskConfig(catalog.kioskType);
 
   return (
     <div className="text-center">
@@ -803,7 +832,7 @@ function DoneScreen({
 
       {/* 주문 요약 */}
       <div className="mt-3 rounded-2xl border-2 border-dashed border-[#C9C7BE] bg-white p-4 text-left">
-        <p className="mb-2 text-center text-[14px] font-extrabold text-[#1A1A2E]">🧾 주문 내역 · {catalog.brand} (연습)</p>
+        <p className="mb-2 text-center text-[14px] font-extrabold text-[#1A1A2E]">🧾 {config.flowLabels.summaryTitle} · {catalog.brand} (연습)</p>
         {state.cart.map((it) => {
           const p = catalog.products.find((pp) => pp.id === it.productId)!;
           return (
@@ -818,7 +847,7 @@ function DoneScreen({
           <span className="text-[#1B6FC8]">{total.toLocaleString()}원</span>
         </p>
         <p className="mt-1 text-[13px] text-[#9B9890]">
-          {catalog.paymentMethods.find((m) => m.id === state.payMethod)?.label ?? ""} 결제(연습) · 영수증 {state.receiptChoice ? "받음" : "받지 않음"}
+          {catalog.paymentMethods.find((m) => m.id === state.payMethod)?.label ?? ""} {config.flowLabels.transactionLabel}(연습) · {catalog.receiptQuestion?.startsWith("명세표") ? "명세표" : "영수증"} {state.receiptChoice ? "받음" : "받지 않음"}
         </p>
       </div>
 

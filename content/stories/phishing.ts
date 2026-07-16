@@ -1,12 +1,12 @@
 import type { Story } from "@/lib/stories/types";
 
-// 첫 번째 그림책: 보이스피싱 구별법.
+// 첫 번째 그림 생활안전 콘텐츠: 보이스피싱 구별법.
 // 문자 예시는 실제 사기 수법(택배 사칭, 자녀 사칭, 기관 사칭)을 재현하되
 // 링크·번호는 가짜임이 분명하게 표기한다.
 const phishingStory: Story = {
   id: "phishing",
   title: "보이스피싱, 이렇게 막아요",
-  badge: "📖 든든이 그림책",
+  badge: "🛡️ 그림으로 배우는 생활안전",
   pages: [
     {
       img: "/mascot-cheer.webp",
@@ -75,7 +75,7 @@ const phishingStory: Story = {
     title: "잘하셨어요! 이제 사기 문자를 구별할 수 있어요",
     text: "오늘 배운 세 가지 약속만 기억하면\n보이스피싱은 무섭지 않아요.\n가족에게도 꼭 알려 주세요.",
     shareText:
-      "[시니어 든든] 보이스피싱 막는 3가지 약속 🛡️\n1. 문자 속 링크는 누르지 않기\n2. 돈 이야기는 직접 전화로 확인하기\n3. 이상하면 바로 끊고 112\n\n든든이 그림책으로 2분 만에 배워요 → https://seniordeundun.com/stories/phishing",
+      "[시니어든든] 보이스피싱 막는 3가지 약속 🛡️\n1. 문자 속 링크는 누르지 않기\n2. 돈 이야기는 직접 전화로 확인하기\n3. 이상하면 바로 끊고 112\n\n그림으로 배우는 생활안전에서 2분 만에 확인해요 → https://seniordeundun.com/stories/phishing",
   },
 };
 

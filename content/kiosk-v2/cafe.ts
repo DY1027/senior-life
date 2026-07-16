@@ -69,12 +69,12 @@ const raw: unknown[] = [
   {
     id: "cafe-learn-americano",
     kioskType: "cafe",
-    title: "따뜻한 아메리카노 포장하기",
+    title: "따뜻한 아메리카노 두 잔 포장하기",
     mode: "learn",
-    missionText: "따뜻한 아메리카노 한 잔을 포장으로 주문하고, 카드로 계산해 보세요.",
+    missionText: "따뜻한 아메리카노 두 잔을 포장으로 주문하고, 카드로 계산해 보세요.",
     mission: {
       serviceType: "takeout",
-      items: [{ productId: "americano", quantity: 1, options: { temperature: "hot" } }],
+      items: [{ productId: "americano", quantity: 2, options: { temperature: "hot" } }],
       paymentMethod: "card",
     },
   },

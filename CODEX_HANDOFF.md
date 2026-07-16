@@ -1,5 +1,18 @@
 # CODEX 인수인계 문서
 
+## 2026-07-17 Codex 최신 변경사항
+
+> 아래 내용이 이 문서의 이전 "현재 상태"보다 우선합니다.
+
+- 작업 브랜치: `codex/soldout-alternatives`
+- 오늘의 연습: `lib/daily-missions.ts`에서 실제 시나리오를 고르고 `/kiosk/{type}/{scenarioId}`로 바로 연결합니다.
+- 7종 공통 설정: `lib/kiosk-config.ts`에 이름, 설명, 도전 문구, 안전 문구, 단계별 용어를 중앙화했습니다.
+- 안전 안내: 모든 키오스크 허브와 임무 시작 화면에 표시하며 ATM은 실제 카드·계좌·비밀번호, 민원은 실제 주민등록번호·개인 식별정보 입력 금지를 추가했습니다.
+- 콘텐츠 명칭: 사용자 화면의 "그림책"을 "그림으로 배우는 생활안전"으로 정리했습니다.
+- 메타데이터/PWA: 홈 title·description·Open Graph·Twitter·manifest를 현재 서비스 문구로 통일했고 `public/sw.js`는 `v4`입니다.
+- 검증: `npx tsc --noEmit` 통과, `npm run lint` 0오류(기존 `app/apple-icon.tsx` 경고 1개), `npm run build` 통과, Playwright 18/18 통과.
+- 브라우저 확인: PC, 모바일 360×800, 태블릿 768×1024, 큰글씨에서 가로 넘침 없음. 브라우저 콘솔 오류 없음. 실물 삼성 기기/Samsung Internet 검증은 아직 필요합니다.
+
 > 최종 갱신: 2026-07-17 (Codex 로컬 브랜치 — 품절 대체 선택 구현)
 > **자세한 프로젝트 전체 문서는 `HANDOFF.md`를 먼저 읽을 것.** 이 파일은 도구(AI)를 오가며
 > 작업을 이어받을 때 필요한 "현재 상태 + 규칙 요약"만 담는다.

@@ -1,4 +1,4 @@
-// 그림책(스토리) 콘텐츠 스키마.
+// 그림으로 배우는 생활안전 콘텐츠 스키마.
 // 한 장(page)에는 그림(또는 이모지) + 큰 글씨 본문이 들어가고,
 // 필요하면 사기 문자 예시(sms)나 고르기 문제(quiz)를 붙일 수 있다.
 export type StoryQuizOption = {
@@ -23,7 +23,7 @@ export type StoryPage = {
 export type Story = {
   id: string;
   title: string;
-  badge: string; // 상단 배지 문구 (예: "📖 든든이 그림책")
+  badge: string; // 상단 배지 문구 (예: "🛡️ 그림으로 배우는 생활안전")
   pages: StoryPage[];
   finish: {
     title: string;

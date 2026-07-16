@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function CafeMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={cafeCatalog}
-      scenarios={cafeScenarios}
-      heading={`${cafeCatalog.brand} 주문 연습`}
-      intro={"오늘은 어떤 임무에 도전해 볼까요?\n같은 카페라도 임무마다 상황이 달라요. 실제 결제는 되지 않아요."}
-    />
-  );
+  return <KioskHub catalog={cafeCatalog} scenarios={cafeScenarios} />;
 }

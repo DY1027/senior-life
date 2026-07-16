@@ -10,12 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function TicketMissionHubPage() {
-  return (
-    <KioskHub
-      catalog={ticketCatalog}
-      scenarios={ticketScenarios}
-      heading={`${ticketCatalog.brand} 표 예매 연습`}
-      intro={"기차역·터미널의 표 발매기를 미리 연습해요.\n행선지와 시간, 좌석을 고르는 흐름이에요. 실제 예매는 되지 않아요."}
-    />
-  );
+  return <KioskHub catalog={ticketCatalog} scenarios={ticketScenarios} />;
 }

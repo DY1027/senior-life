@@ -11,28 +11,28 @@ const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const metadata: Metadata = {
   metadataBase: new URL("https://seniordeundun.com"),
   title: {
-    default: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
-    template: "%s | 시니어 든든",
+    default: "시니어든든 | 실제처럼 눌러보는 디지털 생활 놀이터",
+    template: "%s | 시니어든든",
   },
   description:
-    "카페 주문부터 주차요금 정산까지, 생활 속 디지털 기기를 실제처럼 연습하는 무료 놀이터입니다. 실제 결제 없이 큰 글씨와 음성 안내로 천천히, 실수해도 다시 해보며 배우세요.",
+    "카페 주문, 기차표 예매, 주차 정산, 마트 셀프계산대와 ATM까지 실제처럼 눌러보며 연습하는 무료 시니어 디지털 놀이터입니다.",
   alternates: {
     canonical: "/",
   },
   keywords: ["시니어", "시니어 놀이터", "키오스크 연습", "무인민원발급기 연습", "주차요금 정산기", "셀프계산대", "디지털 교육", "어르신 키오스크"],
-  authors: [{ name: "시니어 든든" }],
-  creator: "시니어 든든",
+  authors: [{ name: "시니어든든" }],
+  creator: "시니어든든",
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    siteName: "시니어 든든",
-    title: "시니어 든든 — 실제처럼 눌러보는 디지털 생활 놀이터",
-    description: "카페 주문부터 주차요금 정산까지, 실제 결제 없이 마음껏 연습하세요",
+    siteName: "시니어든든",
+    title: "시니어든든 – 실제처럼 눌러보는 디지털 생활 놀이터",
+    description: "실제 결제나 발급 없이 생활 속 디지털 기기를 마음껏 눌러보고 반복해서 연습하세요.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "시니어 든든",
-    description: "실제처럼 눌러보는 시니어 디지털 놀이터",
+    title: "시니어든든 – 실제처럼 눌러보는 디지털 생활 놀이터",
+    description: "실제 결제나 발급 없이 생활 속 디지털 기기를 마음껏 눌러보고 반복해서 연습하세요.",
   },
   robots: {
     index: true,

@@ -3,9 +3,9 @@ import StoryPlayer from "@/components/stories/StoryPlayer";
 import phishingStory from "@/content/stories/phishing";
 
 export const metadata: Metadata = {
-  title: "보이스피싱, 이렇게 막아요 — 든든이 그림책",
+  title: "보이스피싱, 이렇게 막아요 — 그림으로 배우는 생활안전",
   description:
-    "택배 사칭, 자녀 사칭, 기관 사칭 문자를 구별하는 세 가지 약속을 그림책으로 배워요. 어르신을 위한 보이스피싱 예방 교육, 2분이면 충분합니다.",
+    "택배 사칭, 가족 사칭, 기관 사칭 문자를 구별하는 세 가지 약속을 그림과 쉬운 설명으로 확인해요. 2분 생활안전 안내입니다.",
   alternates: { canonical: "/stories/phishing" },
 };
 
