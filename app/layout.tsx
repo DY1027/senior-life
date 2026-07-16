@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import MobileTabBar from "@/components/MobileTabBar";
+import PwaSetup from "@/components/PwaSetup";
 import "./globals.css";
 
 const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -44,6 +45,10 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className="h-full">
@@ -73,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `try{if(localStorage.getItem("bigtext")==="1")document.documentElement.dataset.bigtext="1"}catch(e){}`,
           }}
         />
+        <PwaSetup />
         <main className="flex-1">{children}</main>
         <MobileTabBar />
       </body>

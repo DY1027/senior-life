@@ -74,12 +74,13 @@ export default function PlayHubPage() {
               }}
             >
               <Image src={p.img} alt={p.alt} width={84} height={66} style={{ width: 84, height: "auto", borderRadius: 14, flexShrink: 0 }} />
-              <span style={{ flex: 1 }}>
+              {/* CTA는 글 아래로 — 좁은 화면·글자 확대에서 글 칸이 꺾이지 않게 */}
+              <span style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, color: "#4F7245", background: "#EFF5E9", padding: "3px 10px", borderRadius: 999, marginBottom: 6 }}>{p.tag}</span>
                 <span style={{ display: "block", fontSize: 22, fontWeight: 800, color: "#3B3226", marginBottom: 4, wordBreak: "keep-all" }}>{p.title}</span>
                 <span style={{ display: "block", fontSize: 15, color: "#6B7280", lineHeight: 1.5, wordBreak: "keep-all" }}>{p.desc}</span>
+                <span style={{ display: "block", marginTop: 6, fontSize: 15, fontWeight: 800, color: "#C4621A" }}>놀러가기 →</span>
               </span>
-              <span style={{ fontSize: 15, fontWeight: 800, color: "#C4621A", whiteSpace: "nowrap" }}>놀러가기 →</span>
             </Link>
           ))}
         </div>

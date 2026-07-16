@@ -31,18 +31,17 @@ export default function MissionList({ kioskType, scenarios }: { kioskType: strin
                 <Link
                   key={s.id}
                   href={`/kiosk/${kioskType}/${s.id}`}
-                  className="flex items-center gap-3.5 rounded-2xl border-2 border-[#EFDFC0] bg-white px-4 py-4 no-underline transition-transform active:scale-[0.98]"
+                  className="block rounded-2xl border-2 border-[#EFDFC0] bg-white px-4 py-4 no-underline transition-transform active:scale-[0.98]"
                 >
-                  <span className="flex-1">
-                    <span className="block break-keep text-[18px] font-extrabold leading-snug text-[#3B3226]">
-                      {s.title}
-                      {done.has(s.id) && <span className="ml-2 rounded-full bg-[#EFF5E9] px-2 py-0.5 text-[12px] font-bold text-[#4F7245]">✅ 완료</span>}
-                    </span>
-                    {s.missionText && (
-                      <span className="mt-0.5 block break-keep text-[14px] leading-relaxed text-[#8A7660]">{s.missionText}</span>
-                    )}
+                  {/* 오른쪽 고정 문구 없이 세로로 — 좁은 화면·글자 확대에서도 안 꺾인다 */}
+                  <span className="block break-keep text-[18px] font-extrabold leading-snug text-[#3B3226]">
+                    {s.title}
+                    {done.has(s.id) && <span className="ml-2 rounded-full bg-[#EFF5E9] px-2 py-0.5 text-[12px] font-bold text-[#4F7245]">✅ 완료</span>}
                   </span>
-                  <span className="whitespace-nowrap text-[15px] font-extrabold text-[#C4621A]">시작 →</span>
+                  {s.missionText && (
+                    <span className="mt-0.5 block break-keep text-[14px] leading-relaxed text-[#8A7660]">{s.missionText}</span>
+                  )}
+                  <span className="mt-1.5 block text-[15px] font-extrabold text-[#C4621A]">시작하기 →</span>
                 </Link>
               ))}
             </div>

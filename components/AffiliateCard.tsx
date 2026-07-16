@@ -1,11 +1,14 @@
 "use client";
 import { track } from "@/lib/track";
+import { useOnline } from "@/lib/useOnline";
 import type { AffiliateProduct } from "@/content/affiliate";
 
 // 쿠팡 파트너스 상품 카드.
 // 규정 준수: "광고" 표시 + 대가성 문구를 카드와 한 화면에 항상 함께 노출한다.
 export default function AffiliateCard({ product, heading }: { product: AffiliateProduct; heading?: string }) {
+  const online = useOnline();
   if (!product.href) return null; // 링크가 없으면 카드 자체를 숨긴다
+  if (!online) return null; // 오프라인에서는 외부 상품 링크·광고를 숨긴다
   return (
     <div className="mt-4 text-left">
       {heading && <p className="mb-2 text-center text-[16px] font-bold text-[#6E5C49]">{heading}</p>}
