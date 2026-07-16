@@ -18,6 +18,7 @@ import {
   shouldScanFail,
 } from "@/lib/kiosk-engine/machine";
 import { evaluateMission, nextGuidance } from "@/lib/kiosk-engine/evaluator";
+import { availableCards, drawRandomCard, type SituationCard } from "@/lib/kiosk-engine/cards";
 import { useVoice } from "@/components/kiosk/useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
@@ -39,7 +40,41 @@ const PHASE_LABEL: Record<Phase, string> = {
 
 const MODE_LABEL = { learn: "천천히 배우기", solo: "혼자 연습하기", challenge: "실제처럼 도전", free: "자유 연습" } as const;
 
+// 바깥 래퍼 — 상황 카드(무작위 이벤트)를 뽑으면 시나리오에 이벤트를 더해
+// 기계를 새로 켠다 (key 리마운트로 상태 초기화 — 뽑기는 시작 화면에서만 가능).
 export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; scenario: Scenario }) {
+  const [drawnCard, setDrawnCard] = useState<SituationCard | null>(null);
+  const effScenario = useMemo<Scenario>(
+    () => (drawnCard ? { ...scenario, events: [...(scenario.events ?? []), drawnCard.event] } : scenario),
+    [scenario, drawnCard]
+  );
+  const cardPool = scenario.mode === "learn" ? [] : availableCards(catalog, scenario);
+
+  return (
+    <KioskMachine
+      key={drawnCard?.id ?? "base"}
+      catalog={catalog}
+      scenario={effScenario}
+      drawnCard={drawnCard}
+      canDrawCard={cardPool.length > 0 && !drawnCard}
+      onDrawCard={() => setDrawnCard(drawRandomCard(cardPool))}
+    />
+  );
+}
+
+function KioskMachine({
+  catalog,
+  scenario,
+  drawnCard,
+  canDrawCard,
+  onDrawCard,
+}: {
+  catalog: Catalog;
+  scenario: Scenario;
+  drawnCard: SituationCard | null;
+  canDrawCard: boolean;
+  onDrawCard: () => void;
+}) {
   const [state, dispatch] = useReducer(
     (s: ReturnType<typeof createInitialState>, e: MachineEvent) => kioskReducer(s, e, catalog, scenario),
     undefined,
@@ -186,9 +221,16 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                     📋 {scenario.missionText}
                   </p>
                 )}
-                {(scenario.events ?? []).length > 0 && (
+                {(scenario.events ?? []).length > 0 && !drawnCard && (
                   <p className="mx-auto mt-3 max-w-[380px] break-keep text-[14px] leading-relaxed text-[#6B7280]">
                     이번 연습에서는 실제 기기에서 생길 수 있는 상황이 나타날 수 있어요. 모든 상황은 연습용이고, 언제든 처음부터 다시 할 수 있어요.
+                  </p>
+                )}
+                {/* 무작위 상황 카드 — 같은 임무도 매번 다르게 (learn 모드 제외) */}
+                {drawnCard && (
+                  <p className="mx-auto mt-3 max-w-[380px] break-keep rounded-2xl border-2 border-[#BBD9F5] bg-[#EAF3FC] px-4 py-3 text-[15px] font-bold leading-relaxed text-[#0C447C]">
+                    🃏 오늘의 상황 카드 — {drawnCard.label}
+                    <span className="mt-1 block text-[14px] font-semibold text-[#3D5A78]">{drawnCard.desc}</span>
                   </p>
                 )}
                 <button
@@ -199,6 +241,15 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
                 >
                   {catalog.startLabel ?? "연습 시작"} →
                 </button>
+                {canDrawCard && (
+                  <button
+                    type="button"
+                    onClick={onDrawCard}
+                    className="mt-2.5 h-[52px] w-full rounded-2xl border-2 border-[#BBD9F5] bg-[#EAF3FC] text-[16px] font-bold text-[#1B6FC8]"
+                  >
+                    🃏 상황 카드 뽑기 — 매번 다른 상황에 도전 (선택)
+                  </button>
+                )}
                 <p className="mt-3 text-[13px] text-[#9CA3AF]">실제 주문·결제는 되지 않아요.</p>
               </div>
             )}

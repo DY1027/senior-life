@@ -4,7 +4,7 @@
 // 저장 항목을 늘릴 때는 방침 문구도 함께 확인할 것.
 
 import { useSyncExternalStore } from "react";
-import { PRACTICES, getPractice } from "@/lib/practices";
+import { PRACTICES, getPractice, weeklyChallenge } from "@/lib/practices";
 
 export type PracticeProgress = {
   /** 연습(키오스크) id → 완료 횟수 */
@@ -17,11 +17,13 @@ export type PracticeProgress = {
   recent: string[];
   /** 완료한 임무 시나리오 id 목록 (엔진 v2 임무별 기록) */
   scenarios: string[];
+  /** 최근 완료 내역 (어떤 연습을 언제) — 주간 도전 판정용, 최대 100개 */
+  log: { id: string; at: string }[];
 };
 
 const KEY = "dd-progress-v1";
 
-const EMPTY: PracticeProgress = { counts: {}, lastId: null, lastAt: null, recent: [], scenarios: [] };
+const EMPTY: PracticeProgress = { counts: {}, lastId: null, lastAt: null, recent: [], scenarios: [], log: [] };
 
 export function readProgress(): PracticeProgress {
   if (typeof window === "undefined") return EMPTY;
@@ -35,6 +37,9 @@ export function readProgress(): PracticeProgress {
       lastAt: typeof p.lastAt === "string" ? p.lastAt : null,
       recent: Array.isArray(p.recent) ? p.recent.filter((r) => typeof r === "string") : [],
       scenarios: Array.isArray(p.scenarios) ? p.scenarios.filter((s) => typeof s === "string") : [],
+      log: Array.isArray(p.log)
+        ? p.log.filter((e) => e && typeof e.id === "string" && typeof e.at === "string")
+        : [],
     };
   } catch {
     return EMPTY;
@@ -50,6 +55,7 @@ export function recordPracticeComplete(id: string, scenarioId?: string): void {
     p.lastAt = new Date().toISOString();
     p.recent = [...p.recent, p.lastAt].slice(-60);
     if (scenarioId && !p.scenarios.includes(scenarioId)) p.scenarios = [...p.scenarios, scenarioId];
+    p.log = [...p.log, { id, at: p.lastAt }].slice(-100);
     localStorage.setItem(KEY, JSON.stringify(p));
     cached = p;
     listeners.forEach((l) => l());
@@ -91,11 +97,21 @@ export function completedKinds(p: PracticeProgress): number {
   return PRACTICES.filter((pr) => (p.counts[pr.id] ?? 0) > 0).length;
 }
 
+function mondayOf(now: Date): Date {
+  const day = (now.getDay() + 6) % 7; // 월=0
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
+}
+
 /** 이번 주(월요일 시작) 연습 횟수 */
 export function weeklyCount(p: PracticeProgress, now = new Date()): number {
-  const day = (now.getDay() + 6) % 7; // 월=0
-  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
+  const monday = mondayOf(now);
   return p.recent.filter((iso) => new Date(iso) >= monday).length;
+}
+
+/** 이 연습을 이번 주에 완료했는가 */
+export function completedThisWeek(p: PracticeProgress, id: string, now = new Date()): boolean {
+  const monday = mondayOf(now);
+  return p.log.some((e) => e.id === id && new Date(e.at) >= monday);
 }
 
 export type Stamp = { id: string; label: string; emoji: string; earned: boolean };
@@ -112,6 +128,12 @@ export function stamps(p: PracticeProgress): Stamp[] {
     { id: "cafe-3", label: "카페 연습 3회", emoji: "🏅", earned: (p.counts["cafe"] ?? 0) >= 3 },
     { id: "all-kinds", label: `생활기기 ${PRACTICES.length}종 완주`, emoji: "🎖️", earned: completedKinds(p) >= PRACTICES.length },
     { id: "total-10", label: "연습 10회 달성", emoji: "🌟", earned: totalCompletions(p) >= 10 },
+    {
+      id: "weekly",
+      label: "이번 주 도전 완료",
+      emoji: "🗓️",
+      earned: weeklyChallenge().every((pr) => completedThisWeek(p, pr.id)),
+    },
   );
   return list;
 }

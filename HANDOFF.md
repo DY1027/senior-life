@@ -98,8 +98,17 @@
 - 구 엔진(KioskPlayer 등)은 삭제됨. `components/kiosk/useVoice.ts`·`lib/kiosk/track.ts`만 v2가 계속 쓴다
 - 예고(UPCOMING_PRACTICE)는 기차표 예매로 교체, 홈 새 연습 알림은 마트
 
+### 5단계 재방문 기능 (2026-07-15)
+- **주간 도전** (`components/home/WeeklyChallenge.tsx` + `lib/practices.ts weeklyChallenge`):
+  매주 월요일 기준으로 연습 3가지를 결정적으로 선정, 이 기기 기록(`progress.log`)으로 주간 완료 판정,
+  3개 완료 시 주간 도장(🗓️, stamps()의 "weekly")
+- **무작위 상황 카드** (`lib/kiosk-engine/cards.ts`): 연습 시작 화면에서 한 장 뽑으면 그 판에
+  호환되는 이벤트(카드 오류·품절·바코드)가 추가됨. learn 모드 제외, 한 판에 한 장.
+  KioskRunner가 래퍼(카드 상태)+KioskMachine(기계, key 리마운트) 구조로 분리됨
+- progress에 `log: {id, at}[]` 추가(최대 100) — 주간 판정용. localStorage 스키마는 하위 호환
+
 ### 남은 단계 (명세 16장 기준)
-1. ~~4단계 (핵심 키오스크 7종)~~ **완료** — 예고는 푸드코트 주문으로 교체됨
+1. ~~4단계 (핵심 키오스크 7종)~~ / ~~5단계 핵심(주간 도전·상황 카드)~~ **완료**
 2. 3단계 나머지: 오류 종류 추가(품절 대체 선택, 시간 초과, 프린터 오류, 무게 불일치, 성인 확인 등)
 3. 4단계: 마트 셀프계산대 → 표 예매 → ATM (신규 조작: 스캔·키패드·좌석 선택은 컴포넌트 추가 필요)
 4. 5단계: 주간 도전·무작위 상황 카드·오늘의 임무를 시나리오와 연결
