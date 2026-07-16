@@ -162,6 +162,20 @@ const raw: unknown[] = [
     layout: "left",
   },
 
+  {
+    id: "cafe-challenge-printer",
+    kioskType: "cafe",
+    title: "영수증이 안 나올 때",
+    mode: "challenge",
+    missionText: "따뜻한 아메리카노 한 잔을 매장 주문하고 영수증을 받으세요. 영수증이 안 나오면 직접 해결해 보세요.",
+    mission: {
+      serviceType: "dinein",
+      items: [{ productId: "americano", quantity: 1, options: { temperature: "hot" } }],
+      receipt: true,
+    },
+    events: ["printerFailOnce"],
+  },
+
   // ── 자유 연습: 임무 없이 마음껏 ──
   {
     id: "cafe-free",

@@ -29,6 +29,8 @@ export function createInitialState(catalog: Catalog, scenario: Scenario): Machin
     achievements: [],
     hintsUsed: 0,
     scanFailedOnce: false,
+    timeoutWarned: false,
+    timeoutActive: false,
     nextUid,
   };
 }
@@ -242,9 +244,43 @@ export function kioskReducer(
       if (state.phase !== "payError") return state;
       return { ...state, phase: "processing" };
 
-    case "SELECT_RECEIPT":
+    case "SELECT_RECEIPT": {
       if (state.phase !== "receipt") return state;
+      // ErrorEngine: 영수증을 받기로 했는데 프린터가 말썽인 상황
+      if (event.want && (scenario.events ?? []).includes("printerFailOnce")) {
+        return { ...state, receiptChoice: true, phase: "printerFail" };
+      }
       return { ...state, receiptChoice: event.want, phase: "done" };
+    }
+
+    case "PRINT_RETRY":
+      if (state.phase !== "printerFail") return state;
+      return {
+        ...state,
+        phase: "done",
+        achievements: add(state.achievements, "영수증이 안 나올 때 '다시 출력'으로 해결했어요"),
+      };
+
+    case "PRINT_SKIP":
+      if (state.phase !== "printerFail") return state;
+      return {
+        ...state,
+        receiptChoice: false,
+        phase: "done",
+        achievements: add(state.achievements, "영수증이 안 나와도 당황하지 않고 마무리했어요"),
+      };
+
+    case "TIMEOUT_SHOW":
+      if (state.phase !== "menu" || state.timeoutWarned) return state;
+      return { ...state, timeoutWarned: true, timeoutActive: true };
+
+    case "TIMEOUT_DISMISS":
+      if (!state.timeoutActive) return state;
+      return {
+        ...state,
+        timeoutActive: false,
+        achievements: add(state.achievements, "시간 초과 안내에서 '이어서 하기'를 눌러 계속했어요"),
+      };
 
     case "FINISH":
       return state;
@@ -272,6 +308,7 @@ export function kioskReducer(
         case "payError":
           return { ...state, phase: "payMethod" }; // 결제 수단부터 다시 고를 수 있게
         case "receipt":
+        case "printerFail":
           return state; // 결제 후에는 되돌리지 않는다 (실제 기기와 동일)
         default:
           return state;

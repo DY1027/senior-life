@@ -135,6 +135,23 @@ const raw: unknown[] = [
     layout: "left",
   },
 
+  {
+    id: "mart-challenge-timeout",
+    kioskType: "mart",
+    title: "천천히 골라도 괜찮아요",
+    mode: "challenge",
+    missionText: "우유 하나와 두부 하나를 스캔해 카드로 계산하세요. 중간에 '아직 계신가요?' 안내가 나와도 당황하지 말고 이어가면 돼요.",
+    mission: {
+      serviceType: "skip",
+      items: [
+        { productId: "milk", quantity: 1 },
+        { productId: "tofu", quantity: 1 },
+      ],
+      paymentMethod: "card",
+    },
+    events: ["timeoutOnce"],
+  },
+
   // ── 자유 연습 ──
   {
     id: "mart-free",

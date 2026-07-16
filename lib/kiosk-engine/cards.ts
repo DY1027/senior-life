@@ -53,6 +53,24 @@ export function availableCards(catalog: Catalog, scenario: Scenario): SituationC
     });
   }
 
+  if (!has.has("printerFailOnce")) {
+    cards.push({
+      id: "printerfail",
+      label: "🖨️ 영수증이 말썽!",
+      desc: "영수증을 받기로 하면 프린터가 말썽이에요. 다시 출력해 보세요.",
+      event: "printerFailOnce",
+    });
+  }
+
+  if (!has.has("timeoutOnce")) {
+    cards.push({
+      id: "timeout",
+      label: "⏰ 시간 초과 주의!",
+      desc: "메뉴에서 잠시 멈추면 '아직 계신가요?' 안내가 나와요. 침착하게 이어가면 돼요.",
+      event: "timeoutOnce",
+    });
+  }
+
   return cards;
 }
 

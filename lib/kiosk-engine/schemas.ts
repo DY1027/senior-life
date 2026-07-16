@@ -79,7 +79,7 @@ export const scenarioSchema = z.object({
     })
     .optional(),
   preloadCart: z.array(missionItemSchema).optional(),
-  events: z.array(z.enum(["cardFailOnce", "soldOutDecoy", "scanFailOnce"])).optional(),
+  events: z.array(z.enum(["cardFailOnce", "soldOutDecoy", "scanFailOnce", "printerFailOnce", "timeoutOnce"])).optional(),
   layout: z.enum(["top", "left"]).optional(),
 });
 

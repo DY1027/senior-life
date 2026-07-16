@@ -233,6 +233,50 @@ test("든든ATM: 연습 비밀번호로 출금하고 카드 회수 안내를 본
   await expect(page.getByText(/카드를 잊지 말고 꼭 챙기세요/)).toBeVisible();
 });
 
+test("영수증 프린터 오류를 '다시 출력'으로 해결한다", async ({ page }) => {
+  await page.goto("/kiosk/cafe/cafe-challenge-printer");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+  await page.getByRole("button", { name: /매장에서 먹기/ }).click();
+  await page.getByRole("button", { name: /아메리카노/ }).click();
+  await page.getByRole("button", { name: "따뜻하게" }).click();
+  await page.getByRole("button", { name: /담기 ·/ }).click();
+  await page.getByRole("button", { name: /주문 확인/ }).click();
+  await page.getByRole("button", { name: /결제하기/ }).click();
+  await page.getByRole("button", { name: /💳 카드/ }).click();
+  await waitPaymentDone(page);
+
+  // 영수증 받기 → 프린터 오류 → 다시 출력으로 해결
+  await page.getByRole("button", { name: "받기", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "영수증이 나오지 않아요" })).toBeVisible();
+  await page.getByRole("button", { name: /다시 출력하기/ }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+  await expect(page.getByText("영수증이 안 나올 때 '다시 출력'으로 해결했어요")).toBeVisible();
+});
+
+test("시간 초과 안내가 나와도 이어서 연습할 수 있다", async ({ page }) => {
+  await page.goto("/kiosk/mart/mart-challenge-timeout");
+  await page.getByRole("button", { name: /연습 시작/ }).click();
+  await page.getByRole("button", { name: /적립 안 함/ }).click();
+
+  // 메뉴에서 15초 기다리면 안내가 뜬다 (임무 문구에도 같은 표현이 있어 exact 매칭)
+  await expect(page.getByText("아직 계신가요?", { exact: true })).toBeVisible({ timeout: 20000 });
+  await page.getByRole("button", { name: /네, 이어서 할게요/ }).click();
+  await expect(page.getByText("아직 계신가요?", { exact: true })).toBeHidden();
+
+  // 이어서 임무 완수
+  await page.getByRole("button", { name: /우유/ }).click();
+  await page.getByRole("button", { name: /두부/ }).click();
+  await page.getByRole("button", { name: /주문 확인/ }).click();
+  await page.getByRole("button", { name: /결제하기/ }).click();
+  await page.getByRole("button", { name: /💳 카드/ }).click();
+  await waitPaymentDone(page);
+  await page.getByRole("button", { name: "받지 않기" }).click();
+
+  await expect(page.getByRole("heading", { name: /임무 완수/ })).toBeVisible();
+  await expect(page.getByText("시간 초과 안내에서 '이어서 하기'를 눌러 계속했어요")).toBeVisible();
+});
+
 test("상황 카드를 뽑으면 이번 판에 상황이 추가된다", async ({ page }) => {
   // 자유 연습에서 카드 뽑기 — 어떤 카드가 나와도 안내문이 표시돼야 한다
   await page.goto("/kiosk/cafe/cafe-free");
