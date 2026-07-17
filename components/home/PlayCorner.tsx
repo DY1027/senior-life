@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 // 오늘의 놀이터 — 연습만 반복하면 학습 사이트처럼 느껴지니 짧은 놀이를 잇는다.
-// 두뇌 건강 '효과'는 내세우지 않는다: 하루 5분 가볍게 즐기는 놀이로만 소개.
 const plays = [
   {
     img: "/tiles/tile-brain.webp",

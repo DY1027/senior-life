@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 // 오늘의 놀이터 허브 — 연습 사이의 쉼표.
-// 두뇌 건강 '효과'는 내세우지 않는다 (하루 5분 가벼운 놀이로만 소개).
 const plays = [
   {
     img: "/tiles/tile-brain.webp",
