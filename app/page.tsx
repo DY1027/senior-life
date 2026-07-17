@@ -9,7 +9,8 @@ import WeeklyChallenge from "@/components/home/WeeklyChallenge";
 import ContinueCard from "@/components/home/ContinueCard";
 import NewPracticeBanner from "@/components/home/NewPracticeBanner";
 import FAQSection from "@/components/home/FAQSection";
-import ClosingScene from "@/components/home/ClosingScene";
+import { SafetyScene } from "@/components/home/SafetyScene";
+import { TrustPanel } from "@/components/dundun-design/TrustPanel";
 
 // 계절 배경과 '오늘의 연습' 임무가 하루 안에 갱신되도록 매일 재생성한다
 export const revalidate = 86400;
@@ -82,15 +83,18 @@ export default function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       <Header />
-      <PlaygroundHero />
-      <TodayMission />
-      <PracticeGrid />
-      <PlayCorner />
-      <WeeklyChallenge />
-      <ContinueCard />
-      <NewPracticeBanner />
-      <FAQSection />
-      <ClosingScene />
+      <main>
+        <PlaygroundHero />
+        <TrustPanel />
+        <TodayMission />
+        <PracticeGrid />
+        <WeeklyChallenge />
+        <PlayCorner />
+        <SafetyScene />
+        <ContinueCard />
+        <NewPracticeBanner />
+        <FAQSection />
+      </main>
       <Footer />
     </>
   );

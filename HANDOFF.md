@@ -1,6 +1,6 @@
 # 시니어든든 — 에이전트 인수인계 문서
 
-> 최종 업데이트: 2026-07-17 · 이전 기능·페이지·SEO 흔적 정리
+> 최종 업데이트: 2026-07-17 · 든든이 장면 중심 디자인 개편
 
 ## 1. 프로젝트 방향
 
@@ -89,12 +89,14 @@ app/
   robots.ts              실행·개인·내부 페이지 차단
 
 components/kiosk-engine/ 공통 실행 UI
+components/dundun-design/ 장면·카드·말풍선·버튼 디자인 시스템
 content/kiosk-v2/        7종 카탈로그·임무 데이터
 lib/kiosk-engine/        상태·이벤트·임무 판정·Zod 검증
 lib/kiosk-config.ts      7종 표시 문구의 단일 기준
 lib/daily-missions.ts    오늘의 임무 선택
 lib/progress.ts          localStorage 기록·도장
-tests/                   Playwright 회귀 검사 24개
+public/images/dundun/    최적화한 WebP 장면 일러스트 14개
+tests/                   Playwright 회귀 검사 29개
 ```
 
 `app/api/health/route.ts`는 건강 콘텐츠가 아니라 배포 상태 확인 API이므로 삭제하지 않습니다.
@@ -126,7 +128,7 @@ tests/                   Playwright 회귀 검사 24개
 - sitemap에는 이전 주소, 기록, 서비스 변경 안내, 개별 임무를 넣지 않습니다.
 - OG 이미지: `app/opengraph-image.tsx`
 - manifest: `시니어든든 디지털 생활 놀이터`
-- 서비스워커: `public/sw.js`, 현재 `v5`
+- 서비스워커: `public/sw.js`, 현재 `v6`
 - 배포마다 서비스워커 버전을 올려 이전 페이지 캐시를 제거합니다.
 
 ## 8. 검증
@@ -143,8 +145,10 @@ npm run test
 - TypeScript 통과
 - lint 0오류, 기존 `app/apple-icon.tsx`의 `<img>` 경고 1개
 - Next.js production build 통과
-- Playwright 24/24 통과
-- 360×800 모바일 홈과 서비스 변경 안내: 가로 넘침 없음
+- Playwright 29/29 통과
+- 홈 360·390·430·768·1024·1280·1440px: 가로 넘침 없음
+- 모바일 홈·연습·놀이터·생활안전·빈 기록·완료 화면 시각 점검 통과
+- 든든이 WebP 14개: 각 25.3~103.8KB, 대표 장면 외 지연 로딩
 - 이전 재정 주소가 `/service-changed`로 이동
 - 브라우저 오류 오버레이·콘솔 오류 없음
 

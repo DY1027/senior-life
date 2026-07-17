@@ -4,6 +4,7 @@ import { getKioskConfig, type KioskId } from "@/lib/kiosk-config";
 
 export type Practice = {
   id: KioskId; // Catalog.kioskType과 동일해야 기록이 연결된다
+  worldName: string; // 디지털 생활 연습마을 안에서 사용하는 장소 이름
   title: string; // 목록에 크게 보이는 이름
   short: string; // 짧은 이름 (도장·이어하기 문구용)
   desc: string;
@@ -16,6 +17,7 @@ export type Practice = {
 function practiceCopy(id: KioskId) {
   const config = getKioskConfig(id);
   return {
+    worldName: config.name,
     title: config.accentLabel.replace(/ 연습$/, ""),
     short: config.accentLabel.replace(/ 연습$/, ""),
     desc: config.shortDescription,
@@ -28,7 +30,7 @@ export const PRACTICES: Practice[] = [
     ...practiceCopy("cafe"),
     href: "/kiosk/cafe",
     category: "먹고 마시기",
-    img: "/tiles/kiosk-cafe.webp",
+    img: "/images/dundun/kiosk-cafe.webp",
     emoji: "☕",
   },
   {
@@ -44,6 +46,7 @@ export const PRACTICES: Practice[] = [
     ...practiceCopy("ticket"),
     href: "/kiosk/ticket",
     category: "이동하기",
+    img: "/images/dundun/kiosk-ticket.webp",
     emoji: "🚄",
   },
   {
@@ -51,6 +54,7 @@ export const PRACTICES: Practice[] = [
     ...practiceCopy("parking"),
     href: "/kiosk/parking",
     category: "이동하기",
+    img: "/images/dundun/kiosk-parking.webp",
     emoji: "🅿️",
   },
   {
@@ -58,6 +62,7 @@ export const PRACTICES: Practice[] = [
     ...practiceCopy("mart"),
     href: "/kiosk/mart",
     category: "장보고 이용하기",
+    img: "/images/dundun/kiosk-mart.webp",
     emoji: "🛒",
   },
   {
@@ -65,6 +70,7 @@ export const PRACTICES: Practice[] = [
     ...practiceCopy("atm"),
     href: "/kiosk/atm",
     category: "공공생활",
+    img: "/images/dundun/kiosk-atm.webp",
     emoji: "🏧",
   },
   {

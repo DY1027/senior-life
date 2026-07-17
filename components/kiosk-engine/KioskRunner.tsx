@@ -6,6 +6,7 @@
 // 시스템 버튼 고정 배치(명세 5.1): 왼쪽 위 이전 / 가운데 위 진행 단계 /
 // 오른쪽 위 도움말 / 왼쪽 아래 처음부터 / 오른쪽 아래 다음·결제.
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import type { Catalog, MachineEvent, Phase, Scenario } from "@/lib/kiosk-engine/types";
 import {
@@ -24,6 +25,7 @@ import KioskSafetyNotice from "@/components/kiosk-engine/KioskSafetyNotice";
 import { useVoice } from "@/components/kiosk/useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
+import { illustrations } from "@/components/dundun-design/illustration-assets";
 
 const PHASE_LABEL: Record<Phase, string> = {
   intro: "연습 준비",
@@ -247,8 +249,11 @@ function KioskMachine({
 
           {/* 짧은 알림 (품절 등) */}
           {notice && (
-            <div className="border-b border-[#FECACA] bg-[#FEF2F2] px-4 py-2.5">
-              <p className="break-keep text-center text-[15px] font-bold leading-relaxed text-[#B91C1C]">{notice}</p>
+            <div className="flex items-center justify-center gap-3 border-b border-[#FECACA] bg-[#FEF2F2] px-4 py-2.5">
+              <span className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-full bg-white">
+                <Image src="/mascot.webp" alt="" fill sizes="44px" className="object-contain" />
+              </span>
+              <p className="break-keep text-left text-[15px] font-bold leading-relaxed text-[#B42318]">{notice}</p>
             </div>
           )}
 
@@ -791,7 +796,15 @@ function DoneScreen({
 
   return (
     <div className="text-center">
-      <p className="text-[48px]" aria-hidden="true">🎉</p>
+      <div className="relative mx-auto aspect-[4/3] w-full max-w-[320px] overflow-hidden rounded-2xl bg-[#FDF4DF]">
+        <Image
+          src={illustrations.practiceComplete}
+          alt="든든이와 시니어 이용자가 연습 완료 도장을 함께 축하하는 그림"
+          fill
+          sizes="320px"
+          className="object-cover"
+        />
+      </div>
       <h2 className="mt-1 text-[22px] font-extrabold leading-snug text-[#1A1A2E]">
         {scenario.mode === "free" ? "자유 연습을 끝냈어요!" : allPass ? "임무 완수! 정말 잘하셨어요." : "오늘 연습을 완료했어요!"}
       </h2>
@@ -852,14 +865,19 @@ function DoneScreen({
       </div>
 
       <div className="mt-5 flex flex-col gap-2.5">
-        <button type="button" onClick={onRestart} className="h-[60px] rounded-2xl bg-[#1B6FC8] text-[18px] font-extrabold text-white">
-          🔁 같은 임무 다시 하기
-        </button>
-        <Link href={`/kiosk/${catalog.kioskType}`} className="flex h-[56px] items-center justify-center rounded-2xl border-2 border-[#BBD9F5] bg-[#EAF3FC] text-[17px] font-bold text-[#1B6FC8] no-underline">
-          다른 임무 고르기
+        <Link href={`/kiosk/${catalog.kioskType}`} className="flex h-[60px] items-center justify-center rounded-2xl bg-[#E67E3F] text-[18px] font-extrabold text-white no-underline">
+          추천 연습 이어가기
         </Link>
-        <Link href="/kiosk" className="flex h-[52px] items-center justify-center rounded-2xl border-[1.5px] border-[#E5E7EB] bg-white text-[16px] font-bold text-[#6B7280] no-underline">
-          다른 연습 고르기
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <button type="button" onClick={onRestart} className="h-[56px] rounded-2xl border-2 border-[#BBD9F5] bg-[#EAF3FC] text-[17px] font-bold text-[#1B6FC8]">
+            같은 연습 다시 하기
+          </button>
+          <Link href="/kiosk" className="flex h-[56px] items-center justify-center rounded-2xl border-[1.5px] border-[#E5E7EB] bg-white text-[16px] font-bold text-[#6B7280] no-underline">
+            다른 연습 보기
+          </Link>
+        </div>
+        <Link href="/records" className="inline-flex min-h-[48px] items-center justify-center text-[16px] font-bold text-[#6B7280] underline underline-offset-4">
+          내 기록 확인
         </Link>
       </div>
     </div>

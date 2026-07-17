@@ -1,60 +1,94 @@
 "use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import BigTextToggle from "@/components/BigTextToggle";
 
-// 상단 메뉴는 다섯 개로 고정 — 연습 중심 사이트라는 게 메뉴만 봐도 드러나야 한다.
-const nav = [
-  { label: "생활기기 연습", href: "/kiosk" },
-  { label: "오늘의 놀이터", href: "/play" },
+const navItems = [
+  { label: "연습", href: "/kiosk" },
+  { label: "놀이터", href: "/play" },
   { label: "생활안전", href: "/stories" },
-  { label: "이용안내", href: "/guide" },
-];
+  { label: "내 기록", href: "/records" },
+] as const;
+
+function isActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export default function Header() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   return (
-    <header style={{ background: "#fff", borderBottom: "0.5px solid #EEECE6", position: "sticky", top: 0, zIndex: 50 }}>
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 20px", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#E67E3F", display: "inline-block" }} />
-          <span style={{ fontSize: 17, fontWeight: 700, color: "#1A1A1A", letterSpacing: "-0.3px", whiteSpace: "nowrap" }}>시니어 든든</span>
+    <header className="sticky top-0 z-50 border-b border-[#EEECE6] bg-white/95 shadow-[0_2px_14px_rgba(59,50,38,0.05)] backdrop-blur-md">
+      <div className="mx-auto flex h-[68px] max-w-[1180px] items-center justify-between gap-4 px-4 sm:px-5">
+        <Link href="/" className="flex min-h-12 items-center gap-2.5 rounded-xl px-1" aria-label="시니어든든 홈">
+          <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#FEF3E8] text-[#C4621A]" aria-hidden="true">
+            <span className="text-[20px] leading-none">●</span>
+          </span>
+          <span className="whitespace-nowrap text-[19px] font-extrabold tracking-[-0.04em] text-[#3B3226]">시니어든든</span>
         </Link>
 
-        <nav className="hidden md:flex" style={{ gap: 2 }} aria-label="주요 메뉴">
-          {nav.map((item) => (
-            <Link key={item.href} href={item.href}
-              style={{ padding: "6px 11px", fontSize: 15, fontWeight: 600, color: "#6B6860", borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap" }}>
-              {item.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-1 md:flex" aria-label="주요 메뉴">
+          {navItems.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`inline-flex min-h-12 items-center rounded-full px-4 text-[16px] font-bold transition-colors ${
+                  active ? "bg-[#FEF3E8] text-[#C4621A]" : "text-[#5F5A51] hover:bg-[#F7F6F3] hover:text-[#3B3226]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <div className="flex items-center gap-2">
           <BigTextToggle />
           <Link
-            href="/"
-            className="hidden md:inline-flex"
-            style={{ padding: "7px 14px", background: "transparent", color: "#1A1A1A", border: "1px solid #EEECE6", borderRadius: 999, fontSize: 13, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}
+            href="/guide"
+            aria-current={pathname.startsWith("/guide") ? "page" : undefined}
+            className="hidden min-h-12 items-center rounded-full border border-[#EEECE6] px-4 text-[14px] font-bold text-[#5F5A51] hover:border-[#FDDFC0] hover:text-[#C4621A] md:inline-flex"
           >
-            처음으로
+            이용안내
           </Link>
-
-          <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="메뉴 열기" style={{ background: "none", border: "none", padding: 6, color: "#1A1A1A" }}>
-            <i className={`ti ${open ? "ti-x" : "ti-menu-2"}`} style={{ fontSize: 22 }} />
+          <button
+            type="button"
+            className="grid h-12 w-12 place-items-center rounded-xl border border-[#EEECE6] bg-white text-[#3B3226] md:hidden"
+            onClick={() => setOpen((value) => !value)}
+            aria-label={open ? "전체 메뉴 닫기" : "전체 메뉴 열기"}
+            aria-expanded={open}
+            aria-controls="mobile-main-menu"
+          >
+            <span className="text-[27px] leading-none" aria-hidden="true">{open ? "×" : "☰"}</span>
           </button>
         </div>
       </div>
 
       {open && (
-        <nav style={{ background: "#fff", borderTop: "0.5px solid #EEECE6", padding: "12px 24px 16px" }} aria-label="모바일 메뉴">
-          {[{ label: "홈", href: "/" }, ...nav, { label: "내 기록", href: "/records" }].map((item) => (
-            <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
-              style={{ display: "block", padding: "12px 0", fontSize: 16, fontWeight: 500, color: "#1A1A1A", borderBottom: "0.5px solid #EEECE6", textDecoration: "none" }}>
-              {item.label}
-            </Link>
-          ))}
+        <nav id="mobile-main-menu" className="border-t border-[#EEECE6] bg-white px-5 py-3 md:hidden" aria-label="전체 메뉴">
+          {[{ label: "홈", href: "/" }, ...navItems, { label: "이용안내", href: "/guide" }].map((item) => {
+            const active = item.href === "/" ? pathname === "/" : isActive(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setOpen(false)}
+                className={`flex min-h-12 items-center justify-between border-b border-[#F2F0EB] px-1 text-[18px] font-bold last:border-0 ${
+                  active ? "text-[#C4621A]" : "text-[#3B3226]"
+                }`}
+              >
+                {item.label}
+                {active && <span className="text-[13px] font-bold">현재 위치</span>}
+              </Link>
+            );
+          })}
         </nav>
       )}
     </header>

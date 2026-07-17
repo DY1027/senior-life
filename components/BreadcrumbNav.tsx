@@ -28,7 +28,7 @@ export default function BreadcrumbNav({ items }: { items: BreadcrumbItem[] }) {
           {items.map((item, idx) => (
             <li key={idx} style={{ display: "flex", alignItems: "center", gap: 4 }}>
               {idx > 0 && (
-                <i className="ti ti-chevron-right" style={{ fontSize: 11 }} aria-hidden="true" />
+                <span style={{ fontSize: 15 }} aria-hidden="true">›</span>
               )}
               {item.href ? (
                 <Link href={item.href} style={{ color: "#9B9890", textDecoration: "none" }}>

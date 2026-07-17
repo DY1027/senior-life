@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { DungDungGuide } from "@/components/dundun-design/DungDungGuide";
+import { illustrations } from "@/components/dundun-design/illustration-assets";
 
 const faqs = [
   { q: "정말 실제로 결제되거나 접수되나요?", a: "아닙니다. 모든 화면은 연습용 모의 화면이며 실제 주문, 결제, 발급, 송금이 전혀 이루어지지 않습니다. 몇 번을 잘못 눌러도 아무 일도 생기지 않으니 마음 편하게 연습하세요." },
@@ -24,29 +26,47 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" style={{ background: "#FAF8F5", padding: "72px 20px" }}>
+    <section id="faq" className="dd-faq-section" aria-labelledby="faq-title">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <p style={{ fontSize: 13, fontWeight: 600, color: "#C4621A", marginBottom: 6, letterSpacing: "0.05em" }}>FAQ</p>
-        <h2 style={{ fontSize: "clamp(22px,3vw,30px)", fontWeight: 800, color: "#3B3226", letterSpacing: "-0.5px", marginBottom: 36 }}>자주 묻는 질문</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="dd-faq-shell">
+        <aside className="dd-faq-trust" aria-label="안심하고 이용하세요">
+          <DungDungGuide
+            image={illustrations.mistakeGuide}
+            alt="든든이가 실수한 이용자에게 이전 버튼과 다시 시작을 안내하는 그림"
+          >
+            처음이어도 괜찮아요.<br />마음껏 눌러보고 다시 연습할 수 있어요.
+          </DungDungGuide>
+          <ul className="dd-faq-trust-list">
+            <li>✓ 실제 주문·결제·송금·발급 없음</li>
+            <li>✓ 회원가입 없이 사용</li>
+            <li>✓ 기록은 현재 기기에 저장</li>
+          </ul>
+        </aside>
+        <p className="dd-eyebrow">FAQ</p>
+        <h2 id="faq-title" className="dd-faq-title">자주 묻는 질문</h2>
+        <div className="dd-faq-list">
           {faqs.map((f, i) => (
-            <div key={i} style={{ background: "#fff", borderRadius: 14, border: `1.5px solid ${open === i ? "#E67E3F" : "#EFE3CC"}`, overflow: "hidden" }}>
-              <button onClick={() => setOpen(open === i ? null : i)}
-                style={{ width: "100%", padding: "20px 22px", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, textAlign: "left", minHeight: 52 }}>
-                <span style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: "#C4621A", flexShrink: 0, marginTop: 1 }}>Q.</span>
-                  <span style={{ fontSize: 16, fontWeight: 600, color: "#1A1A2E", lineHeight: 1.5 }}>{f.q}</span>
+            <div key={f.q} className={`dd-faq-item${open === i ? " is-open" : ""}`}>
+              <button
+                type="button"
+                className="dd-faq-button"
+                aria-expanded={open === i}
+                aria-controls={`faq-answer-${i}`}
+                onClick={() => setOpen(open === i ? null : i)}
+              >
+                <span className="dd-faq-question">
+                  <span className="dd-faq-mark">Q.</span>
+                  <span>{f.q}</span>
                 </span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A5568" strokeWidth="2" style={{ flexShrink: 0, transform: open === i ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>
+                <svg className="dd-faq-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <polyline points="6 9 12 15 18 9"/>
                 </svg>
               </button>
               {open === i && (
-                <div style={{ padding: "0 22px 20px" }}>
-                  <div style={{ borderTop: "1px solid #E8F0FE", paddingTop: 16 }}>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: "#E67E3F", marginRight: 8 }}>A.</span>
-                    <span style={{ fontSize: 15, color: "#4A5568", lineHeight: 1.75 }}>{f.a}</span>
+                <div id={`faq-answer-${i}`} className="dd-faq-answer-wrap">
+                  <div className="dd-faq-answer">
+                    <span className="dd-faq-mark">A.</span>
+                    <span>{f.a}</span>
                   </div>
                 </div>
               )}

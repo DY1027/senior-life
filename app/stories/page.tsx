@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { illustrations } from "@/components/dundun-design/illustration-assets";
+import { SceneCard } from "@/components/dundun-design/SceneCard";
+import { SectionHeading } from "@/components/dundun-design/SectionHeading";
 
 export const metadata: Metadata = {
   title: "그림으로 배우는 생활안전",
@@ -8,66 +10,57 @@ export const metadata: Metadata = {
   alternates: { canonical: "/stories" },
 };
 
-const stories = [
-  {
-    img: "/mascot-cheer.webp",
-    alt: "앞발을 내밀며 다정하게 알려주는 든든이",
-    title: "보이스피싱, 이렇게 막아요",
-    desc: "가짜 문자와 전화를 구별하는 세 가지 약속. 딱 2분이면 배워요.",
-    href: "/stories/phishing",
-    badge: "⭐ 꼭 보세요",
-  },
-];
-
 export default function StoriesHubPage() {
   return (
-    <div className="mx-auto max-w-[720px] px-5 pb-14 pt-8">
-      <div className="text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FDDFC0] px-4 py-1.5 text-[15px] font-bold text-[#C4621A]">
-          🛡️ 그림으로 배우는 생활안전
-        </span>
-        <h1 className="mt-3 text-[clamp(26px,5vw,34px)] font-extrabold leading-snug tracking-[-0.5px] text-[#3B3226]">
-          어렵고 위험한 상황을 쉽게 확인해요
-        </h1>
-        <p className="mt-2 break-keep text-[17px] leading-relaxed text-[#6E5C49]">
-          어렵고 위험한 상황을 그림과 쉬운 설명으로 한 장씩 확인해보세요.
-          <br />
-          천천히 넘기며 읽어 보세요.
-        </p>
-      </div>
-
-      <div className="mt-7 flex flex-col gap-4">
-        {stories.map((s) => (
-          <Link
-            key={s.href}
-            href={s.href}
-            className="flex items-center gap-5 rounded-3xl border-2 border-[#EFDFC0] bg-[#F9F2E0] p-5 no-underline transition-transform active:scale-[0.98]"
-          >
-            <Image src={s.img} alt={s.alt} width={100} height={122} className="h-auto w-[100px] flex-shrink-0 rounded-2xl" />
-            <span className="flex-1">
-              <span className="inline-block rounded-full bg-[#E67E3F] px-2.5 py-0.5 text-[12px] font-bold text-white">{s.badge}</span>
-              <span className="mt-1.5 block break-keep text-[22px] font-extrabold text-[#3B3226]">{s.title}</span>
-              <span className="mt-1 block break-keep text-[15px] leading-relaxed text-[#8A7660]">{s.desc}</span>
-              <span className="mt-2 block text-[16px] font-extrabold text-[#C4621A]">읽으러 가기 →</span>
-            </span>
-          </Link>
-        ))}
-
-        <div className="flex items-center gap-5 rounded-3xl border-2 border-dashed border-[#EFDFC0] bg-[#FBF6EA] p-5">
-          <Image
-            src="/mascot-building.webp"
-            alt="안전모를 쓰고 망치질하는 든든이"
-            width={100}
-            height={105}
-            className="h-auto w-[100px] flex-shrink-0 rounded-2xl"
+    <>
+      <section className="dd-inner-hero dd-inner-hero-blue">
+        <div className="dd-shell dd-inner-hero-grid">
+          <SectionHeading
+            level={1}
+            eyebrow="생활안전"
+            title={<>누르기 전에<br />한 번 더 확인해요</>}
+            description="걱정을 키우기보다, 차분하게 확인하는 방법을 그림으로 익혀요."
           />
-          <span className="flex-1">
-            <span className="block text-[19px] font-extrabold text-[#6B6860]">다음 생활안전 콘텐츠를 만들고 있어요</span>
-            <span className="mt-1 block break-keep text-[15px] text-[#9B9890]">🔨 키오스크, 무서워하지 않아도 돼요</span>
-            <span className="mt-1 block break-keep text-[15px] text-[#9B9890]">🔨 스마트폰 안전하게 쓰는 법</span>
-          </span>
+          <div className="dd-inner-hero-image">
+            <Image
+              src={illustrations.safetyHero}
+              alt="든든이가 안전 확인 안내판을 들고 시니어 이용자와 스마트폰 문자를 살펴보는 그림"
+              fill
+              priority
+              sizes="(max-width: 767px) 100vw, 58vw"
+              className="object-contain"
+            />
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <section className="dd-section" aria-labelledby="safety-list-title">
+        <div className="dd-shell">
+          <SectionHeading
+            id="safety-list-title"
+            eyebrow="2분 생활안전"
+            title="그림을 넘기며 확인해요"
+            description="중요한 약속만 짧고 쉽게 정리했습니다."
+          />
+          <div className="mt-8 grid max-w-[760px] gap-5 md:grid-cols-2">
+            <SceneCard
+              href="/stories/phishing"
+              image="/story-sms.webp"
+              imageAlt="수상한 문자 메시지를 확인하는 생활안전 그림"
+              tag="꼭 확인해요"
+              title="보이스피싱, 이렇게 막아요"
+              description="가짜 문자와 전화를 구별하는 세 가지 약속을 확인해요."
+              actionLabel="읽으러 가기"
+            />
+            <div className="dd-coming-soon mt-0">
+              <span className="dd-card-tag">다음 이야기</span>
+              <strong>스마트폰 안전하게 쓰는 법</strong>
+              <p>든든이와 함께 다음 생활안전 이야기를 만들고 있어요.</p>
+              <em>준비 중</em>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

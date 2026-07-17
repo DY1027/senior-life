@@ -10,6 +10,8 @@ export default defineConfig({
   testDir: "./tests",
   timeout: 60_000,
   retries: 0,
+  // Next Image가 여러 고해상도 장면을 처음 최적화할 때 로컬 서버가 과부하되지 않도록 직렬 실행한다.
+  workers: 1,
   use: {
     baseURL: "http://localhost:3210",
     trace: "retain-on-failure",

@@ -1,5 +1,7 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
+import { illustrations } from "@/components/dundun-design/illustration-assets";
 import { PRACTICES, getPractice } from "@/lib/practices";
 import { useProgress, stamps, totalCompletions, weeklyCount } from "@/lib/progress";
 
@@ -12,9 +14,10 @@ export default function RecordsBoard() {
   const last = progress?.lastId ? getPractice(progress.lastId) : null;
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px 56px" }}>
+    <main style={{ maxWidth: 880, margin: "0 auto", padding: "44px 20px 72px" }}>
       <div style={{ textAlign: "center", marginBottom: 26 }}>
-        <h1 style={{ fontSize: "clamp(24px,5vw,34px)", fontWeight: 800, color: "#3B3226", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 10 }}>
+        <p className="dd-eyebrow">현재 기기에 저장된 기록</p>
+        <h1 style={{ fontSize: "clamp(32px,6vw,46px)", fontWeight: 850, color: "#3B3226", lineHeight: 1.3, letterSpacing: "-0.5px", marginBottom: 10 }}>
           내 기록
         </h1>
         <p style={{ fontSize: 15, color: "#8A7660", lineHeight: 1.7 }}>
@@ -23,17 +26,25 @@ export default function RecordsBoard() {
       </div>
 
       {progress && total === 0 && (
-        <div style={{ background: "#fff", border: "2px solid #EFDFC0", borderRadius: 20, padding: "36px 24px", textAlign: "center" }}>
-          <p style={{ fontSize: 40, marginBottom: 10 }} aria-hidden="true">🛝</p>
-          <p style={{ fontSize: 18, fontWeight: 800, color: "#3B3226", marginBottom: 6 }}>아직 기록이 없어요</p>
-          <p style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.7, marginBottom: 18 }}>
-            첫 연습을 끝내면 여기에 도장이 하나씩 모여요.
+        <div className="dd-empty-records">
+          <div className="dd-empty-records-image">
+            <Image
+              src={illustrations.emptyRecords}
+              alt="든든이가 카페 연습 선택판을 들고 첫 연습을 안내하는 그림"
+              fill
+              sizes="(max-width: 767px) 72vw, 320px"
+              className="object-contain"
+            />
+          </div>
+          <p style={{ fontSize: 24, fontWeight: 850, color: "#3B3226", marginBottom: 6 }}>아직 완료한 연습이 없어요</p>
+          <p style={{ fontSize: 17, color: "#6B7280", lineHeight: 1.7, marginBottom: 22 }}>
+            카페 주문부터 천천히 시작해보세요.<br />첫 연습을 끝내면 여기에 도장이 모여요.
           </p>
           <Link
-            href="/kiosk"
+            href="/kiosk/cafe"
             style={{ display: "inline-flex", minHeight: 52, alignItems: "center", justifyContent: "center", background: "#E67E3F", color: "#fff", borderRadius: 999, padding: "0 28px", fontSize: 17, fontWeight: 800, textDecoration: "none" }}
           >
-            첫 연습 하러 가기 →
+            첫 연습 시작하기 →
           </Link>
         </div>
       )}

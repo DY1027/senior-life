@@ -2,13 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// 모바일 하단 메뉴 — 홈 | 연습 | 오늘의 놀이 | 내 기록.
+// 모바일 하단 메뉴 — 홈 | 연습 | 놀이터 | 내 기록.
 // '내 기록'은 로그인이 아니라 이 기기 브라우저에 저장된 연습 기록을 보여준다.
 const tabs = [
-  { label: "홈", href: "/", icon: "ti-home" },
-  { label: "연습", href: "/kiosk", icon: "ti-hand-click" },
-  { label: "오늘의 놀이", href: "/play", icon: "ti-confetti" },
-  { label: "내 기록", href: "/records", icon: "ti-rosette-discount-check" },
+  { label: "홈", href: "/", icon: "⌂" },
+  { label: "연습", href: "/kiosk", icon: "◎" },
+  { label: "놀이터", href: "/play", icon: "✦" },
+  { label: "내 기록", href: "/records", icon: "✓" },
 ];
 
 export default function MobileTabBar() {
@@ -38,20 +38,22 @@ export default function MobileTabBar() {
           <Link
             key={t.href}
             href={t.href}
+            aria-current={active ? "page" : undefined}
             style={{
               flex: 1,
-              minHeight: 60,
+              minHeight: 64,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
               gap: 2,
               textDecoration: "none",
-              color: active ? "#C4621A" : "#8A8578",
+              color: active ? "#C4621A" : "#6B6860",
+              background: active ? "#FEF3E8" : "transparent",
             }}
           >
-            <i className={`ti ${t.icon}`} style={{ fontSize: 22 }} aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: active ? 800 : 600 }}>{t.label}</span>
+            <span style={{ fontSize: 22, lineHeight: 1 }} aria-hidden="true">{t.icon}</span>
+            <span style={{ fontSize: 13, fontWeight: active ? 800 : 700 }}>{t.label}</span>
           </Link>
         );
       })}

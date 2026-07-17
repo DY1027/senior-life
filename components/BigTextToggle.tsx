@@ -32,19 +32,21 @@ export default function BigTextToggle() {
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 3,
-        padding: "6px 12px",
+        justifyContent: "center",
+        gap: 4,
+        minHeight: 48,
+        padding: "6px 13px",
         borderRadius: 999,
         border: `1.5px solid ${on ? "#E67E3F" : "#EEECE6"}`,
         background: on ? "#FDF0E0" : "#fff",
         color: on ? "#C4621A" : "#6B6860",
-        fontSize: 13,
-        fontWeight: 700,
+        fontSize: 14,
+        fontWeight: 800,
         cursor: "pointer",
         whiteSpace: "nowrap",
       }}
     >
-      가<span style={{ fontSize: 16, lineHeight: 1 }}>{on ? "−" : "+"}</span>
+      가<span style={{ fontSize: 18, lineHeight: 1 }}>{on ? "−" : "+"}</span>
     </button>
   );
 }

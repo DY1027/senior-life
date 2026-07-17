@@ -29,3 +29,7 @@
   `/service-changed` 안내와 이전 주소 영구 리다이렉트, 현재 메타데이터·JSON-LD·sitemap·robots·manifest,
   개별 임무 noindex, 서비스워커 v5를 적용. 검증: build·typecheck✅ lint 0오류(기존 경고 1)✅
   Playwright 24/24✅ 모바일 360×800·리다이렉트·브라우저 오류 점검✅
+- **07-17 · Codex** — 든든이 장면 중심 디자인 개편: 원본 14개를 WebP(각 25.3~103.8KB)로 최적화하고,
+  공통 장면·카드·말풍선·버튼 시스템과 체험형 홈, 통일된 키오스크 카드, 주간 도전, 놀이터·생활안전,
+  빈 기록·완료 표현, PC·모바일 메뉴를 적용. 상태 머신·47개 임무·URL·localStorage는 유지하고 서비스워커 v6 갱신.
+  검증: build·typecheck✅ lint 0오류(기존 경고 1)✅ Playwright 29/29✅ 7개 화면 폭·큰 글자·이미지 대체 텍스트✅
