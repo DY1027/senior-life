@@ -14,7 +14,7 @@ const tabs = [
 export default function MobileTabBar() {
   const pathname = usePathname();
   // 키오스크 연습 화면 안에서는 기계 화면에 집중하도록 숨긴다
-  if (/^\/kiosk\/.+/.test(pathname)) return null;
+  if (/^\/kiosk\/.+/.test(pathname) || /^\/shopping\/missions\/.+\/(practice|result)$/.test(pathname)) return null;
 
   return (
     <nav

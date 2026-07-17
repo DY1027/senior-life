@@ -7,6 +7,7 @@ import BigTextToggle from "@/components/BigTextToggle";
 
 const navItems = [
   { label: "연습", href: "/kiosk" },
+  { label: "쇼핑연습", href: "/shopping" },
   { label: "놀이터", href: "/play" },
   { label: "생활안전", href: "/stories" },
   { label: "내 기록", href: "/records" },

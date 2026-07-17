@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { illustrations } from "@/components/dundun-design/illustration-assets";
@@ -68,6 +69,16 @@ export default function KioskHubPage() {
               <strong>{UPCOMING_PRACTICE.title}</strong>
               <p>새로운 생활기기 연습을 준비하고 있어요.</p>
               <em>준비 중</em>
+            </div>
+          </div>
+        </section>
+        <section className="dd-section pt-0" aria-labelledby="shopping-practice-kiosk-title">
+          <div className="dd-shell">
+            <div className="rounded-[26px] border border-[#D8E5FF] bg-[#F2F7FF] p-6 text-center sm:p-9">
+              <span className="text-[14px] font-extrabold text-[#1558C0]">새 연습</span>
+              <h2 id="shopping-practice-kiosk-title" className="mt-2 break-keep text-[28px] font-black text-[#25324A]">인터넷 쇼핑도 실제 결제 없이 연습해요</h2>
+              <p className="mx-auto mt-3 max-w-[620px] break-keep text-[17px] leading-relaxed text-[#5B6575]">상품 검색, 옵션 선택, 예산 맞추기와 주문 실수 찾기를 천천히 해볼 수 있어요.</p>
+              <Link href="/shopping" className="mt-5 inline-flex min-h-14 items-center rounded-2xl bg-[#246BDF] px-7 text-[18px] font-extrabold text-white">쇼핑 연습관 보기 →</Link>
             </div>
           </div>
         </section>

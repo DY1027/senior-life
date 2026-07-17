@@ -8,6 +8,7 @@ import PlayCorner from "@/components/home/PlayCorner";
 import WeeklyChallenge from "@/components/home/WeeklyChallenge";
 import ContinueCard from "@/components/home/ContinueCard";
 import NewPracticeBanner from "@/components/home/NewPracticeBanner";
+import ShoppingPracticeBanner from "@/components/home/ShoppingPracticeBanner";
 import FAQSection from "@/components/home/FAQSection";
 import { SafetyScene } from "@/components/home/SafetyScene";
 import { TrustPanel } from "@/components/dundun-design/TrustPanel";
@@ -88,6 +89,7 @@ export default function HomePage() {
         <TrustPanel />
         <TodayMission />
         <PracticeGrid />
+        <ShoppingPracticeBanner />
         <WeeklyChallenge />
         <PlayCorner />
         <SafetyScene />

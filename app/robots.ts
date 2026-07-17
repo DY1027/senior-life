@@ -17,6 +17,8 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: [
         ...scenarioPrefixes,
+        "/shopping/missions/*/practice",
+        "/shopping/missions/*/result",
         "/service-changed",
         "/records",
         "/offline",

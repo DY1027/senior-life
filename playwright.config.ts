@@ -23,7 +23,7 @@ export default defineConfig({
     // 시니어 이용 환경에 맞춰 모바일 크기로 검사한다
     { name: "mobile-chromium", use: { ...devices["Pixel 7"] } },
   ],
-  webServer: {
+  webServer: process.env.PLAYWRIGHT_EXTERNAL_SERVER ? undefined : {
     command: "npx next start -p 3210",
     url: "http://localhost:3210",
     reuseExistingServer: true,
