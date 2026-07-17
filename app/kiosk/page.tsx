@@ -6,9 +6,9 @@ import Footer from "@/components/Footer";
 import { PRACTICES, UPCOMING_PRACTICE, type Practice } from "@/lib/practices";
 
 export const metadata: Metadata = {
-  title: "생활기기 연습 — 카페·주차·무인기기 미리 눌러보기",
+  title: "키오스크 연습",
   description:
-    "카페 주문, 햄버거 주문, 주차요금 정산, 무인민원발급기까지 생활 속 디지털 기기를 집에서 미리 눌러보며 연습하세요. 큰 글씨·큰 버튼·음성 안내로 어르신도 쉽게. 실제 결제는 되지 않는 연습용입니다.",
+    "카페, 햄버거, 기차표, 주차 정산, 마트 셀프계산대, ATM과 무인민원발급기를 실제처럼 연습하세요.",
   alternates: { canonical: "/kiosk" },
 };
 

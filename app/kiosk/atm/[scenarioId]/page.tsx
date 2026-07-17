@@ -10,11 +10,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ scenarioId: string }> }): Promise<Metadata> {
   const { scenarioId } = await params;
   const scenario = getAtmScenario(scenarioId);
-  if (!scenario) return { title: "은행 ATM 연습" };
+  if (!scenario) return { title: "은행 ATM 연습", robots: { index: false, follow: false } };
   return {
     title: `${scenario.title} — 은행 ATM 연습`,
     description: scenario.missionText ?? "든든은행 ATM에서 출금과 잔액 확인을 연습해 보세요. 실제 거래는 되지 않습니다.",
     alternates: { canonical: `/kiosk/atm/${scenario.id}` },
+    robots: { index: false, follow: false },
   };
 }
 

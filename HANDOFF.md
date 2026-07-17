@@ -1,369 +1,170 @@
-# 시니어 든든 — 에이전트 인수인계 문서
+# 시니어든든 — 에이전트 인수인계 문서
 
-## 2026-07-17 유지보수 갱신
+> 최종 업데이트: 2026-07-17 · 이전 기능·페이지·SEO 흔적 정리
 
-- 오늘의 연습 데이터와 직접 링크는 `lib/daily-missions.ts`가 담당합니다. 홈의 두 진입 버튼 모두 해당 날짜의 실제 `/kiosk/{type}/{scenarioId}`로 이동합니다.
-- 키오스크 7종의 표시명, 설명, 도전 문구, 안전 문구, 흐름 용어는 `lib/kiosk-config.ts`가 단일 기준입니다. 새 키오스크나 용어 변경 시 이 파일을 먼저 수정합니다.
-- 공통 안전 UI는 `components/kiosk-engine/KioskSafetyNotice.tsx`입니다. ATM·민원은 실제 개인정보를 입력하지 말라는 추가 경고가 있습니다.
-- 사용자 노출 콘텐츠 명칭은 "그림으로 배우는 생활안전"입니다. 내부 타입 이름은 호환성을 위해 기존 이름을 유지할 수 있습니다.
-- 홈 기본 메타데이터는 "시니어든든 | 실제처럼 눌러보는 디지털 생활 놀이터"이며 PWA 서비스워커 버전은 `v4`입니다.
-- 현재 회귀 테스트는 `tests/kiosk-cafe.spec.ts` 18개이며 7종 완료 흐름, 오늘의 연습 직접 링크, 문구·메타데이터, 완료 기록 저장과 주간 도장을 검사합니다.
-- 2026-07-17 검증 결과: tsc·build 통과, lint 0오류(기존 경고 1), Playwright 18/18, PC·360px 모바일·768px 태블릿·큰글씨 브라우저 확인 통과.
+## 1. 프로젝트 방향
 
-> 최종 업데이트: 2026-07-17 (품절 대체 선택 either-of 의미론 추가)
-> 저장소: https://github.com/DY1027/senior-life
+시니어든든은 **실제처럼 눌러보고 실수해도 다시 연습할 수 있는 시니어 디지털 생활 놀이터**입니다.
 
----
+- 도메인: https://seniordeundun.com
+- 저장소: https://github.com/DY1027/senior-life
+- 배포: Vercel, `master` 자동 배포
+- 회원·로그인·DB: 없음
+- 기기 기록: 브라우저 `localStorage`
+- 분석: 환경변수가 있을 때만 Google Analytics 4
+- 광고: 쿠팡 파트너스, 허용된 완성/완료 영역만
 
-## 1. 프로젝트 개요 (2026-07-15 방향 전환)
+과거 건강·병원·복지·노후재정 포털 기능은 2026-07-17에 코드와 검색 노출에서 완전히 제거했습니다. 해당 기능을 복구하거나 관련 신규 페이지를 만들지 않습니다.
 
-> **시니어든든은 생활 속 디지털 기기를 실제처럼 연습하고, 놀이처럼 반복해서 익히는 무료 연습 공간입니다.**
+## 2. 현재 공개 기능
 
-정보 포털이 아니라 **"실제처럼 눌러보는 시니어 디지털 놀이터"**로 좁혔다 (소유자 결정).
-운영 비중: 실제 생활기기 연습 70% · 놀이·반복 방문 기능 20% · 생활안전·제휴상품 10%.
-마스코트는 강아지 "든든이". 어린이용처럼 만들지 않되, 캐릭터·축하 효과는 유지.
+### 생활기기 연습
 
-- **도메인**: seniordeundun.com
-- **배포**: Vercel
-- **회원/DB**: 없음 — 회원가입·로그인·Supabase 전부 제거됨. 연습 기록은 브라우저 localStorage에만 저장
-- **애널리틱스**: Google Analytics 4
+- 카페 주문
+- 햄버거 주문
+- 기차표 예매
+- 주차요금 정산
+- 마트 셀프계산
+- 은행 ATM
+- 무인민원발급기
 
-### 2026-07-15 전환에서 한 일
-- **삭제**: 건강·병원 콘텐츠 전체(`app/health`, MedicationSummary, HospitalChecklistPreview), 병원 접수 키오스크,
-  로그인·회원가입·admin·Supabase(패키지 의존성까지), 환불규정 페이지.
-  삭제된 주소는 `next.config.ts`의 `redirects()`가 308로 안내한다.
-- **메뉴에서 강등(주소는 유지)**: 복지혜택·노후재정·생활팁 — 검색 유입용으로 페이지·sitemap은 남기되
-  홈·헤더·푸터 어디에도 노출하지 않는다 ("생활정보 보관함" 취급).
-- **새 메뉴**: 홈 | 생활기기 연습(/kiosk) | 오늘의 놀이터(/play) | 생활안전(/stories) | 이용안내(/guide).
-  헤더 오른쪽은 글자 크게 + 처음으로. 모바일은 하단 탭바(`components/MobileTabBar.tsx`) 홈|연습|오늘의 놀이|내 기록.
-- **새 홈**: 히어로(서비스 한 문장+시작 버튼 2개) → 오늘의 연습(일별 임무, `lib/practices.ts` `todayMission`)
-  → 연습 그리드(도장 표시) → 오늘의 놀이터 → 지난번 이어하기 → 새 연습 알림 → FAQ → 닫는 컷.
-- **주차요금 정산기** 추가 (`content/kiosk/parking.json`, 가상 브랜드 "든든주차") — 일러스트가 아직 없어
-  emoji 박스로 표시된다 (`Practice.img`가 없으면 emoji 폴백).
-- **연습 기록**(`lib/progress.ts`): localStorage `dd-progress-v1`에 완료 횟수·마지막 연습만 저장(민감정보 없음).
-  `useProgress()` 훅(useSyncExternalStore)으로 읽는다. KioskPlayer가 완료 시 `recordPracticeComplete` 호출.
-  도장판·내 기록 화면은 `/records` (noindex).
-- **연습·놀이 레지스트리** `lib/practices.ts`: 새 키오스크를 추가하면 여기 등록해야
-  홈 그리드·허브 카테고리·도장판·오늘의 임무에 잡힌다. 예고는 `UPCOMING_PRACTICE` 한 개만.
-- **약관·개인정보처리방침 전면 개정** (시행일 2026-07-15): 회원·결제(토스페이먼츠) 조항 삭제,
-  연습용 콘텐츠·실기기 차이·광고 고지 명시. 방침은 "직접 수집 없음 + 자동수집(Vercel/GA4) + 기기저장" 구조.
-  **localStorage 기록을 서버로 보내는 기능을 추가하면 방침 문구부터 고칠 것.**
-- **광고 원칙(소유자 지시)**: 연습 진행 화면 안에는 절대 광고 금지. 완료 화면 아래·만들기 완성 화면·생활 콘텐츠
-  하단만 허용, 페이지당 1영역, 상품 2~3개, **가격은 표기하지 않음**(AffiliateCard에서 제거됨).
-  광고 표시 문구는 AffiliateCard에 내장. 자세한 원칙은 `/guide#ads`.
+7종 모두 공통 엔진 v2를 사용하며 임무는 총 47개입니다. 오류 상황은 카드 인식 실패, 품절, 품절 대체 선택, 바코드 재스캔, 영수증 미출력, 시간 초과 안내를 지원합니다.
 
-## 키오스크 엔진 v2 (2026-07-15, 기술 명세서 1.0 기반 — 최우선 프로젝트)
+### 재방문·접근성
 
-소유자가 준 「키오스크 시뮬레이터 고도화 기술 명세서 1.0」의 1~3단계 일부를 구현했다.
-**공통 엔진 + 카탈로그 + 임무 시나리오** 구조이며, 든든카페가 첫 파일럿이다.
+- 오늘의 연습: `lib/daily-missions.ts`에서 실제 임무를 골라 실행 URL로 직접 연결
+- 주간 도전과 주간 도장
+- 키오스크별 완료 도장과 최근 기록
+- 기록 전체 삭제
+- 큰 글씨와 브라우저 음성 안내
+- 이전, 처음부터, 오류 후 재시도
+- PWA 설치와 오프라인 폴백
 
-### 구조 (명세 11장 폴더 구조를 프로젝트 관례에 맞게 적용)
-- `lib/kiosk-engine/` — 공통 엔진 (키오스크 종류와 무관)
-  - `types.ts` — Catalog(상품·옵션·결제수단) / Scenario(임무·랜덤 이벤트·모드·배치 변형) / MachineState·Event
-  - `machine.ts` — **상태 중심 리듀서** (intro→service→menu→options→cart→payMethod→processing→payError→receipt→done).
-    XState 대신 타입 완전한 리듀서를 썼다(번들 절약, 전환이 한 파일에 명시). 이벤트 유니언이라 XState v5 이관 가능.
-  - `evaluator.ts` — 임무 판정(evaluateMission: 과정 중심 점검표) + 안내 생성(nextGuidance: 다음 행동 1가지 + 강조 대상)
-  - `mission.ts` — 우선 상품 + `alternativeProductIds`를 하나의 either-of 임무 항목으로 판정하는 공통 헬퍼
-  - `schemas.ts` — Zod 검증. 카탈로그·시나리오는 모듈 로드 시 검증되므로 **데이터 실수는 빌드가 실패**한다
-- `components/kiosk-engine/KioskRunner.tsx` — 공통 화면(KioskShell 포함).
-  시스템 버튼 고정 배치(왼쪽 위 이전/가운데 단계/오른쪽 도움말/왼쪽 아래 처음부터),
-  결제 지연 연출(1.5초), 카드 인식 실패→재시도, 품절 안내, 직원 호출, 과정 피드백 완료 화면
-- `components/kiosk-engine/MissionList.tsx` — 모드별 임무 목록 + 임무별 완료 도장
-- `content/kiosk-v2/cafe.ts` — 든든카페 카탈로그 + 임무 8종
-- 라우트: `/kiosk/cafe`(임무 허브) → `/kiosk/cafe/[scenarioId]`(generateStaticParams)
+### 놀이·생활안전
 
-### 연습 모드 (명세 6장)
-- `learn` 천천히 배우기: 눌러야 할 버튼 반짝임(kg-target) + 안내 자동 음성
-- `solo` 혼자 연습하기: 강조 없음, 도움말 버튼으로만 안내 (hintsUsed 기록)
-- `challenge` 실제처럼 도전: 화면 배치 변형(layout: "left") + 랜덤 이벤트
-- `free` 자유 연습: 임무·판정 없음
+- 카드 짝 맞추기: `/brain/matching`
+- 보이스피싱 생활안전: `/stories/phishing`
+- 사진 달력 만들기: `/making/calendar`
 
-### 랜덤 이벤트 (ErrorEngine, 현재 6종)
-- `cardFailOnce` — 첫 결제 시도 실패 → "카드 다시 넣고 시도" / 다른 결제수단 / 직원 호출
-- `soldOutDecoy` — 임무와 무관한 상품 1개 품절 (품절 만나는 경험)
-- `soldOutAlternative` — 임무의 우선 상품 품절 → `alternativeProductIds` 중 하나를 골라도 임무 충족
-- `scanFailOnce` — 첫 바코드 스캔 실패 → 같은 상품 재스캔
-- `printerFailOnce` — 영수증 미출력 → 다시 출력 / 영수증 없이 진행 / 직원 호출
-- `timeoutOnce` — 메뉴에서 15초 멈추면 안내 오버레이, 벌칙 없이 이어서 진행
-- 새 이벤트 추가: types.ts 유니언 → machine.ts(shouldPaymentFail 등) → KioskRunner 처리
+## 3. 현재 라우트
 
-### 새 임무·새 키오스크 추가 방법 (완료 기준 달성)
-- **새 임무**: `content/kiosk-v2/cafe.ts`의 raw 배열에 JSON 한 덩이 추가 — 끝 (코드 수정 없음)
-- **새 키오스크**: `content/kiosk-v2/{type}.ts`(카탈로그+시나리오) + 허브·시나리오 페이지 2개(카페 것 복사) +
-  `lib/practices.ts` 등록 + sitemap. 엔진·러너는 그대로 재사용
-- 기록: `lib/progress.ts`에 `scenarios: string[]`(임무별 완료) 추가됨 — recordPracticeComplete(kioskType, scenarioId)
+### 검색 노출
 
-### 테스트 (명세 14장)
-- Playwright e2e 4본 (`tests/kiosk-cafe.spec.ts`, `npm run test:e2e`, 모바일 뷰포트):
-  learn 임무 완주 / 카드 오류 해결 / 잘못 담은 메뉴 삭제 / 이전·처음부터 복귀.
-  `playwright.config.ts`가 원격 환경의 사전 설치 Chromium(/opt/pw-browsers/chromium)을 자동 사용
-- 주의: 테스트 셀렉터는 화면 문구에 의존 — 문구 바꾸면 테스트도 갱신
+- `/`
+- `/kiosk`와 키오스크 7종 소개 페이지
+- `/play`, `/brain`, `/brain/matching`
+- `/stories`, `/stories/phishing`
+- `/making`, `/making/calendar`
+- `/guide`
+- `/legal/terms`, `/legal/privacy`
 
-### 이관 현황 — **명세 4단계 완료: 키오스크 7종 전부 엔진 v2**
-- 카페(8) + 햄버거(7) + 민원(6) + 주차(5) + 마트(8) + 기차표(7) + **ATM(6, 2026-07-15 신규)** = 임무 47종
-- 기차표(든든기차): 편도/왕복=serviceTypes, 행선지=카테고리, 열차=상품, 좌석=옵션.
-  매진 임무는 `soldOutAlternative`로 우선 시간(d9)이 매진되면 대체 시간(d10/d14) 중 하나를 허용한다.
-  출발지는 서울 고정 — 출발지 선택·좌석 배치도는 추후 확장
-- ATM(든든은행): **안전 제한 준수** — 실제 은행 로고·계좌·비밀번호 사용 금지, 연습 비밀번호(1234)만 안내,
-  키패드는 mask로 ●표시, 입력값 저장·검증 안 함, 송금 대신 출금·잔액확인 + 보이스피싱 경고(payNote 상시).
-  카탈로그 문구 커스터마이즈 필드 추가: startLabel/payQuestion/payNote/receiptQuestion/doneNote/keypad.mask
-- 주차용 phase: `keypad`(숫자 입력) → `carSelect`(내 차 확인). `singleChoice: true`면 장바구니 생략하고 결제로
-- 마트용 동작: 옵션 없는 상품 담기 = '스캔'. **같은 상품 재탭 시 수량 합침**(중복 스캔),
-  `scanFailOnce` 이벤트(첫 스캔 실패 → 재스캔, 과정 피드백 기록), 회원 적립 건너뛰기는 serviceTypes로 물음
-  (전화번호 등 실제 입력 없음)
-- 구 엔진(KioskPlayer 등)은 삭제됨. `components/kiosk/useVoice.ts`·`lib/kiosk/track.ts`만 v2가 계속 쓴다
-- 예고(UPCOMING_PRACTICE)는 기차표 예매로 교체, 홈 새 연습 알림은 마트
+### noindex
 
-### 5단계 재방문 기능 (2026-07-15)
-- **주간 도전** (`components/home/WeeklyChallenge.tsx` + `lib/practices.ts weeklyChallenge`):
-  매주 월요일 기준으로 연습 3가지를 결정적으로 선정, 이 기기 기록(`progress.log`)으로 주간 완료 판정,
-  3개 완료 시 주간 도장(🗓️, stamps()의 "weekly")
-- **무작위 상황 카드** (`lib/kiosk-engine/cards.ts`): 연습 시작 화면에서 한 장 뽑으면 그 판에
-  호환되는 이벤트(카드 오류·품절·품절 대체·바코드·프린터·시간 초과)가 추가됨. learn 모드 제외, 한 판에 한 장.
-  KioskRunner가 래퍼(카드 상태)+KioskMachine(기계, key 리마운트) 구조로 분리됨
-- progress에 `log: {id, at}[]` 추가(최대 100) — 주간 판정용. localStorage 스키마는 하위 호환
+- `/service-changed`
+- `/records`
+- `/offline`
+- 개별 `/kiosk/{type}/{scenarioId}` 실행 화면
 
-### 6단계 PWA·오프라인 (2026-07-16)
-- `app/manifest.ts`(설치 매니페스트) + `app/pwa-icon/[size]/route.ts`(192/512 PNG, ImageResponse 정적 생성)
-- `public/sw.js` — 직접 작성한 서비스워커 (Workbox 없이): 페이지 network-first(끊기면 저장본→/offline),
-  `/_next/static`·이미지 cache-first, 외부 도메인·/api는 관여 안 함.
-  **배포 시 캐시를 갈아치우려면 sw.js의 VERSION을 올릴 것** (activate에서 이전 캐시 삭제, 현재 v3)
-- `components/PwaSetup.tsx` — SW 등록(프로덕션만)·오프라인 상단 배너·새 버전 안내(새로고침 버튼).
-  ⚠️ controllerchange 새로고침은 "원래 컨트롤러가 있던 경우"에만 — 첫 설치에서 리로드하면 화면이 뚝 끊긴다(수정됨)
-- 오프라인에서는 AffiliateCard(쿠팡 광고)가 숨겨진다 (`lib/useOnline.ts`)
-- e2e는 서비스워커가 켜진 프로덕션 서버 위에서 돌므로 SW 회귀도 함께 잡는다
+### 영구 리다이렉트
 
-### 오류 이벤트 6종 (ErrorEngine, 2026-07-17 확대)
-- `cardFailOnce`(카드 인식 실패→재시도) / `soldOutDecoy`(품절) / `scanFailOnce`(바코드 재스캔)
-- `soldOutAlternative` — 우선 상품 매진 → 허용된 대체 상품 중 하나 선택. 임무 점검표와 도움말도 either-of로 안내
-- `printerFailOnce` — 영수증 받기 선택 시 미출력 → printerFail phase (다시 출력/영수증 없이 진행/직원 호출)
-- `timeoutOnce` — 메뉴에서 15초 멈추면 "아직 계신가요?" 오버레이 (한 번만, 벌칙 없음 — 명세 원칙:
-  시간 제한 기본 미적용). 호환 시 뽑을 수 있는 상황 카드 후보도 최대 6종
+- `/kiosk/hospital`과 하위 주소 → `/kiosk`
+- `/health`, `/hospital`, `/welfare`, `/finance`, `/retirement`, `/care`, `/life-tips`와 하위 주소 → `/service-changed`
+- `/login`, `/signup`, `/mypage`, `/auth`와 하위 주소 → `/service-changed`
+- `/legal/refund` → `/legal/terms`
 
-### 남은 단계 (명세 16장 기준)
-1. ~~4단계~~ / ~~5단계~~ / ~~6단계(PWA·오프라인)~~ / ~~오류 확대(6종)~~ **완료**
-2. 잔여 오류 아이디어: 무게 불일치, 성인 확인
-3. 7단계: 시나리오 편집기 (시나리오 50개 이전에는 JSON 운영 원칙 — 현재 47종)
-4. 광고(준비물 영역), 기관용 모드
+`/service-changed`는 현재 서비스 설명과 생활기기 허브·오늘의 임무 버튼을 제공합니다. 검색에는 노출하지 않습니다.
 
-### 다음 단계 (소유자 로드맵 — 엔진 외)
-1. 연습 완료 화면 아래 준비물(거치대·터치펜 등) 광고 영역, 별도 준비물 페이지
-2. 기관용 모드(복지관 수업용)
+## 4. 핵심 구조
 
----
+```text
+app/
+  kiosk/                 키오스크 허브와 7종 소개·실행 라우트
+  brain/                 카드 짝 맞추기
+  stories/               그림으로 배우는 생활안전
+  making/                만들기 놀이
+  records/               기기 기록(noindex)
+  service-changed/       이전 주소 안내(noindex)
+  legal/                 이용약관·개인정보처리방침
+  sitemap.ts             현재 공개 주소만
+  robots.ts              실행·개인·내부 페이지 차단
 
-## 2. 기술 스택
-
-| 항목 | 버전/상세 |
-|---|---|
-| Next.js | 16.2.9 (App Router) |
-| React | 19.2.4 |
-| TypeScript | 5.x |
-| CSS | Tailwind 4 + 인라인 스타일 혼용 |
-| 테스트 | Playwright 모바일 E2E 14본 |
-
-**주의**: Next.js 16은 기존 버전과 API가 다르다. 코드 작성 전 반드시 `node_modules/next/dist/docs/`의 가이드를 참고할 것.
-
----
-
-## 3. 디렉토리 구조
-
-```
-senior-life/
-├── app/                    # Next.js App Router 페이지
-│   ├── page.tsx            # 홈페이지
-│   ├── layout.tsx          # 루트 레이아웃
-│   ├── welfare/            # 복지혜택 (기초연금, 장기요양)
-│   ├── health/             # 건강·병원 (건강검진, 본인부담금, 복용약)
-│   ├── finance/            # 노후재정 (노후자금계산기, 생활비, 국민연금)
-│   ├── life-tips/          # 생활팁 (시니어할인, 가족돌봄/부모님점검표)
-│   ├── kiosk/              # 키오스크 연습
-│   │   ├── page.tsx        # 허브 (4개 키오스크 목록)
-│   │   └── cafe/page.tsx   # 카페 키오스크 (완성)
-│   ├── admin/              # 관리자 페이지 + 백업
-│   ├── login/              # 로그인 (Supabase Google OAuth)
-│   ├── legal/              # 이용약관, 개인정보처리방침, 환불규정
-│   └── api/health/         # 헬스체크 API
-├── components/
-│   ├── Header.tsx          # 일반 페이지 헤더 (네비게이션)
-│   ├── Footer.tsx          # 공통 푸터
-│   ├── home/               # 홈페이지 전용 컴포넌트 (HomeHeader, HeroSection 등)
-│   ├── kiosk/              # 키오스크 공통 컴포넌트
-│   │   ├── KioskPlayer.tsx # 시나리오 재생 엔진 (핵심)
-│   │   ├── BigButton.tsx   # 큰 선택 버튼
-│   │   ├── StepGuide.tsx   # 질문 + 안내 듣기 버튼
-│   │   ├── ProgressBar.tsx # 진행 표시 바
-│   │   ├── ResultCard.tsx  # 완료 화면 (영수증 + 번호표)
-│   │   └── useVoice.ts    # 음성 안내 훅 (Web Speech API)
-│   ├── welfare/            # 복지 도구 (BenefitFinder)
-│   ├── health/             # 건강 도구 (MedicationSummary)
-│   ├── life-tips/          # 생활 도구 (ParentChecklistTool)
-│   ├── legal/              # 법적 문서 컴포넌트
-│   └── admin/              # 관리자 UI
-├── content/
-│   └── kiosk/cafe.json     # 카페 키오스크 시나리오 데이터
-├── lib/
-│   ├── supabase.ts         # Supabase 클라이언트 (브라우저 전용 lazy init)
-│   ├── adminAuth.ts        # 관리자 권한 확인
-│   ├── companyInfo.ts      # 회사 정보
-│   ├── backupSanitize.ts   # 백업 시 민감정보 제거
-│   └── kiosk/
-│       ├── types.ts        # KioskScenario, KioskStep, KioskOption 타입
-│       └── track.ts        # GA4 이벤트 전송 헬퍼
-└── public/                 # 정적 파일
+components/kiosk-engine/ 공통 실행 UI
+content/kiosk-v2/        7종 카탈로그·임무 데이터
+lib/kiosk-engine/        상태·이벤트·임무 판정·Zod 검증
+lib/kiosk-config.ts      7종 표시 문구의 단일 기준
+lib/daily-missions.ts    오늘의 임무 선택
+lib/progress.ts          localStorage 기록·도장
+tests/                   Playwright 회귀 검사 24개
 ```
 
----
+`app/api/health/route.ts`는 건강 콘텐츠가 아니라 배포 상태 확인 API이므로 삭제하지 않습니다.
 
-## 4. 현재 완료된 기능
+## 5. 키오스크 엔진 규칙
 
-### 핵심 페이지
-- [x] **놀이터 홈** (2026-07-13 재편: 큰 타일 4개 — 키오스크 연습·혜택 찾기·병원 준비·두뇌 놀이(준비 중) + 연습 지름길 + 도구함 + 정보 카테고리 + FAQ)
-- [x] 노후자금 계산기 → `/finance/retirement`, 병원 체크리스트 → `/health/hospital-checklist` (홈 인라인에서 독립 페이지로 이전)
-- [x] **일러스트 브랜딩** (2026-07-13): 마스코트 "든든이"(주황 강아지+연두 목도리). 소유자가 AI로 생성해 제공 → 크롭·WebP 압축 후 적용.
-  `public/mascot*.webp`(기본/축하/공사/토닥), `public/hero.webp`, `public/tiles/*.webp`(홈 타일 4, 키오스크 4, 카테고리 4).
-  `mascot-building`/`mascot-cheer`는 두뇌 놀이 준비 중·오답 화면용으로 대기.
-  표면 팔레트: 크림 배경(#F9F2E0), 테라코타(#E67E3F/#C4621A), 세이지(#DCE8CE), 흑갈색 글씨(#3B3226).
-  **키오스크 플레이어 내부만 의도적으로 파란 기계 화면 유지** (실제 키오스크와 닮게).
-- [x] 복지혜택 허브 + 기초연금 신청방법 + 장기요양보험 등급
-- [x] 건강·병원 허브 + 건강검진 안내 + 본인부담금 안내
-- [x] 노후재정 허브 + 노후 생활비 계산기 + 국민연금 수령액 안내
-- [x] 생활팁 허브 + 시니어 할인 카드 + 가족 돌봄 가이드
+- `content/kiosk-v2/*.ts`는 모듈 로드 시 Zod로 검증됩니다.
+- `components/kiosk-engine/KioskRunner.tsx`가 7종 공통 화면입니다.
+- `lib/kiosk-config.ts`가 이름, 설명, 도전 문구, 안전 문구, 단계별 용어의 기준입니다.
+- 실제 개인정보, 카드번호, 계좌번호, 주민등록번호를 받지 않습니다.
+- ATM 비밀번호는 연습용 1234이며 저장하거나 서버에서 검증하지 않습니다.
+- 개별 임무 URL은 실행 화면이므로 `noindex,nofollow`를 유지합니다.
+- 새 임무는 해당 콘텐츠 파일에 추가하고 회귀 테스트를 갱신합니다.
+- 새 키오스크는 콘텐츠, 설정, 허브, 실행 라우트, `lib/practices.ts`를 함께 추가합니다. sitemap에는 소개 페이지만 넣습니다.
 
-### 두뇌 놀이 (`/brain`)
-- [x] 카드 짝 맞추기 (`/brain/matching`, 2026-07-13) — 난이도 3단계(3/6/8쌍), 시간 제한 없음,
-  맞출 때마다 칭찬·완료 시 축하 든든이. GA4: `brain_start/complete/restart/share` (`lib/track.ts` 공용 헬퍼).
-  클릭 핸들러는 `cardsRef` 미러로 최신 상태를 읽는다(더블탭 레이스 방지 — state 클로저로 되돌리지 말 것).
-- [ ] 오늘의 문제(속담·상식 퀴즈), 순서 기억하기 — 허브에 "만들고 있어요"로 예고됨
+## 6. 기록·개인정보·광고
 
-### 정보 페이지 2026 기준 갱신 + 웜톤 통일 (2026-07-14)
-- 기준 연도·수치 갱신: 국민연금 평균 월 약 67만(2025), 1인 최소 생활비 139만·적정 197.6만/부부 298.1만
-  (국민연금연구원 최신 패널조사), 본인부담상한 1분위 90만/10분위 843만(2026), 생활비 계산기 base 갱신.
-  **제도 수치는 매년 1월 발표 후 갱신 필요** (기초연금·상한액·생활비 조사).
-  중간 분위 등 공식 확인 안 되는 수치는 표기하지 않고 "공단 확인" 안내로 대체하는 원칙.
-- 안쪽 페이지(정보 4카테고리·도구·로그인·에러/404)의 파랑·보라 계열을 웜 팔레트로 일괄 교체.
-  파랑이 남은 곳은 의도적: 키오스크 기계 화면, 관리자, apple-icon.
+- 연습 기록과 큰 글씨 설정은 현재 브라우저에만 저장합니다.
+- 서버 전송, 사용자 프로필, 회원 전용 조건문을 도입하지 않습니다.
+- 개인정보 처리 방식이 바뀌면 코드보다 먼저 약관과 개인정보처리방침의 변경 범위를 검토합니다.
+- 키오스크 진행 화면 광고는 금지합니다.
+- `AffiliateCard`의 광고 표시와 대가성 문구를 제거하지 않습니다.
+- 광고 링크 이후의 거래·개인정보 처리는 외부 사이트 정책을 따릅니다.
 
-### 두뇌 놀이·만들기 공개 (2026-07-14, 소유자 결정)
-보류였던 두 기능의 입구를 다시 열었음: 홈 두뇌 놀이 타일 활성화("새 놀이"),
-MakingBanner(사진 달력) 신설, 헤더 nav에 두뇌 놀이·만들기 복귀, sitemap 등록.
+## 7. SEO·PWA 기준
 
-### 홈 도구함 제거 (2026-07-14)
-"든든 도구함" 섹션(ToolLinks)은 놀이터 전환 전의 유산이라 홈에서 제거함 (소유자 결정:
-디자인 이질적 + 어르신이 쓸 이유 없음). 계산기·점검표 등 도구 페이지 자체는 SEO 자산으로
-유지되며 각 카테고리 허브와 푸터에서 접근 가능. 홈 구성: 히어로 → 타일 4 → 연습 → 생활안전 배너
-→ 정보 카테고리 → FAQ → 닫는 컷.
+- 루트 제목: `시니어든든 | 실제처럼 눌러보는 디지털 생활 놀이터`
+- 구조화 데이터: `Organization`, `WebSite`, `WebApplication`
+- sitemap에는 이전 주소, 기록, 서비스 변경 안내, 개별 임무를 넣지 않습니다.
+- OG 이미지: `app/opengraph-image.tsx`
+- manifest: `시니어든든 디지털 생활 놀이터`
+- 서비스워커: `public/sw.js`, 현재 `v5`
+- 배포마다 서비스워커 버전을 올려 이전 페이지 캐시를 제거합니다.
 
-### 생활안전 비주얼 시스템 (2026-07-14)
-- 제목(h1,h2)은 구글 폰트 **Jua(주아체)** — `globals.css` @layer base. 단일 굵기라 font-weight 400 고정
-- 홈 히어로 배경은 **계절 자동 전환** (`PlaygroundHero.seasonBg`): 기본/가을/겨울 3종,
-  홈은 `revalidate = 86400`(하루 ISR)이라 계절이 하루 안에 반영됨
-- 홈 맨 아래 닫는 컷 `ClosingScene` (노을 든든이 `public/footer-dog.webp`)
-- 생활안전 1호 장면 3곳 일러스트 적용 (`public/story-{sms,call,112}.webp`)
-- 만들기 공개 대비 타일 `public/tiles/tile-making.webp` 보관 중
-
-### 그림으로 배우는 생활안전 (`/stories`) — 공개 중
-- [x] 생활안전 콘텐츠 엔진 `components/stories/StoryPlayer.tsx` (2026-07-13) — 장면 그림/이모지 + 큰 글씨 +
-  [다음 장], 사기 문자 예시 말풍선(`sms`), 고르기 퀴즈(`quiz`, 답 전 다음 잠금·오답도 다정하게).
-  콘텐츠는 `content/stories/*.ts` (`lib/stories/types.ts` 스키마). 새 생활안전 콘텐츠 = 콘텐츠 파일 + 라우트 + 허브 등록.
-- [x] 1호: 보이스피싱 예방 (`/stories/phishing`) — 홈 배너(StoryBanner)·헤더 nav·sitemap 연결.
-  GA4: `story_start/complete/share`.
-- [ ] 예고됨: 키오스크 이야기, 스마트폰 안전 수칙
-
-### 만들기 놀이 (`/making`)
-- [x] 사진 달력 만들기 (`/making/calendar`, 2026-07-13) — 사진(선택) → 연/월 → 색·문구 → 완성.
-  캔버스로 A4 비율 PNG 생성, 인쇄(`window.print` + print CSS)·사진첩 저장·공유(navigator.share).
-  **사진은 서버로 전송하지 않음** (업로드 API 없음 — 신뢰 포인트이므로 유지할 것).
-  공휴일은 `lib/making/holidays.ts` 상수 — 음력 명절 때문에 **연 1회 갱신 필요**.
-  GA4: `making_start/complete/print/save`.
-- [ ] 부채 꾸미기, 생신 카드 — 허브에 예고됨. 장기 방향: 체험키트 판매(스마트스토어 연결)와 연계.
-
-### 인터랙티브 도구
-- [x] 노후자금 계산기 (홈페이지 인라인)
-- [x] 병원 방문 체크리스트
-- [x] 내 혜택 찾아보기 (BenefitFinder)
-- [x] 복용약 요약표 (MedicationSummary)
-- [x] 부모님 생활 점검표 (ParentChecklistTool)
-- [x] **키오스크 연습 4종 완성** (KioskPlayer + cafe/hospital/fastfood/civil.json)
-
-### 인프라
-- [x] Supabase 인증 (Google OAuth)
-- [x] 관리자 페이지 + 백업 (민감정보 제외)
-- [x] GA4 트래킹
-- [x] SEO (메타데이터, sitemap, robots.txt, OpenGraph)
-- [x] 법적 페이지 (이용약관, 개인정보처리방침, 환불규정)
-- [x] Vercel 배포 + 헬스체크 API
-- [x] 파비콘
-
----
-
-## 5. 미완료 / 다음 작업
-
-### 키오스크 연습 — 4종 모두 완성 (2026-07-13)
-카페·병원 접수·패스트푸드·무인민원발급기 4종이 모두 `ready: true` 상태다.
-엔진이 시나리오별 차이를 지원하도록 일반화되었다 (`lib/kiosk/types.ts`의 `KioskScenario` 선택 필드):
-- `finishLabel` — 마지막 버튼 글자 (접수하기/발급하기 등)
-- `unitLabel` — 수량 단위 (잔/개/통)
-- `showTicket: false` — 완료 화면 번호표 숨김 (민원발급기)
-- `ticketNote`, `receiptTitle`, `receiptNote`, `cartEmptyText` — 완료 화면 문구
-- 가격(`price`) 있는 옵션이 하나도 없으면 합계·결제 UI가 자동으로 숨겨진다 (병원 접수)
-
-**새 키오스크 추가 방법:**
-1. `content/kiosk/{id}.json`에 `KioskScenario` 형태의 시나리오 데이터 작성 (`cafe.json` 참고)
-2. `app/kiosk/{id}/page.tsx` 생성 (`app/kiosk/cafe/page.tsx` 복사 후 import 경로만 변경)
-3. `app/kiosk/page.tsx`의 `practices` 배열에 항목 추가 (`ready: true`)
-4. `app/sitemap.ts`에 URL 추가
-
-### 기타 잠재 작업
-- Playwright 테스트 작성 (현재 의존성만 설치됨)
-- 다크모드 미지원
-- 홈페이지 HomeHeader / Header 네비게이션 배열 중복 → 공통화 가능
-
----
-
-## 6. 주의사항
-
-### 네비게이션 메뉴 수정 시
-헤더는 `components/Header.tsx` **하나**다 (2026-07-13에 홈 전용 HomeHeader를 제거하고 단일화).
-메뉴 항목은 `nav` 배열만 수정하면 전 페이지에 반영된다.
-
-### 스타일 작성 시 (Tailwind)
-새 컴포넌트는 Tailwind 클래스로 작성한다 (홈 컴포넌트들이 예시).
-`app/globals.css`의 전역 `a` 규칙은 반드시 `@layer base` 안에 있어야 한다 —
-레이어 밖으로 꺼내면 명시도와 무관하게 Tailwind 유틸리티(`.flex` 등)를 덮어써서
-링크 레이아웃이 조용히 깨진다.
-
-### 빌드 캐시
-수정이 반영되지 않을 때 `.next` 폴더를 삭제하고 dev 서버를 재시작한다.
-
----
-
-## 7. 커밋 히스토리
-
-`git log --oneline`으로 확인한다. 주요 이정표:
-- `8380d7a` (PR #1, 2026-07-13) — 시니어 놀이터 전환: 키오스크 4종 완성 + 홈 재편 + 일러스트 브랜딩
-- `44bfe0b` (`v1.1.0-kiosk-cafe`) — 카페 키오스크 최초 완성
-
----
-
-## 8. 로컬 개발 시작
+## 8. 검증
 
 ```bash
-cd senior-life
-npm install
-npm run dev        # http://localhost:3000
+npm run typecheck
+npm run lint
+npm run build
+npm run test
 ```
 
-필수 환경변수 없음 (회원·DB 기능 없음). 선택:
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID` (GA4)
-- `COUPANG_ACCESS_KEY` / `COUPANG_SECRET_KEY` (쿠팡 파트너스 Open API — 없으면 수동 링크 폴백)
+2026-07-17 결과:
 
----
+- TypeScript 통과
+- lint 0오류, 기존 `app/apple-icon.tsx`의 `<img>` 경고 1개
+- Next.js production build 통과
+- Playwright 24/24 통과
+- 360×800 모바일 홈과 서비스 변경 안내: 가로 넘침 없음
+- 이전 재정 주소가 `/service-changed`로 이동
+- 브라우저 오류 오버레이·콘솔 오류 없음
 
-*이 문서는 마지막 배포 시점 기준이다. 작업 후 변경사항을 반영하여 업데이트할 것.*
+Windows PowerShell 실행 정책이 `npm.ps1`을 막으면 `npm.cmd`를 사용합니다. 삭제된 페이지를 `.next/types`가 계속 참조하면 작업공간 안의 `.next` 캐시만 삭제하고 재빌드합니다.
 
-### 쿠팡 파트너스 연동 (2026-07-15)
-- 수익화 카드: `content/affiliate.ts`(상품 레지스트리) + `components/AffiliateCard.tsx`(광고 표시·대가성 문구 내장)
-- Open API: `lib/coupang.ts` — Vercel 환경변수 `COUPANG_ACCESS_KEY`/`COUPANG_SECRET_KEY` (Production).
-  달력 페이지가 1시간 ISR로 공식 사진·가격을 조회, 실패 시 수동 링크 카드로 자동 폴백.
-- 광고 원칙: 홈·놀이터 과정에는 광고 금지, 페이지당 1개, 맥락 일치 상품만. 현재 1곳(달력 완성 화면).
+## 9. 환경변수
+
+필수 환경변수는 없습니다.
+
+- `NEXT_PUBLIC_GA_MEASUREMENT_ID`: 선택
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: 선택
+- `NEXT_PUBLIC_NAVER_SITE_VERIFICATION`: 선택
+- `COUPANG_ACCESS_KEY`, `COUPANG_SECRET_KEY`: Vercel Production, 쿠팡 공식 상품 조회
+
+비밀값은 코드·문서·로그에 기록하지 않습니다.
+
+## 10. 다음 작업 후보
+
+1. 실물 삼성 기기와 Samsung Internet 최종 확인
+2. 오류 상황 무게 불일치·성인 확인 검토
+3. 연습 완료 화면 아래 준비물 영역과 별도 준비물 페이지
+4. 기관 수업용 모드
+5. 임무가 50개를 넘으면 시나리오 편집기 재검토

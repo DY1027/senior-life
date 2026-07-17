@@ -4,9 +4,6 @@
     "app/api/health/route.ts": {
       "maxDuration": 10
     },
-    "app/auth/**": {
-      "maxDuration": 15
-    },
     "app/**": {
       "maxDuration": 30
     }

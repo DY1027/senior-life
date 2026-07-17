@@ -25,3 +25,7 @@
 - **07-17 · Codex** — 품절 대체 선택 구현: `alternativeProductIds` either-of 임무 판정과
   `soldOutAlternative` 이벤트를 추가하고, 기차표 매진 임무를 오전 10시/오후 2시 대체 선택으로 고도화.
   상황 카드 후보 추가, sw.js VERSION v3. 검증: 빌드✅ tsc✅ lint 0오류(기존 경고 1)✅ e2e 14/14✅
+- **07-17 · Codex** — 이전 기능·페이지·SEO 정리: 재정·복지·생활팁 페이지와 전용 컴포넌트·이미지를 삭제하고,
+  `/service-changed` 안내와 이전 주소 영구 리다이렉트, 현재 메타데이터·JSON-LD·sitemap·robots·manifest,
+  개별 임무 noindex, 서비스워커 v5를 적용. 검증: build·typecheck✅ lint 0오류(기존 경고 1)✅
+  Playwright 24/24✅ 모바일 360×800·리다이렉트·브라우저 오류 점검✅

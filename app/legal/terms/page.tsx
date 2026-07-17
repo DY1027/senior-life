@@ -6,7 +6,6 @@ import { companyInfo } from "@/lib/companyInfo";
 export const metadata: Metadata = {
   title: "이용약관",
   description: "시니어 든든 서비스 이용약관입니다.",
-  robots: { index: false, follow: false },
 };
 
 // 2026-07-15 전면 개정 — 연습 놀이터 전환에 맞춰 회원·결제 조항을 삭제하고

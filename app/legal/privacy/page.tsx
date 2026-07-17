@@ -6,7 +6,6 @@ import { companyInfo } from "@/lib/companyInfo";
 export const metadata: Metadata = {
   title: "개인정보처리방침",
   description: "시니어 든든 개인정보처리방침입니다.",
-  robots: { index: false, follow: false },
 };
 
 // 2026-07-15 전면 개정 — 회원가입·결제 기능을 없앤 실제 운영과 일치하도록 축소.

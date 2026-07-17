@@ -1,61 +1,36 @@
 import type { MetadataRoute } from "next";
-import { cafeScenarios } from "@/content/kiosk-v2/cafe";
-import { burgerScenarios } from "@/content/kiosk-v2/burger";
-import { civilScenarios } from "@/content/kiosk-v2/civil";
-import { parkingScenarios } from "@/content/kiosk-v2/parking";
-import { martScenarios } from "@/content/kiosk-v2/mart";
-import { ticketScenarios } from "@/content/kiosk-v2/ticket";
-import { atmScenarios } from "@/content/kiosk-v2/atm";
+
+const BASE_URL = "https://seniordeundun.com";
+
+const publicRoutes = [
+  { path: "/", changeFrequency: "weekly", priority: 1 },
+  { path: "/kiosk", changeFrequency: "weekly", priority: 0.9 },
+  { path: "/kiosk/cafe", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/fastfood", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/ticket", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/parking", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/mart", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/atm", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/kiosk/civil", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/play", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/brain", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/brain/matching", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/stories", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/stories/phishing", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/making", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/making/calendar", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/guide", changeFrequency: "monthly", priority: 0.5 },
+  { path: "/legal/terms", changeFrequency: "yearly", priority: 0.2 },
+  { path: "/legal/privacy", changeFrequency: "yearly", priority: 0.2 },
+] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://seniordeundun.com";
-  const now = new Date().toISOString();
+  const lastModified = new Date();
 
-  return [
-    { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    // 생활기기 연습 (핵심)
-    { url: `${base}/kiosk`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${base}/kiosk/cafe`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/fastfood`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/civil`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/parking`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/mart`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/ticket`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/kiosk/atm`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    ...[
-      ...cafeScenarios.map((s) => `/kiosk/cafe/${s.id}`),
-      ...burgerScenarios.map((s) => `/kiosk/fastfood/${s.id}`),
-      ...civilScenarios.map((s) => `/kiosk/civil/${s.id}`),
-      ...parkingScenarios.map((s) => `/kiosk/parking/${s.id}`),
-      ...martScenarios.map((s) => `/kiosk/mart/${s.id}`),
-      ...ticketScenarios.map((s) => `/kiosk/ticket/${s.id}`),
-      ...atmScenarios.map((s) => `/kiosk/atm/${s.id}`),
-    ].map((path) => ({
-      url: `${base}${path}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    })),
-    // 오늘의 놀이터 + 생활안전
-    { url: `${base}/play`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/brain`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/brain/matching`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/stories`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/stories/phishing`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/making`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${base}/making/calendar`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    // 이용안내
-    { url: `${base}/guide`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    // 생활정보 보관함 — 메뉴에서는 뺐지만 검색 유입이 있어 주소는 유지한다
-    { url: `${base}/welfare`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/welfare/basic-pension`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/welfare/long-term-care`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/finance`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/finance/national-pension`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/finance/living-cost`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/finance/retirement`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/life-tips`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/life-tips/senior-discount`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${base}/life-tips/family-care`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-  ];
+  return publicRoutes.map(({ path, changeFrequency, priority }) => ({
+    url: `${BASE_URL}${path === "/" ? "" : path}`,
+    lastModified,
+    changeFrequency,
+    priority,
+  }));
 }

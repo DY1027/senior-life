@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import RecordsBoard from "@/components/records/RecordsBoard";
 
 export const metadata: Metadata = {
-  title: "내 기록 — 연습 도장판",
-  description: "이 기기 브라우저에 저장된 나의 연습 기록과 도장판을 확인합니다.",
+  title: "나의 연습 기록",
+  description: "현재 기기에 저장된 키오스크 연습 완료 기록과 도장을 확인하세요.",
   alternates: { canonical: "/records" },
   // 개인 기록 화면이라 검색에 노출할 이유가 없다
   robots: { index: false, follow: false },

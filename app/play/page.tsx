@@ -5,9 +5,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "오늘의 놀이터 — 하루 5분 가벼운 놀이",
-  description:
-    "카드 짝 맞추기, 보이스피싱 문자 구별하기, 사진 달력 만들기까지. 하루 5분, 가볍게 즐기는 시니어 놀이 모음입니다. 회원가입 없이 무료입니다.",
+  title: "오늘의 놀이터",
+  description: "생활기기 연습과 가벼운 놀이를 매일 부담 없이 즐겨보세요.",
   alternates: { canonical: "/play" },
 };
 

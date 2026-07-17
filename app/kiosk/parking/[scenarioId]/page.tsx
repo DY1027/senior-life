@@ -10,11 +10,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ scenarioId: string }> }): Promise<Metadata> {
   const { scenarioId } = await params;
   const scenario = getParkingScenario(scenarioId);
-  if (!scenario) return { title: "주차요금 정산기 연습" };
+  if (!scenario) return { title: "주차요금 정산기 연습", robots: { index: false, follow: false } };
   return {
     title: `${scenario.title} — 주차요금 정산기 연습`,
     description: scenario.missionText ?? "든든주차 정산기에서 주차요금 정산을 연습해 보세요. 실제 결제는 되지 않습니다.",
     alternates: { canonical: `/kiosk/parking/${scenario.id}` },
+    robots: { index: false, follow: false },
   };
 }
 

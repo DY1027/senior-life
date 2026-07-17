@@ -10,11 +10,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ scenarioId: string }> }): Promise<Metadata> {
   const { scenarioId } = await params;
   const scenario = getCivilScenario(scenarioId);
-  if (!scenario) return { title: "무인민원발급기 연습" };
+  if (!scenario) return { title: "무인민원발급기 연습", robots: { index: false, follow: false } };
   return {
     title: `${scenario.title} — 무인민원발급기 연습`,
     description: scenario.missionText ?? "든든민원 발급기에서 서류 발급을 연습해 보세요. 실제 발급은 되지 않습니다.",
     alternates: { canonical: `/kiosk/civil/${scenario.id}` },
+    robots: { index: false, follow: false },
   };
 }
 

@@ -4,8 +4,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "그림으로 배우는 생활안전",
-  description:
-    "어렵고 위험한 상황을 그림과 쉬운 설명으로 한 장씩 확인해보세요. 큰 글씨와 음성 안내를 제공하며 회원가입 없이 무료입니다.",
+  description: "보이스피싱과 디지털 생활 속 주의사항을 그림과 쉬운 설명으로 확인하세요.",
   alternates: { canonical: "/stories" },
 };
 

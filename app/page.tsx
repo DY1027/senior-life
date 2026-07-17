@@ -20,7 +20,16 @@ export const metadata: Metadata = {
   description:
     "카페 주문, 기차표 예매, 주차 정산, 마트 셀프계산대와 ATM까지 실제처럼 눌러보며 연습하는 무료 시니어 디지털 놀이터입니다.",
   alternates: { canonical: "/" },
-  keywords: ["시니어든든", "시니어 놀이터", "키오스크 연습", "주차요금 정산기 연습", "무인민원발급기 연습", "어르신 디지털 교육"],
+  keywords: [
+    "시니어 키오스크 연습",
+    "키오스크 사용법",
+    "디지털 기기 연습",
+    "시니어 디지털 교육",
+    "무인기기 연습",
+    "ATM 연습",
+    "셀프계산대 연습",
+    "주차정산기 연습",
+  ],
   openGraph: {
     type: "website",
     locale: "ko_KR",
@@ -33,11 +42,39 @@ export const metadata: Metadata = {
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "시니어든든",
-  url: "https://seniordeundun.com",
-  description: "카페 주문, 기차표 예매, 주차 정산, 마트 셀프계산대와 ATM까지 실제처럼 눌러보며 연습하는 무료 시니어 디지털 놀이터입니다.",
-  inLanguage: "ko-KR",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://seniordeundun.com/#organization",
+      name: "시니어든든",
+      url: "https://seniordeundun.com",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://seniordeundun.com/#website",
+      name: "시니어든든",
+      url: "https://seniordeundun.com",
+      description:
+        "카페 주문, 기차표 예매, 주차 정산, 마트 셀프계산대와 ATM까지 실제처럼 눌러보며 연습하는 무료 시니어 디지털 놀이터입니다.",
+      inLanguage: "ko-KR",
+      publisher: { "@id": "https://seniordeundun.com/#organization" },
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://seniordeundun.com/#application",
+      name: "시니어든든 디지털 생활 놀이터",
+      url: "https://seniordeundun.com",
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "웹 브라우저",
+      description:
+        "실제 주문, 결제, 송금 또는 발급 없이 생활 속 디지털 기기 사용을 연습하는 교육용 시뮬레이션입니다.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "KRW",
+      },
+    },
+  ],
 };
 
 export default function HomePage() {

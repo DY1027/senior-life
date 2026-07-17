@@ -1,14 +1,31 @@
 import type { NextConfig } from "next";
 
+const serviceChangedPrefixes = [
+  "health",
+  "hospital",
+  "welfare",
+  "finance",
+  "retirement",
+  "care",
+  "life-tips",
+] as const;
+
+const retiredAccountPrefixes = ["login", "signup", "mypage", "auth"] as const;
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async redirects() {
-    // 연습 놀이터 전환(2026-07)으로 삭제된 주소들 — 검색 유입이 끊기지 않게 안내한다
     return [
-      { source: "/health", destination: "/", permanent: true },
-      { source: "/health/:path*", destination: "/", permanent: true },
       { source: "/kiosk/hospital", destination: "/kiosk", permanent: true },
-      { source: "/login", destination: "/", permanent: true },
+      { source: "/kiosk/hospital/:path*", destination: "/kiosk", permanent: true },
+      ...serviceChangedPrefixes.flatMap((prefix) => [
+        { source: `/${prefix}`, destination: "/service-changed", permanent: true },
+        { source: `/${prefix}/:path*`, destination: "/service-changed", permanent: true },
+      ]),
+      ...retiredAccountPrefixes.flatMap((prefix) => [
+        { source: `/${prefix}`, destination: "/service-changed", permanent: true },
+        { source: `/${prefix}/:path*`, destination: "/service-changed", permanent: true },
+      ]),
       { source: "/legal/refund", destination: "/legal/terms", permanent: true },
     ];
   },
