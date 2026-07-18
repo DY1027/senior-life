@@ -14,12 +14,12 @@ export const parkingCatalog = validateCatalog({
   singleChoice: true,
   keypad: {
     title: "차 번호 뒤 4자리를 눌러요",
-    guide: "실제 기계처럼 숫자판으로 차 번호 뒤 4자리를 눌러 보세요. 연습이니 아무 숫자나 괜찮아요.",
+    guide: "실제 기계처럼 숫자판으로 차 번호 뒤 네 자리를 눌러 주세요. 연습이니 아무 숫자나 괜찮아요.",
     length: 4,
   },
   carSelect: {
     title: "내 차가 맞는지 확인해요",
-    guide: "사진과 들어온 시간을 보고 내 차를 골라 보세요. 연습이니 아무 차나 괜찮아요.",
+    guide: "사진과 들어온 시간을 보고 내 차를 골라 주세요. 연습이니 아무 차나 괜찮아요.",
     cars: [
       { id: "white", label: "흰색 승용차", sublabel: "오후 2시 10분에 들어옴", emoji: "🚗" },
       { id: "gray", label: "회색 승용차", sublabel: "오후 1시 40분에 들어옴", emoji: "🚙" },
@@ -28,12 +28,12 @@ export const parkingCatalog = validateCatalog({
   categories: [{ id: "fee", label: "요금" }],
   optionGroups: [],
   products: [
-    { id: "fee-normal", name: "할인 없이 정산 (1시간 30분)", emoji: "🧾", price: 3000, categoryId: "fee" },
-    { id: "fee-discount", name: "매장 할인 적용 (1시간 무료)", emoji: "🎟️", price: 2000, categoryId: "fee" },
+    { id: "fee-normal", name: "할인 없이 정산 (1시간 30분)", voiceName: "할인 없이 정산하기", emoji: "🧾", price: 3000, categoryId: "fee" },
+    { id: "fee-discount", name: "매장 할인 적용 (1시간 무료)", voiceName: "매장 할인 적용하기", emoji: "🎟️", price: 2000, categoryId: "fee" },
   ],
   paymentMethods: [
     { id: "card", label: "카드", emoji: "💳", hint: "넣거나 갖다 대기" },
-    { id: "cash", label: "현금 (지폐)", emoji: "💵", hint: "지폐 넣는 곳에 넣기" },
+    { id: "cash", label: "현금 (지폐)", voiceLabel: "현금", emoji: "💵", hint: "지폐 넣는 곳에 넣기" },
   ],
 });
 

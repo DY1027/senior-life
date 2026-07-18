@@ -23,7 +23,7 @@ export const civilCatalog = validateCatalog({
       label: "주민등록번호 표시",
       required: true, // 실제 발급기의 핵심 선택 — 반드시 고르게 한다
       choices: [
-        { id: "masked", label: "뒷자리 가리기 (권장)" },
+        { id: "masked", label: "뒷자리 가리기 (권장)", voiceLabel: "뒷자리 가리기" },
         { id: "full", label: "전체 표시" },
       ],
     },
@@ -43,7 +43,7 @@ export const civilCatalog = validateCatalog({
     { id: "family-cert", name: "가족관계증명서", emoji: "👨‍👩‍👧", price: 500, categoryId: "family", optionGroupIds: ["maskId"] },
   ],
   paymentMethods: [
-    { id: "cash", label: "현금 (동전·지폐)", emoji: "💵", hint: "수수료 넣는 곳에 넣기" },
+    { id: "cash", label: "현금 (동전·지폐)", voiceLabel: "현금", emoji: "💵", hint: "수수료 넣는 곳에 넣기" },
     { id: "card", label: "카드", emoji: "💳", hint: "넣거나 갖다 대기" },
   ],
 });

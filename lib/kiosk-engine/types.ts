@@ -15,12 +15,15 @@
 export type OptionChoice = {
   id: string;
   label: string; // "따뜻하게"
+  /** 화면 문구와 다르게 읽어야 할 때 쓰는 음성용 이름 */
+  voiceLabel?: string;
   priceDelta?: number; // 크게 +500원 등
 };
 
 export type OptionGroup = {
   id: string; // "temperature"
   label: string; // "온도"
+  voiceLabel?: string;
   choices: OptionChoice[];
   /** 지정하면 상품을 담기 전 반드시 골라야 한다 */
   required?: boolean;
@@ -30,6 +33,7 @@ export type OptionGroup = {
 export type Product = {
   id: string;
   name: string;
+  voiceName?: string;
   emoji: string;
   price: number;
   categoryId: string;
@@ -43,13 +47,13 @@ export type Catalog = {
   emoji: string;
   place: string; // "카페" — 안내 문장용
   /** 매장/포장 등. 비어 있으면 주문 방법 단계를 건너뛴다 (민원발급기 등) */
-  serviceTypes: { id: string; label: string; emoji: string }[];
+  serviceTypes: { id: string; label: string; voiceLabel?: string; emoji: string }[];
   /** 주문 방법 화면의 질문 (기본 "어디에서 드시겠어요?") */
   serviceQuestion?: string;
-  categories: { id: string; label: string }[];
+  categories: { id: string; label: string; voiceLabel?: string }[];
   products: Product[];
   optionGroups: OptionGroup[];
-  paymentMethods: { id: string; label: string; emoji: string; hint?: string }[];
+  paymentMethods: { id: string; label: string; voiceLabel?: string; emoji: string; hint?: string }[];
   /** 수량 단위 (잔/개/통) */
   unitLabel: string;
   /** 장바구니의 결제 버튼 문구 (기본 "결제하기") — 민원은 "수수료 결제하기" */

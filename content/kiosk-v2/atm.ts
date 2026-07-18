@@ -18,7 +18,7 @@ export const atmCatalog = validateCatalog({
   startLabel: "🪪 카드 넣기",
   keypad: {
     title: "비밀번호 4자리를 눌러요",
-    guide: "연습 비밀번호는 1 2 3 4예요. 진짜 비밀번호는 연습 화면에 절대 입력하지 마세요.",
+    guide: "연습 비밀번호는 일, 이, 삼, 사예요. 진짜 비밀번호는 연습 화면에 절대 입력하지 마세요.",
     length: 4,
     mask: true, // 실제 ATM처럼 ●로 가려서 — 비밀번호는 가리고 누르는 습관
   },
@@ -28,9 +28,9 @@ export const atmCatalog = validateCatalog({
   ],
   optionGroups: [],
   products: [
-    { id: "w3", name: "3만원 찾기", emoji: "💵", price: 30000, categoryId: "withdraw" },
-    { id: "w5", name: "5만원 찾기", emoji: "💵", price: 50000, categoryId: "withdraw" },
-    { id: "w10", name: "10만원 찾기", emoji: "💰", price: 100000, categoryId: "withdraw" },
+    { id: "w3", name: "3만원 찾기", voiceName: "삼만 원 찾기", emoji: "💵", price: 30000, categoryId: "withdraw" },
+    { id: "w5", name: "5만원 찾기", voiceName: "오만 원 찾기", emoji: "💵", price: 50000, categoryId: "withdraw" },
+    { id: "w10", name: "10만원 찾기", voiceName: "십만 원 찾기", emoji: "💰", price: 100000, categoryId: "withdraw" },
     { id: "balance", name: "잔액 확인", emoji: "🔍", price: 0, categoryId: "etc" },
   ],
   paymentMethods: [

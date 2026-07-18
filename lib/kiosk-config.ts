@@ -46,7 +46,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "주문 내역",
       processingMessage: "결제 정보를 확인하고 있어요",
       transactionLabel: "결제",
-      paymentPrompt: "결제 방법을 골라 보세요.",
+      paymentPrompt: "결제 방법을 골라 주세요.",
     },
   },
   fastfood: {
@@ -68,7 +68,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "주문 내역",
       processingMessage: "결제 정보를 확인하고 있어요",
       transactionLabel: "결제",
-      paymentPrompt: "결제 방법을 골라 보세요.",
+      paymentPrompt: "결제 방법을 골라 주세요.",
     },
   },
   ticket: {
@@ -90,7 +90,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "예매 내역",
       processingMessage: "결제 정보를 확인하고 있어요",
       transactionLabel: "결제",
-      paymentPrompt: "결제 방법을 골라 보세요.",
+      paymentPrompt: "결제 방법을 골라 주세요.",
     },
   },
   parking: {
@@ -112,7 +112,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "정산 내역",
       processingMessage: "결제 정보를 확인하고 있어요",
       transactionLabel: "결제",
-      paymentPrompt: "결제 방법을 골라 보세요.",
+      paymentPrompt: "결제 방법을 골라 주세요.",
     },
   },
   mart: {
@@ -134,7 +134,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "계산 내역",
       processingMessage: "결제 정보를 확인하고 있어요",
       transactionLabel: "결제",
-      paymentPrompt: "결제 방법을 골라 보세요.",
+      paymentPrompt: "결제 방법을 골라 주세요.",
     },
   },
   atm: {
@@ -157,7 +157,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "거래 내역",
       processingMessage: "거래 정보를 확인하고 있어요",
       transactionLabel: "거래",
-      paymentPrompt: "화면의 거래 내용을 확인해 보세요.",
+      paymentPrompt: "화면의 거래 내용을 확인해 주세요.",
     },
   },
   civil: {
@@ -180,7 +180,7 @@ export const KIOSK_CONFIGS = {
       summaryTitle: "발급 내역",
       processingMessage: "발급 정보를 확인하고 있어요",
       transactionLabel: "수수료 결제",
-      paymentPrompt: "수수료 결제 방법을 골라 보세요.",
+      paymentPrompt: "수수료 결제 방법을 골라 주세요.",
     },
   },
 } satisfies Record<KioskId, KioskConfig>;

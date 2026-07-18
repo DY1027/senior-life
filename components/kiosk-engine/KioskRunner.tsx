@@ -27,6 +27,7 @@ import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
 import { illustrations } from "@/components/dundun-design/illustration-assets";
 import CompletionActualShoppingAd from "@/components/CompletionActualShoppingAd";
+import { withParticle } from "@/lib/kiosk-engine/speech";
 
 const PHASE_LABEL: Record<Phase, string> = {
   intro: "연습 준비",
@@ -255,7 +256,7 @@ function KioskMachine({
           {/* 안내 배너 (learn 모드 상시 / 도움말 눌렀을 때) */}
           {showGuide && state.phase !== "done" && state.phase !== "intro" && (
             <div className="border-b border-[#DDEBDD] bg-[#F0FDF4] px-4 py-2.5">
-              <p className="break-keep text-center text-[15px] font-bold leading-relaxed text-[#166534]">💬 {guidance.text}</p>
+              <p data-testid="kiosk-guidance" className="break-keep text-center text-[15px] font-bold leading-relaxed text-[#166534]">💬 {guidance.text}</p>
             </div>
           )}
 
@@ -440,7 +441,7 @@ function KioskMachine({
                           data-guide={`product-${p.id}`}
                           onClick={() => {
                             if (soldOut) {
-                              setNotice(`${p.name}은(는) 품절이에요. 당황하지 말고 다른 메뉴를 고르면 돼요.`);
+                              setNotice(`${withParticle(p.name, "topic")} 품절이에요. 당황하지 말고 다른 메뉴를 고르면 돼요.`);
                               return;
                             }
                             // ErrorEngine: 첫 스캔이 안 읽히는 상황 — 같은 상품을 다시 누르면 된다
@@ -518,7 +519,7 @@ function KioskMachine({
                         const missing = missingRequiredOption(catalog, state.editing!);
                         if (missing) {
                           const og = catalog.optionGroups.find((o) => o.id === missing);
-                          setNotice(`${og?.label}을(를) 먼저 골라 주세요.`);
+                          setNotice(`${withParticle(og?.label ?? "옵션", "object")} 먼저 골라 주세요.`);
                           return;
                         }
                         send({ type: "CONFIRM_ITEM" });

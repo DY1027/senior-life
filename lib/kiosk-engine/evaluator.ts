@@ -5,12 +5,22 @@
 import type { Catalog, MachineState, MissionItem, Scenario } from "./types";
 import { missionAcceptsProduct, missionProductIds } from "./mission";
 import { getKioskConfig } from "@/lib/kiosk-config";
+import { countPhrase, spokenProduct, spokenValue, withParticle } from "./speech";
 
 export type MissionCheck = { label: string; pass: boolean };
 
 function optionLabel(catalog: Catalog, groupId: string, choiceId: string): string {
   const g = catalog.optionGroups.find((og) => og.id === groupId);
   return g?.choices.find((c) => c.id === choiceId)?.label ?? choiceId;
+}
+
+function optionVoiceLabel(catalog: Catalog, groupId: string, choiceId: string): string {
+  const group = catalog.optionGroups.find((optionGroup) => optionGroup.id === groupId);
+  return spokenValue(group?.choices.find((choice) => choice.id === choiceId));
+}
+
+function optionChoiceInstruction(label: string): string {
+  return /(게|없이)$/.test(label) ? label : withParticle(label, "direction");
 }
 
 function productName(catalog: Catalog, id: string): string {
@@ -85,24 +95,28 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
 
   switch (state.phase) {
     case "intro":
-      return { text: "아래의 '연습 시작' 버튼을 눌러 보세요.", targetId: "start" };
+      return { text: "연습 시작 버튼을 눌러 주세요.", targetId: "start" };
 
     case "keypad": {
       const kp = catalog.keypad;
-      if (!kp) return { text: "숫자를 눌러 보세요." };
+      if (!kp) return { text: "숫자를 눌러 주세요." };
       if (state.keypadValue.length < kp.length) {
-        return { text: kp.guide ?? `숫자판에서 ${kp.length}자리를 눌러 보세요. 연습이니 아무 숫자나 괜찮아요.`, targetId: "keypad" };
+        return { text: kp.guide ?? `숫자판에서 ${countPhrase(kp.length, "자리")}를 눌러 주세요. 연습이니 아무 숫자나 괜찮아요.`, targetId: "keypad" };
       }
-      return { text: "다 입력했어요. '확인' 버튼을 눌러 보세요.", targetId: "keypad-done" };
+      return { text: "다 입력했어요. 확인 버튼을 눌러 주세요.", targetId: "keypad-done" };
     }
 
     case "carSelect":
-      return { text: catalog.carSelect?.guide ?? "사진과 들어온 시간을 보고 내 차를 골라 보세요. 연습이니 아무 차나 괜찮아요." };
+      return { text: catalog.carSelect?.guide ?? "사진과 들어온 시간을 보고 내 차를 골라 주세요. 연습이니 아무 차나 괜찮아요." };
 
     case "service": {
-      if (!mission?.serviceType) return { text: "매장에서 드실지, 가져가실지 골라 보세요." };
+      if (!mission?.serviceType) return { text: "매장에서 드실지, 가져가실지 골라 주세요." };
       const svc = catalog.serviceTypes.find((s) => s.id === mission.serviceType);
-      return { text: `이번 임무는 ${svc?.label}이에요. '${svc?.label}'를 눌러 보세요.`, targetId: `service-${mission.serviceType}` };
+      const serviceLabel = spokenValue(svc);
+      return {
+        text: `이번 임무에 맞게 ${serviceLabel} 버튼을 눌러 주세요.`,
+        targetId: `service-${mission.serviceType}`,
+      };
     }
 
     case "menu": {
@@ -111,11 +125,14 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
         const want = mission?.items[0];
         if (want) {
           const p = availableProduct(catalog, state, want);
-          return { text: `'${p?.name}'을(를) 눌러 보세요. 누르면 ${flow.paymentStep} 화면으로 넘어가요.`, targetId: `product-${p?.id}` };
+          return {
+            text: `${spokenProduct(p)} 버튼을 눌러 주세요. 다음 화면에서 ${flow.paymentStep} 단계로 이동합니다.`,
+            targetId: `product-${p?.id}`,
+          };
         }
-        return { text: `원하는 항목을 눌러 보세요. 누르면 ${flow.paymentStep} 화면으로 넘어가요.` };
+        return { text: `원하는 항목을 눌러 주세요. 다음 화면에서 ${flow.paymentStep} 단계로 이동합니다.` };
       }
-      if (!mission) return { text: "원하는 메뉴를 눌러 자유롭게 담아 보세요." };
+      if (!mission) return { text: "원하는 메뉴를 눌러 자유롭게 담아 주세요." };
       // 아직 안 담긴 임무 항목 → 카테고리 → 상품 순으로 안내
       const missing = mission.items.find((it) => {
         const match = findMatch(state.cart, it);
@@ -125,69 +142,75 @@ export function nextGuidance(state: MachineState, scenario: Scenario, catalog: C
         const p = availableProduct(catalog, state, missing);
         if (p && p.categoryId !== state.activeCategoryId) {
           const cat = catalog.categories.find((c) => c.id === p.categoryId);
-          return { text: `'${cat?.label}' 칸을 눌러 보세요. ${p.name}이(가) 거기 있어요.`, targetId: `category-${p.categoryId}` };
+          return {
+            text: `${spokenValue(cat)} 항목을 눌러 주세요. 그 안에서 ${withParticle(spokenProduct(p), "object")} 찾을 수 있어요.`,
+            targetId: `category-${p.categoryId}`,
+          };
         }
-        return { text: `'${p?.name}'을(를) 눌러 보세요.`, targetId: `product-${p?.id}` };
+        return { text: `${spokenProduct(p)} 버튼을 눌러 주세요.`, targetId: `product-${p?.id}` };
       }
       // 다 담았으면 장바구니로
-      return { text: `다 골랐어요. '${flow.reviewButton}' 버튼을 눌러 선택한 내용을 확인해 보세요.`, targetId: "open-cart" };
+      return { text: `다 골랐어요. ${flow.reviewButton} 버튼을 눌러 선택한 내용을 확인해 주세요.`, targetId: "open-cart" };
     }
 
     case "options": {
-      if (!state.editing) return { text: "옵션을 골라 보세요." };
+      if (!state.editing) return { text: "옵션을 골라 주세요." };
       const item = mission?.items.find((it) => missionAcceptsProduct(it, state.editing!.productId));
       // 임무 옵션과 다른 것부터 안내
       for (const [gid, want] of Object.entries(item?.options ?? {})) {
         if (state.editing.options[gid] !== want) {
           const g = catalog.optionGroups.find((og) => og.id === gid);
-          return { text: `${g?.label}은(는) '${optionLabel(catalog, gid, want)}'를 골라 보세요.`, targetId: `option-${gid}-${want}` };
+          return {
+            text: `${withParticle(spokenValue(g), "topic")} ${optionChoiceInstruction(optionVoiceLabel(catalog, gid, want))} 골라 주세요.`,
+            targetId: `option-${gid}-${want}`,
+          };
         }
       }
       if (item && state.editing.quantity !== item.quantity) {
-        return { text: `수량을 ${item.quantity}${catalog.unitLabel}로 맞춰 보세요.`, targetId: "qty" };
+        return { text: `수량을 ${withParticle(countPhrase(item.quantity, catalog.unitLabel), "direction")} 맞춰 주세요.`, targetId: "qty" };
       }
-      return { text: "'담기' 버튼을 눌러 장바구니에 담아 보세요.", targetId: "confirm-item" };
+      return { text: "담기 버튼을 눌러 장바구니에 담아 주세요.", targetId: "confirm-item" };
     }
 
     case "cart": {
       const checkoutLabel = catalog.checkoutLabel ?? "결제하기";
-      if (!mission) return { text: `내역을 확인하고 '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
+      if (!mission) return { text: `내역을 확인하고 ${checkoutLabel} 버튼을 눌러 주세요.`, targetId: "checkout" };
       const extra = state.cart.filter((c) => !mission.items.some((m) => findMatch([c], m)));
       if (extra.length > 0) {
-        const name = productName(catalog, extra[0].productId);
-        return { text: `'${name}'은(는) 임무에 없는 메뉴예요. 옆의 '삭제'를 눌러 빼 보세요.`, targetId: `remove-${extra[0].uid}` };
+        const name = spokenProduct(catalog.products.find((product) => product.id === extra[0].productId));
+        return { text: `${withParticle(name, "topic")} 임무에 없는 항목이에요. 옆의 삭제 버튼을 눌러 빼 주세요.`, targetId: `remove-${extra[0].uid}` };
       }
       const missing = mission.items.find((it) => {
         const match = findMatch(state.cart, it);
         return !match || match.quantity !== it.quantity;
       });
       if (missing) {
-        return { text: "아직 임무 메뉴가 다 담기지 않았어요. '메뉴로 돌아가기'를 눌러 보세요.", targetId: "close-cart" };
+        return { text: "아직 임무 메뉴가 다 담기지 않았어요. 메뉴로 돌아가기 버튼을 눌러 주세요.", targetId: "close-cart" };
       }
-      return { text: `선택한 내용이 맞아요. '${checkoutLabel}'를 눌러 보세요.`, targetId: "checkout" };
+      return { text: `선택한 내용이 맞아요. ${checkoutLabel} 버튼을 눌러 주세요.`, targetId: "checkout" };
     }
 
     case "payMethod": {
       if (!mission?.paymentMethod) return { text: flow.paymentPrompt };
       const m = catalog.paymentMethods.find((mm) => mm.id === mission.paymentMethod);
-      return { text: `'${m?.label}'를 눌러 보세요.`, targetId: `pay-${mission.paymentMethod}` };
+      return { text: `${spokenValue(m)} 버튼을 눌러 주세요.`, targetId: `pay-${mission.paymentMethod}` };
     }
 
     case "processing":
       return { text: `${flow.processingMessage}. 잠시만 기다려 주세요.` };
 
     case "payError":
-      return { text: "괜찮아요, 실제로도 자주 있는 일이에요. '다시 시도'를 눌러 보세요.", targetId: "retry-pay" };
+      return { text: "괜찮아요. 실제로도 자주 있는 일이에요. 다시 시도 버튼을 눌러 주세요.", targetId: "retry-pay" };
 
     case "receipt": {
-      if (mission?.receipt === undefined) return { text: "영수증이 필요하면 '받기', 아니면 '받지 않기'를 눌러 보세요." };
+      if (mission?.receipt === undefined) return { text: "영수증이 필요하면 받기, 필요하지 않으면 받지 않기 버튼을 눌러 주세요." };
       return mission.receipt
-        ? { text: "이번 임무는 영수증을 받는 거예요. '영수증 받기'를 눌러 보세요.", targetId: "receipt-yes" }
-        : { text: "이번 임무는 영수증을 받지 않는 거예요. '받지 않기'를 눌러 보세요.", targetId: "receipt-no" };
+        ? { text: "이번 임무에서는 영수증을 받아요. 영수증 받기 버튼을 눌러 주세요.", targetId: "receipt-yes" }
+        : { text: "이번 임무에서는 영수증을 받지 않아요. 받지 않기 버튼을 눌러 주세요.", targetId: "receipt-no" };
     }
 
     case "printerFail":
-      return { text: "괜찮아요, 종이가 걸리면 생기는 일이에요. '다시 출력하기'를 눌러 보세요.", targetId: "retry-print" };
+      return { text: "괜찮아요. 종이가 걸리면 생기는 일이에요. 다시 출력하기 버튼을 눌러 주세요.", targetId: "retry-print" };
 
     case "done":
       return { text: "연습을 끝냈어요!" };

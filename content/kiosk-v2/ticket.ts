@@ -14,8 +14,8 @@ export const ticketCatalog = validateCatalog({
   unitLabel: "장",
   serviceQuestion: "어떻게 다녀오시나요?",
   serviceTypes: [
-    { id: "oneway", label: "편도 (가는 표만)", emoji: "➡️" },
-    { id: "round", label: "왕복 (가고 오는 표)", emoji: "🔁" },
+    { id: "oneway", label: "편도 (가는 표만)", voiceLabel: "편도", emoji: "➡️" },
+    { id: "round", label: "왕복 (가고 오는 표)", voiceLabel: "왕복", emoji: "🔁" },
   ],
   checkoutLabel: "결제하기",
   categories: [
@@ -43,11 +43,11 @@ export const ticketCatalog = validateCatalog({
     },
   ],
   products: [
-    { id: "d9", name: "서울 → 대전 · 오전 9시", emoji: "🚄", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
-    { id: "d10", name: "서울 → 대전 · 오전 10시", emoji: "🚄", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
-    { id: "d14", name: "서울 → 대전 · 오후 2시", emoji: "🚆", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
-    { id: "b10", name: "서울 → 부산 · 오전 10시", emoji: "🚄", price: 28000, categoryId: "busan", optionGroupIds: ["trainClass", "seatPos"] },
-    { id: "b14", name: "서울 → 부산 · 오후 2시", emoji: "🚆", price: 28000, categoryId: "busan", optionGroupIds: ["trainClass", "seatPos"] },
+    { id: "d9", name: "서울 → 대전 · 오전 9시", voiceName: "서울에서 대전으로 가는 오전 아홉 시 기차", emoji: "🚄", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
+    { id: "d10", name: "서울 → 대전 · 오전 10시", voiceName: "서울에서 대전으로 가는 오전 열 시 기차", emoji: "🚄", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
+    { id: "d14", name: "서울 → 대전 · 오후 2시", voiceName: "서울에서 대전으로 가는 오후 두 시 기차", emoji: "🚆", price: 10000, categoryId: "daejeon", optionGroupIds: ["trainClass", "seatPos"] },
+    { id: "b10", name: "서울 → 부산 · 오전 10시", voiceName: "서울에서 부산으로 가는 오전 열 시 기차", emoji: "🚄", price: 28000, categoryId: "busan", optionGroupIds: ["trainClass", "seatPos"] },
+    { id: "b14", name: "서울 → 부산 · 오후 2시", voiceName: "서울에서 부산으로 가는 오후 두 시 기차", emoji: "🚆", price: 28000, categoryId: "busan", optionGroupIds: ["trainClass", "seatPos"] },
   ],
   paymentMethods: [
     { id: "card", label: "카드", emoji: "💳", hint: "넣거나 갖다 대기" },

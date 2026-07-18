@@ -13,16 +13,16 @@ export const martCatalog = validateCatalog({
   unitLabel: "개",
   serviceQuestion: "회원 적립 하시겠어요?",
   serviceTypes: [
-    { id: "skip", label: "적립 안 함 (건너뛰기)", emoji: "➡️" },
+    { id: "skip", label: "적립 안 함 (건너뛰기)", voiceLabel: "적립 안 함", emoji: "➡️" },
     { id: "point", label: "포인트 적립하기", emoji: "📱" },
   ],
   categories: [
     { id: "basket", label: "바구니 속 상품" },
-    { id: "extra", label: "봉투·기타" },
+    { id: "extra", label: "봉투·기타", voiceLabel: "봉투와 기타" },
   ],
   optionGroups: [],
   products: [
-    { id: "milk", name: "우유 1L", emoji: "🥛", price: 2500, categoryId: "basket" },
+    { id: "milk", name: "우유 1L", voiceName: "우유 일 리터", emoji: "🥛", price: 2500, categoryId: "basket" },
     { id: "ramen", name: "라면 묶음", emoji: "🍜", price: 3500, categoryId: "basket" },
     { id: "apple", name: "사과 한 봉지", emoji: "🍎", price: 5500, categoryId: "basket" },
     { id: "snack", name: "과자", emoji: "🍪", price: 1500, categoryId: "basket" },

@@ -13,12 +13,12 @@ export const cafeCatalog = validateCatalog({
   unitLabel: "잔",
   serviceTypes: [
     { id: "dinein", label: "매장에서 먹기", emoji: "🍽️" },
-    { id: "takeout", label: "포장하기 (가져가기)", emoji: "🥡" },
+    { id: "takeout", label: "포장하기 (가져가기)", voiceLabel: "포장하기", emoji: "🥡" },
   ],
   categories: [
     { id: "coffee", label: "커피" },
-    { id: "noncoffee", label: "차·음료" },
-    { id: "dessert", label: "빵·간식" },
+    { id: "noncoffee", label: "차·음료", voiceLabel: "차와 음료" },
+    { id: "dessert", label: "빵·간식", voiceLabel: "빵과 간식" },
   ],
   optionGroups: [
     {
@@ -44,7 +44,7 @@ export const cafeCatalog = validateCatalog({
       label: "시럽",
       defaultChoiceId: "none",
       choices: [
-        { id: "none", label: "시럽 없음" },
+        { id: "none", label: "시럽 없음", voiceLabel: "시럽 없이" },
         { id: "add", label: "시럽 추가", priceDelta: 300 },
       ],
     },

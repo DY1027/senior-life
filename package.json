@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "audit:kiosk-voice": "node --no-warnings --experimental-strip-types --loader ./scripts/ts-path-loader.mjs ./scripts/generate-kiosk-audio.mjs --audit",
     "test": "playwright test",
     "test:e2e": "playwright test"
   },

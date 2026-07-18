@@ -14,12 +14,12 @@ export const burgerCatalog = validateCatalog({
   serviceQuestion: "어디에서 드시겠어요?",
   serviceTypes: [
     { id: "dinein", label: "매장에서 먹기", emoji: "🍽️" },
-    { id: "takeout", label: "포장하기 (가져가기)", emoji: "🥡" },
+    { id: "takeout", label: "포장하기 (가져가기)", voiceLabel: "포장하기", emoji: "🥡" },
   ],
   categories: [
     { id: "set", label: "세트 메뉴" },
-    { id: "single", label: "단품·사이드" },
-    { id: "drink", label: "음료·디저트" },
+    { id: "single", label: "단품·사이드", voiceLabel: "단품과 사이드" },
+    { id: "drink", label: "음료·디저트", voiceLabel: "음료와 디저트" },
   ],
   optionGroups: [
     {

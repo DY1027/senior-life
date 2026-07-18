@@ -8,12 +8,14 @@ import type { Catalog, MissionItem, Scenario } from "./types";
 const optionChoiceSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
+  voiceLabel: z.string().min(1).optional(),
   priceDelta: z.number().int().optional(),
 });
 
 const optionGroupSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
+  voiceLabel: z.string().min(1).optional(),
   choices: z.array(optionChoiceSchema).min(1),
   required: z.boolean().optional(),
   defaultChoiceId: z.string().optional(),
@@ -22,6 +24,7 @@ const optionGroupSchema = z.object({
 const productSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
+  voiceName: z.string().min(1).optional(),
   emoji: z.string().min(1),
   price: z.number().int().nonnegative(),
   categoryId: z.string().min(1),
@@ -33,12 +36,12 @@ export const catalogSchema = z.object({
   brand: z.string().min(1),
   emoji: z.string().min(1),
   place: z.string().min(1),
-  serviceTypes: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string() })), // 비어 있으면 단계 생략
+  serviceTypes: z.array(z.object({ id: z.string(), label: z.string(), voiceLabel: z.string().min(1).optional(), emoji: z.string() })), // 비어 있으면 단계 생략
   serviceQuestion: z.string().min(1).optional(),
-  categories: z.array(z.object({ id: z.string(), label: z.string() })).min(1),
+  categories: z.array(z.object({ id: z.string(), label: z.string(), voiceLabel: z.string().min(1).optional() })).min(1),
   products: z.array(productSchema).min(1),
   optionGroups: z.array(optionGroupSchema),
-  paymentMethods: z.array(z.object({ id: z.string(), label: z.string(), emoji: z.string(), hint: z.string().optional() })).min(1),
+  paymentMethods: z.array(z.object({ id: z.string(), label: z.string(), voiceLabel: z.string().min(1).optional(), emoji: z.string(), hint: z.string().optional() })).min(1),
   unitLabel: z.string().min(1),
   checkoutLabel: z.string().min(1).optional(),
   startLabel: z.string().min(1).optional(),
