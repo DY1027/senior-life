@@ -137,5 +137,5 @@ export function kioskVoiceId(text: string): string {
 
 export function kioskVoiceAsset(text: string): string | undefined {
   const id = kioskVoiceId(text);
-  return availableVoiceIds.has(id) ? `/api/kiosk-voice/${id}` : undefined;
+  return availableVoiceIds.has(id) ? `/audio/kiosk/${id}.mp3` : undefined;
 }

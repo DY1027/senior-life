@@ -29,6 +29,41 @@ if (args.has("--audit")) {
 }
 
 const ids = corpus.map(kioskVoiceId).sort();
+const outputDirectory = path.resolve("public/audio/kiosk");
+
+function isMp3(buffer) {
+  return (
+    buffer.length > 1_000 &&
+    ((buffer[0] === 0x49 && buffer[1] === 0x44 && buffer[2] === 0x33) ||
+      (buffer[0] === 0xff && (buffer[1] & 0xe0) === 0xe0))
+  );
+}
+
+if (args.has("--check")) {
+  const invalidIds = [];
+  let totalBytes = 0;
+  for (const id of ids) {
+    const filePath = path.join(outputDirectory, `${id}.mp3`);
+    if (!fs.existsSync(filePath)) {
+      invalidIds.push(id);
+      continue;
+    }
+    const audio = fs.readFileSync(filePath);
+    if (!isMp3(audio)) {
+      invalidIds.push(id);
+      continue;
+    }
+    totalBytes += audio.length;
+  }
+  if (invalidIds.length) {
+    console.error(`누락되거나 잘못된 음성 파일: ${invalidIds.length}/${ids.length}`);
+    invalidIds.forEach((id) => console.error(`- ${id}`));
+    process.exit(1);
+  }
+  console.log(`정적 음성 파일 검증 완료: ${ids.length}개 (${(totalBytes / 1024 / 1024).toFixed(2)} MiB)`);
+  process.exit(0);
+}
+
 function updateManifest() {
   const manifestPath = path.resolve("lib/kiosk-voice/assets.ts");
   const manifest = fs.readFileSync(manifestPath, "utf8");
@@ -53,7 +88,6 @@ if (!key || !voiceId) {
 
 const api = "https://api.inworld.ai/tts/v1/voice";
 const modelId = process.env.INWORLD_MODEL ?? "inworld-tts-1";
-const outputDirectory = path.resolve("public/audio/kiosk");
 fs.mkdirSync(outputDirectory, { recursive: true });
 
 async function synthesize(text) {
