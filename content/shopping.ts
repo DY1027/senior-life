@@ -193,7 +193,7 @@ export const SHOPPING_MISSIONS = z.array(shoppingMissionSchema).parse([
     accent: "blue",
     visual: { cardImage: cableImage, heroImage: cableImage },
     productIds: ["cable-usbc-white-2m", "cable-usbc-black-1m", "cable-eightpin-white-2m"],
-    steps: ["상품 검색", "검색 결과", "상세 정보", "옵션 선택", "장바구니", "주문 전 확인"],
+    steps: ["상품 검색", "검색 결과", "상세 확인", "단자 선택", "길이 선택", "수량 확인", "장바구니", "배송비 포함 총액", "주문 전 확인"],
     correctProductId: "cable-usbc-white-2m",
     learningPoints: ["광고 표시와 일반 상품을 구분했어요.", "단자와 길이를 먼저 확인했어요.", "수량과 배송비를 주문 전에 다시 봤어요."],
     collectionSlug: "charging",
@@ -288,4 +288,3 @@ export function getShoppingMission(slug: string) {
 export function getShoppingProduct(id: string) {
   return SHOPPING_PRODUCTS.find((product) => product.id === id);
 }
-

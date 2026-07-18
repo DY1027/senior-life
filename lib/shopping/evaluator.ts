@@ -25,22 +25,38 @@ export function calculateShoppingTotal(productIds: string[]) {
   }, 0);
 }
 
-export function evaluateGuidedMission(mission: ShoppingMission, input: { productId?: string; length?: string; color?: string; quantity: number }): ShoppingEvaluation {
+export type GuidedMissionInput = {
+  productId?: string;
+  connector?: string;
+  length?: string;
+  quantity: number;
+  detailConfirmed: boolean;
+  cartAdded: boolean;
+  reviewConfirmed: boolean;
+};
+
+export function evaluateGuidedMission(mission: ShoppingMission, input: GuidedMissionInput): ShoppingEvaluation {
   const checks = {
     product: input.productId === mission.correctProductId,
+    connector: input.connector === "C타입-C타입",
     length: input.length === "2m",
-    color: input.color === "화이트",
     quantity: input.quantity === 1,
+    detail: input.detailConfirmed,
+    cart: input.cartAdded,
+    review: input.reviewConfirmed,
   };
   const failedRuleIds = Object.entries(checks).filter(([, passed]) => !passed).map(([id]) => id);
   const product = input.productId ? getShoppingProduct(input.productId) : undefined;
-  const totalPrice = product ? (product.examplePrice + product.shippingFee) * input.quantity : 0;
+  const totalPrice = product ? product.examplePrice * input.quantity + product.shippingFee : 0;
   const feedback: ShoppingFeedback[] = [];
-  if (!checks.product) feedback.push({ level: "check", title: "단자를 다시 확인해요", description: "이번 미션은 C타입 단자 제품을 찾는 연습이에요." });
+  if (!checks.product) feedback.push({ level: "check", title: "상품을 다시 비교해요", description: "이번 연습 조건은 C타입-C타입 단자, 길이 2m인 단품이에요." });
+  if (!checks.connector) feedback.push({ level: "check", title: "단자가 달라요", description: "단자 선택 화면으로 돌아가 C타입-C타입을 골라주세요." });
   if (!checks.length) feedback.push({ level: "check", title: "길이는 2m가 필요해요", description: "옵션에서 2m가 선택되었는지 확인해 주세요." });
-  if (!checks.color) feedback.push({ level: "check", title: "색상은 화이트로 골라요", description: "옵션에서 화이트가 선택되었는지 확인해 주세요." });
   if (!checks.quantity) feedback.push({ level: "check", title: "필요한 수량은 1개예요", description: "장바구니에서 수량을 1개로 바꿔 주세요." });
-  if (failedRuleIds.length === 0) feedback.push({ level: "good", title: "조건에 잘 맞는 선택이에요", description: "단자, 길이, 색상과 수량을 모두 확인했어요." });
+  if (!checks.detail) feedback.push({ level: "check", title: "상세정보를 더 확인해요", description: "상품 상세 화면에서 단자와 배송비를 확인해 주세요." });
+  if (!checks.cart) feedback.push({ level: "check", title: "장바구니에 담아주세요", description: "선택한 상품과 옵션을 확인한 뒤 장바구니 담기 버튼을 눌러주세요." });
+  if (!checks.review) feedback.push({ level: "check", title: "주문 내용을 모두 확인해요", description: "상품, 옵션, 수량, 배송비 포함 총액을 차례로 확인해 주세요." });
+  if (failedRuleIds.length === 0) feedback.push({ level: "good", title: "조건에 잘 맞는 선택이에요", description: "단자, 길이, 수량과 배송비 포함 총액을 모두 확인했어요." });
   return buildResult(mission, failedRuleIds, totalPrice, feedback);
 }
 

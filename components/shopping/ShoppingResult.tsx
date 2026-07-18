@@ -37,6 +37,12 @@ export default function ShoppingResult({ mission }: { mission: ShoppingMission }
         <h1>{mission.shortTitle} 연습을 마쳤어요!</h1>
         <p>실제 주문이나 결제는 전혀 일어나지 않았습니다.</p>
         {result && <strong className={styles.resultScore}>확인 점수 {result.score}점</strong>}
+        {result && mission.mode === "guided" && (
+          <div className={styles.savedResult}>
+            <span>배송비 포함 연습 총액 <strong>{result.totalPrice.toLocaleString("ko-KR")}원</strong></span>
+            <span><CheckIcon /> 완료 기록이 이 기기에 저장됐어요</span>
+          </div>
+        )}
       </section>
 
       <section className={styles.learningCard} aria-labelledby="shopping-learning-title">

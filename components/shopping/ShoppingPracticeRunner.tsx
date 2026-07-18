@@ -23,12 +23,17 @@ type RunnerState = {
   step: number;
   searchTerm: string;
   selectedProductId?: string;
+  connector?: string;
   length?: string;
-  color?: string;
   quantity: number;
+  detailChecks: string[];
+  quantityConfirmed: boolean;
+  cartAdded: boolean;
+  reviewChecks: string[];
   selectedBudgetIds: string[];
   selectedMistakes: string[];
   hintOpen: boolean;
+  stepNotice?: { title: string; description: string };
   feedback?: ShoppingEvaluation;
 };
 
@@ -36,25 +41,35 @@ type RunnerAction =
   | { type: "step"; step: number }
   | { type: "search"; value: string }
   | { type: "product"; id: string }
+  | { type: "connector"; value: string }
   | { type: "length"; value: string }
-  | { type: "color"; value: string }
   | { type: "quantity"; value: number }
+  | { type: "toggleDetail"; id: string }
+  | { type: "confirmQuantity" }
+  | { type: "addCart" }
+  | { type: "toggleReview"; id: string }
   | { type: "toggleBudget"; id: string }
   | { type: "toggleMistake"; id: string }
   | { type: "hint" }
+  | { type: "stepNotice"; value?: { title: string; description: string } }
   | { type: "feedback"; value?: ShoppingEvaluation };
 
 function reducer(state: RunnerState, action: RunnerAction): RunnerState {
   switch (action.type) {
-    case "step": return { ...state, step: action.step, feedback: undefined, hintOpen: false };
-    case "search": return { ...state, searchTerm: action.value };
-    case "product": return { ...state, selectedProductId: action.id, feedback: undefined };
-    case "length": return { ...state, length: action.value, feedback: undefined };
-    case "color": return { ...state, color: action.value, feedback: undefined };
-    case "quantity": return { ...state, quantity: Math.max(1, Math.min(9, action.value)), feedback: undefined };
+    case "step": return { ...state, step: action.step, feedback: undefined, stepNotice: undefined, hintOpen: false };
+    case "search": return { ...state, searchTerm: action.value, stepNotice: undefined };
+    case "product": return { ...state, selectedProductId: action.id, connector: undefined, length: undefined, quantity: 1, detailChecks: [], quantityConfirmed: false, cartAdded: false, reviewChecks: [], feedback: undefined, stepNotice: undefined };
+    case "connector": return { ...state, connector: action.value, cartAdded: false, reviewChecks: [], feedback: undefined, stepNotice: undefined };
+    case "length": return { ...state, length: action.value, cartAdded: false, reviewChecks: [], feedback: undefined, stepNotice: undefined };
+    case "quantity": return { ...state, quantity: Math.max(1, Math.min(9, action.value)), quantityConfirmed: false, cartAdded: false, reviewChecks: [], feedback: undefined, stepNotice: undefined };
+    case "toggleDetail": return { ...state, detailChecks: state.detailChecks.includes(action.id) ? state.detailChecks.filter((id) => id !== action.id) : [...state.detailChecks, action.id], stepNotice: undefined };
+    case "confirmQuantity": return { ...state, quantityConfirmed: true, cartAdded: false, reviewChecks: [], stepNotice: undefined };
+    case "addCart": return { ...state, cartAdded: true, reviewChecks: [], stepNotice: undefined };
+    case "toggleReview": return { ...state, reviewChecks: state.reviewChecks.includes(action.id) ? state.reviewChecks.filter((id) => id !== action.id) : [...state.reviewChecks, action.id], stepNotice: undefined };
     case "toggleBudget": return { ...state, selectedBudgetIds: state.selectedBudgetIds.includes(action.id) ? state.selectedBudgetIds.filter((id) => id !== action.id) : [...state.selectedBudgetIds, action.id], feedback: undefined };
     case "toggleMistake": return { ...state, selectedMistakes: state.selectedMistakes.includes(action.id) ? state.selectedMistakes.filter((id) => id !== action.id) : [...state.selectedMistakes, action.id], feedback: undefined };
     case "hint": return { ...state, hintOpen: !state.hintOpen };
+    case "stepNotice": return { ...state, stepNotice: action.value };
     case "feedback": return { ...state, feedback: action.value };
   }
 }
@@ -63,6 +78,10 @@ const initialState: RunnerState = {
   step: 0,
   searchTerm: "충전 케이블",
   quantity: 1,
+  detailChecks: [],
+  quantityConfirmed: false,
+  cartAdded: false,
+  reviewChecks: [],
   selectedBudgetIds: [],
   selectedMistakes: [],
   hintOpen: false,
@@ -94,14 +113,34 @@ export default function ShoppingPracticeRunner({ mission }: { mission: ShoppingM
 
   function next() {
     if (mission.mode === "guided") {
-      const guidedInput = { productId: state.selectedProductId, length: state.length, color: state.color, quantity: state.quantity };
-      if (state.step === 1 && !state.selectedProductId) return dispatch({ type: "feedback", value: evaluateGuidedMission(mission, guidedInput) });
+      const guidedInput = {
+        productId: state.selectedProductId,
+        connector: state.connector,
+        length: state.length,
+        quantity: state.quantity,
+        detailConfirmed: ["connector", "shipping"].every((id) => state.detailChecks.includes(id)),
+        cartAdded: state.cartAdded,
+        reviewConfirmed: ["product", "options", "quantity", "total"].every((id) => state.reviewChecks.includes(id)),
+      };
+      const compactSearch = state.searchTerm.replace(/\s/g, "");
+      if (state.step === 0 && (!compactSearch.includes("C타입") || !compactSearch.includes("케이블"))) return showStepNotice("검색어를 조금 더 자세히 써요", "‘C타입 충전 케이블’처럼 단자와 상품 종류를 함께 입력해 주세요.");
+      if (state.step === 1 && !state.selectedProductId) return showStepNotice("상품을 하나 골라주세요", "검색 결과에서 상세정보를 확인할 상품을 눌러주세요.");
+      if (state.step === 2 && !guidedInput.detailConfirmed) return showStepNotice("상세정보 두 곳을 확인해요", "단자와 배송비를 확인했다는 칸을 모두 눌러주세요.");
+      if (state.step === 3 && !state.connector) return showStepNotice("단자를 선택해 주세요", "내 기기에 맞는 케이블 단자를 하나 골라주세요.");
+      if (state.step === 4 && !state.length) return showStepNotice("길이를 선택해 주세요", "사용할 장소를 생각하고 케이블 길이를 하나 골라주세요.");
+      if (state.step === 5 && !state.quantityConfirmed) return showStepNotice("수량을 확인해 주세요", "수량을 맞춘 뒤 ‘수량 확인했어요’ 버튼을 눌러주세요.");
+      if (state.step === 6 && !state.cartAdded) return showStepNotice("장바구니에 담아주세요", "선택한 상품과 옵션을 확인한 뒤 담기 버튼을 눌러주세요.");
+      if (state.step === maxStep && !guidedInput.reviewConfirmed) return showStepNotice("주문 내용을 모두 확인해요", "상품, 옵션, 수량, 배송비 포함 총액 네 곳을 모두 확인해 주세요.");
       if (state.step === maxStep) return finish(evaluateGuidedMission(mission, guidedInput));
     }
     if (mission.mode === "budget" && state.step === maxStep) return finish(evaluateBudgetMission(mission, state.selectedBudgetIds));
     if (mission.mode === "compare" && state.step === maxStep) return finish(evaluateCompareMission(mission, state.selectedProductId));
     if (mission.mode === "mistake" && state.step === maxStep) return finish(evaluateMistakeMission(mission, state.selectedMistakes));
     dispatch({ type: "step", step: Math.min(maxStep, state.step + 1) });
+  }
+
+  function showStepNotice(title: string, description: string) {
+    dispatch({ type: "stepNotice", value: { title, description } });
   }
 
   return (
@@ -128,6 +167,7 @@ export default function ShoppingPracticeRunner({ mission }: { mission: ShoppingM
         {mission.mode === "compare" && renderCompareStep()}
         {mission.mode === "mistake" && renderMistakeStep()}
 
+        {state.stepNotice && <StepNotice title={state.stepNotice.title} description={state.stepNotice.description} />}
         {state.feedback && <FeedbackPanel result={state.feedback} />}
         {state.hintOpen && <div className={styles.hintPanel}><strong>힌트</strong><p>{hintText()}</p></div>}
       </section>
@@ -156,27 +196,71 @@ export default function ShoppingPracticeRunner({ mission }: { mission: ShoppingM
     if (state.step === 2 && selectedProduct) return (
       <div className={styles.detailGrid}>
         <PracticeProductCard product={selectedProduct} />
-        <div className={styles.infoTable}><p>온라인 쇼핑 연습을 위해 만든 가상 상품입니다.</p>{Object.entries(selectedProduct.features).map(([key, value]) => <div key={key}><span>{key}</span><strong>{value}</strong></div>)}</div>
+        <div>
+          <div className={styles.infoTable}><p>온라인 쇼핑 연습을 위해 만든 가상 상품입니다.</p>{Object.entries(selectedProduct.features).map(([key, value]) => <div key={key}><span>{key}</span><strong>{value}</strong></div>)}<div><span>배송비</span><strong>{selectedProduct.shippingFee.toLocaleString("ko-KR")}원</strong></div></div>
+          <fieldset className={styles.checkboxGroup}>
+            <legend>확인한 상세정보를 눌러주세요</legend>
+            <CheckChoice id="detail-connector" label="단자를 확인했어요" checked={state.detailChecks.includes("connector")} onChange={() => dispatch({ type: "toggleDetail", id: "connector" })} />
+            <CheckChoice id="detail-shipping" label="배송비를 확인했어요" checked={state.detailChecks.includes("shipping")} onChange={() => dispatch({ type: "toggleDetail", id: "shipping" })} />
+          </fieldset>
+        </div>
       </div>
     );
     if (state.step === 3) return (
       <div className={styles.practicePanel}>
-        <OptionGroup label="길이 선택" values={["1m", "2m", "3m"]} selected={state.length} onSelect={(value) => dispatch({ type: "length", value })} />
-        <OptionGroup label="색상 선택" values={["화이트", "블랙"]} selected={state.color} onSelect={(value) => dispatch({ type: "color", value })} />
-        <div className={styles.quantityRow}><span>수량</span><button type="button" onClick={() => dispatch({ type: "quantity", value: state.quantity - 1 })}>−</button><strong>{state.quantity}</strong><button type="button" onClick={() => dispatch({ type: "quantity", value: state.quantity + 1 })}>＋</button></div>
+        <p className={styles.noteText}>케이블 양쪽 끝의 모양이 내 기기와 충전기에 맞아야 해요.</p>
+        <OptionGroup label="단자 선택" values={["C타입-C타입", "USB-A-C타입", "8핀-USB"]} selected={state.connector} onSelect={(value) => dispatch({ type: "connector", value })} />
       </div>
     );
-    if (state.step === 4 && selectedProduct) return (
+    if (state.step === 4) return (
+      <div className={styles.practicePanel}>
+        <p className={styles.noteText}>침대나 소파처럼 충전기에서 거리가 있는 곳에서는 길이도 확인해요.</p>
+        <OptionGroup label="길이 선택" values={["1m", "2m", "3m"]} selected={state.length} onSelect={(value) => dispatch({ type: "length", value })} />
+      </div>
+    );
+    if (state.step === 5) return (
+      <div className={styles.practicePanel}>
+        <div className={styles.quantityRow}><span>수량</span><button type="button" aria-label="수량 줄이기" onClick={() => dispatch({ type: "quantity", value: state.quantity - 1 })}>−</button><strong>{state.quantity}개</strong><button type="button" aria-label="수량 늘리기" onClick={() => dispatch({ type: "quantity", value: state.quantity + 1 })}>＋</button></div>
+        <button type="button" className={state.quantityConfirmed ? styles.confirmButtonDone : styles.confirmButton} aria-pressed={state.quantityConfirmed} onClick={() => dispatch({ type: "confirmQuantity" })}>{state.quantityConfirmed ? "✓ 수량 확인 완료" : `수량 ${state.quantity}개 확인했어요`}</button>
+      </div>
+    );
+    if (state.step === 6 && selectedProduct) return (
       <div className={styles.practicePanel}>
         <div className={styles.cartTitle}><CartIcon /><strong>연습 장바구니</strong></div>
         <PracticeProductCard product={selectedProduct} compact />
-        <div className={styles.summaryRows}><div><span>선택한 옵션</span><strong>{state.length ?? "선택 안 함"} / {state.color ?? "선택 안 함"}</strong></div><div><span>수량</span><strong>{state.quantity}개</strong></div><div><span>총 주문금액</span><strong>{((selectedProduct.examplePrice + selectedProduct.shippingFee) * state.quantity).toLocaleString("ko-KR")}원</strong></div></div>
+        <div className={styles.summaryRows}><div><span>단자</span><strong>{state.connector ?? "선택 안 함"}</strong></div><div><span>길이</span><strong>{state.length ?? "선택 안 함"}</strong></div><div><span>수량</span><strong>{state.quantity}개</strong></div></div>
+        <button type="button" className={state.cartAdded ? styles.confirmButtonDone : styles.primaryPanelButton} aria-pressed={state.cartAdded} onClick={() => dispatch({ type: "addCart" })}>{state.cartAdded ? "✓ 장바구니에 담았어요" : "장바구니에 담아보기"}</button>
       </div>
     );
+    if (state.step === 7 && selectedProduct) {
+      const productSubtotal = selectedProduct.examplePrice * state.quantity;
+      const total = productSubtotal + selectedProduct.shippingFee;
+      return (
+        <div className={styles.practicePanel}>
+          <div className={styles.cartTitle}><CartIcon /><strong>배송비 포함 총액</strong></div>
+          <div className={styles.totalBreakdown}>
+            <div><span>상품 금액</span><strong>{selectedProduct.examplePrice.toLocaleString("ko-KR")}원 × {state.quantity}개</strong></div>
+            <div><span>상품 소계</span><strong>{productSubtotal.toLocaleString("ko-KR")}원</strong></div>
+            <div><span>배송비</span><strong>{selectedProduct.shippingFee.toLocaleString("ko-KR")}원</strong></div>
+            <div className={styles.totalRow}><span>배송비 포함 총액</span><strong>{total.toLocaleString("ko-KR")}원</strong></div>
+          </div>
+          <p className={styles.noteText}>배송비는 상품 수량과 따로 한 번만 더했어요.</p>
+        </div>
+      );
+    }
+    const productSubtotal = (selectedProduct?.examplePrice ?? 0) * state.quantity;
+    const total = productSubtotal + (selectedProduct?.shippingFee ?? 0);
     return (
       <div className={styles.practicePanel}>
         <div className={styles.noticeBox}><CheckIcon /><p><strong>마지막으로 확인해요</strong> 실제 주문이나 결제가 이루어지지 않는 연습 화면입니다.</p></div>
-        <ReviewChecklist items={[`상품: ${selectedProduct?.title ?? "선택 안 함"}`, `옵션: ${state.length ?? "미선택"} / ${state.color ?? "미선택"}`, `수량: ${state.quantity}개`, `배송비: ${(selectedProduct?.shippingFee ?? 0).toLocaleString("ko-KR")}원`]} />
+        <div className={styles.summaryRows}><div><span>상품</span><strong>{selectedProduct?.title ?? "선택 안 함"}</strong></div><div><span>단자 · 길이</span><strong>{state.connector ?? "미선택"} · {state.length ?? "미선택"}</strong></div><div><span>수량</span><strong>{state.quantity}개</strong></div><div><span>상품 소계</span><strong>{productSubtotal.toLocaleString("ko-KR")}원</strong></div><div><span>배송비</span><strong>{(selectedProduct?.shippingFee ?? 0).toLocaleString("ko-KR")}원</strong></div><div><span>배송비 포함 총액</span><strong>{total.toLocaleString("ko-KR")}원</strong></div></div>
+        <fieldset className={styles.checkboxGroup}>
+          <legend>확인한 내용을 모두 눌러주세요</legend>
+          <CheckChoice id="review-product" label="상품을 확인했어요" checked={state.reviewChecks.includes("product")} onChange={() => dispatch({ type: "toggleReview", id: "product" })} />
+          <CheckChoice id="review-options" label="단자와 길이를 확인했어요" checked={state.reviewChecks.includes("options")} onChange={() => dispatch({ type: "toggleReview", id: "options" })} />
+          <CheckChoice id="review-quantity" label="수량을 확인했어요" checked={state.reviewChecks.includes("quantity")} onChange={() => dispatch({ type: "toggleReview", id: "quantity" })} />
+          <CheckChoice id="review-total" label="배송비 포함 총액을 확인했어요" checked={state.reviewChecks.includes("total")} onChange={() => dispatch({ type: "toggleReview", id: "total" })} />
+        </fieldset>
       </div>
     );
   }
@@ -246,6 +330,10 @@ function ReviewChecklist({ items }: { items: string[] }) {
 
 function CheckChoice({ id, label, checked, onChange }: { id: string; label: string; checked: boolean; onChange: () => void }) {
   return <label className={checked ? styles.checkChoiceSelected : styles.checkChoice}><input id={`mistake-${id}`} type="checkbox" checked={checked} onChange={onChange} /><span>{checked ? "✓ " : ""}{label}</span></label>;
+}
+
+function StepNotice({ title, description }: { title: string; description: string }) {
+  return <div className={styles.feedbackPanel} role="alert"><AlertIcon /><div><strong>{title}</strong><p>{description}</p></div></div>;
 }
 
 function FeedbackPanel({ result }: { result: ShoppingEvaluation }) {

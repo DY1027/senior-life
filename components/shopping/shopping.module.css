@@ -397,6 +397,31 @@
   font-size: 19px;
 }
 
+.confirmButton,
+.confirmButtonDone,
+.primaryPanelButton {
+  width: 100%;
+  min-height: 54px;
+  margin-top: 20px;
+  border: 2px solid #2866d9;
+  border-radius: 14px;
+  background: #fff;
+  color: #2059bd;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.primaryPanelButton {
+  background: #2866d9;
+  color: #fff;
+}
+
+.confirmButtonDone {
+  border-color: #56a76f;
+  background: #eff9f1;
+  color: #2e7247;
+}
+
 .cartTitle {
   display: flex;
   align-items: center;
@@ -425,6 +450,34 @@
 
 .summaryRows span {
   color: #687384;
+}
+
+.totalBreakdown {
+  overflow: hidden;
+  border: 1px solid #dce3ed;
+  border-radius: 15px;
+}
+
+.totalBreakdown > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e9edf3;
+}
+
+.totalBreakdown > div:last-child {
+  border-bottom: 0;
+}
+
+.totalBreakdown span {
+  color: #687384;
+}
+
+.totalBreakdown .totalRow {
+  background: #edf4ff;
+  color: #1558c0;
+  font-size: 19px;
 }
 
 .noticeBox,
@@ -991,6 +1044,9 @@
 .resultHero h1 { margin: 10px 0 0; font-size: clamp(32px, 5vw, 48px); line-height: 1.2; letter-spacing: -0.045em; }
 .resultHero p { margin: 14px 0 0; color: #687489; font-size: 17px; }
 .resultScore { display: inline-flex; margin-top: 18px; border-radius: 999px; background: #eef4ff; padding: 9px 15px; color: #1558c0; }
+.savedResult { display: grid; gap: 8px; max-width: 420px; margin: 18px auto 0; border: 1px solid #cfe4d5; border-radius: 16px; background: #f1faf4; padding: 15px; color: #2e6240; font-size: 16px; font-weight: 800; }
+.savedResult span { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.savedResult svg { width: 21px; height: 21px; }
 .learningCard { margin-top: 38px; border: 1px solid #dce7f5; border-radius: 24px; background: white; padding: 27px; box-shadow: 0 12px 32px rgba(41,69,115,.07); }
 .learningCard h2 { margin: 0; font-size: 25px; }
 .learningCard ul { display: grid; gap: 13px; margin: 20px 0 0; padding: 0; list-style: none; }
