@@ -26,6 +26,8 @@ import { useVoice } from "@/components/kiosk/useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
 import { illustrations } from "@/components/dundun-design/illustration-assets";
+import ActualShoppingAdCard from "@/components/ActualShoppingAdCard";
+import { ACTUAL_SHOPPING_AD } from "@/content/affiliate";
 
 const PHASE_LABEL: Record<Phase, string> = {
   intro: "연습 준비",
@@ -793,6 +795,7 @@ function DoneScreen({
   const allPass = checks.length > 0 && checks.every((c) => c.pass);
   const passCount = checks.filter((c) => c.pass).length;
   const config = getKioskConfig(catalog.kioskType);
+  const showActualShoppingAd = scenario.mode === "free" || allPass;
 
   return (
     <div className="text-center">
@@ -864,7 +867,7 @@ function DoneScreen({
         </p>
       </div>
 
-      <div className="mt-5 flex flex-col gap-2.5">
+      <div data-testid="kiosk-completion-actions" className="mt-5 flex flex-col gap-2.5">
         <Link href={`/kiosk/${catalog.kioskType}`} className="flex h-[60px] items-center justify-center rounded-2xl bg-[#E67E3F] text-[18px] font-extrabold text-white no-underline">
           추천 연습 이어가기
         </Link>
@@ -880,6 +883,8 @@ function DoneScreen({
           내 기록 확인
         </Link>
       </div>
+
+      {showActualShoppingAd && <ActualShoppingAdCard {...ACTUAL_SHOPPING_AD} />}
     </div>
   );
 }

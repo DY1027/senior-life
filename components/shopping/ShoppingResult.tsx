@@ -6,6 +6,8 @@ import type { ShoppingMission } from "@/lib/shopping/schemas";
 import { SHOPPING_PROGRESS_KEY, type ShoppingProgress } from "@/lib/shopping/progress";
 import { CheckIcon } from "./ShoppingIcons";
 import styles from "./shopping.module.css";
+import ActualShoppingAdCard from "@/components/ActualShoppingAdCard";
+import { ACTUAL_SHOPPING_AD } from "@/content/affiliate";
 
 export default function ShoppingResult({ mission }: { mission: ShoppingMission }) {
   const rawProgress = useSyncExternalStore(
@@ -59,10 +61,12 @@ export default function ShoppingResult({ mission }: { mission: ShoppingMission }
         <Link className={styles.collectionButton} href={`/shopping/products/${mission.collectionSlug}`}>조건에 맞는 제품 고르는 법 보기</Link>
       </section>
 
-      <div className={styles.resultActions}>
+      <div data-testid="shopping-result-actions" className={styles.resultActions}>
         <Link href={`/shopping/missions/${mission.slug}/practice`}>다시 연습하기</Link>
         <Link href="/shopping">다른 미션 고르기</Link>
       </div>
+
+      {result && <ActualShoppingAdCard {...ACTUAL_SHOPPING_AD} />}
     </main>
   );
 }

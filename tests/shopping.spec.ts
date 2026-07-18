@@ -102,6 +102,12 @@ test.describe("쇼핑 연습관", () => {
 
     await expect(page).toHaveURL(/\/shopping\/missions\/first-usb-c-cable\/result$/);
     await expect(page.getByText("완료 기록이 이 기기에 저장됐어요")).toBeVisible();
+    const actualShoppingAd = page.getByTestId("actual-shopping-ad");
+    await expect(actualShoppingAd).toBeVisible();
+    await expect(actualShoppingAd.getByRole("link", { name: "쿠팡에서 실제 상품 보기 ↗" })).toHaveAttribute("target", "_blank");
+    const resultActionsBottom = await page.getByTestId("shopping-result-actions").evaluate((element) => element.getBoundingClientRect().bottom);
+    const adTop = await actualShoppingAd.evaluate((element) => element.getBoundingClientRect().top);
+    expect(adTop).toBeGreaterThan(resultActionsBottom + 30);
   });
 
   test("장마 예산 미션은 필요한 세 항목만 고르면 통과한다", async ({ page }) => {
