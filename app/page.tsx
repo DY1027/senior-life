@@ -88,8 +88,8 @@ export default function HomePage() {
         <PlaygroundHero />
         <TrustPanel />
         <TodayMission />
-        <PracticeGrid />
         <ShoppingPracticeBanner />
+        <PracticeGrid />
         <WeeklyChallenge />
         <PlayCorner />
         <SafetyScene />
