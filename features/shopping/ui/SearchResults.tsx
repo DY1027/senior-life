@@ -4,22 +4,24 @@ import type { CommerceProduct } from "@/features/shopping/domain/types";
 import { formatWon } from "@/features/shopping/engine/price-calculator";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
+import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
 
 export default function SearchResults({ query, products }: { query: string; products: CommerceProduct[] }) {
   return (
     <main className="mx-auto w-full max-w-[1040px] px-4 py-8 sm:px-6 sm:py-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <Link href="/shopping" className="text-[15px] font-extrabold text-[#246BDF]">← 쇼핑 연습관</Link>
+          <Link href="/shopping/catalog" className="text-[15px] font-extrabold text-[#246BDF]">← 필요한 물건 찾아보기</Link>
           <h1 className="mt-3 text-[30px] font-black text-[#25324A] sm:text-[42px]">“{query}” 검색 결과</h1>
         </div>
         <ShoppingCartLink />
       </div>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <div className="mt-5"><ActiveCommerceMission /></div>
       {products.length === 0 ? (
         <section className="mt-8 rounded-3xl border border-[#D9E4F5] bg-white p-8 text-center">
           <h2 className="text-[24px] font-black text-[#25324A]">찾은 연습 상품이 없어요</h2>
-          <p className="mt-3 text-[16px] text-[#667287]">“C타입 충전 케이블”처럼 다시 검색해 보세요.</p>
+          <p className="mt-3 text-[16px] text-[#667287]">“C타입 충전 케이블” 또는 “장마철”처럼 다시 검색해 보세요.</p>
         </section>
       ) : (
         <section className="mt-8 grid gap-5 sm:grid-cols-2" aria-label="검색된 연습 상품">

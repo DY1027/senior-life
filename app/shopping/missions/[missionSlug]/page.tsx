@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { CheckIcon } from "@/components/shopping/ShoppingIcons";
 import styles from "@/components/shopping/shopping.module.css";
 import { getShoppingMission, SHOPPING_MISSIONS } from "@/content/shopping";
+import CommerceMissionStartLink from "@/features/shopping/ui/CommerceMissionStartLink";
 
 type Props = { params: Promise<{ missionSlug: string }> };
 
@@ -45,7 +46,9 @@ export default async function ShoppingMissionPage({ params }: Props) {
             <h1>{mission.title}</h1>
             <p>{mission.summary}</p>
             <div className={styles.noPaymentCallout}><CheckIcon /><div><strong>안심하세요</strong><span>실제 주문, 결제 또는 개인정보 입력은 없습니다.</span></div></div>
-            <Link href={`/shopping/missions/${mission.slug}/practice`}>연습 시작하기</Link>
+            {["first-usb-c-cable", "rainy-budget-30000"].includes(mission.slug)
+              ? <CommerceMissionStartLink missionSlug={mission.slug} />
+              : <Link href={`/shopping/missions/${mission.slug}/practice`}>연습 시작하기</Link>}
           </div>
         </section>
 

@@ -4,10 +4,12 @@ import Link from "next/link";
 import { formatWon } from "@/features/shopping/engine/price-calculator";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import { getCommerceMissionLabel } from "@/features/shopping/engine/commerce-mission-evaluator";
 
 export default function OrderComplete({ orderId }: { orderId: string }) {
   const order = useShoppingOrders().orders.find((candidate) => candidate.id === orderId);
   if (!order) return <main className="mx-auto max-w-[760px] px-4 py-16 text-center"><p className="text-[18px] font-bold text-[#667287]">가상 주문 기록을 불러오는 중이에요.</p></main>;
+  const missionLabel = getCommerceMissionLabel(order.missionSlug);
 
   return (
     <main data-testid="order-complete" className="mx-auto w-full max-w-[760px] px-4 py-10 sm:px-6 sm:py-16">
@@ -17,6 +19,13 @@ export default function OrderComplete({ orderId }: { orderId: string }) {
         <p className="mt-3 text-[17px] text-[#667287]">실제 주문·결제·배송은 전혀 일어나지 않았습니다.</p>
       </div>
       <div className="mt-6"><PracticeDisclosure /></div>
+      {missionLabel && (
+        <section data-testid="mission-complete-record" className="mt-6 rounded-2xl border-2 border-[#B8DFC8] bg-[#EFF9F3] p-5 text-center">
+          <span className="text-[14px] font-extrabold text-[#286B4B]">미션 완료 기록 저장됨</span>
+          <h2 className="mt-2 text-[22px] font-black text-[#25324A]">{missionLabel}</h2>
+          <p className="mt-2 text-[15px] font-bold text-[#4D6B58]">완료 기록은 이 브라우저에만 저장됩니다.</p>
+        </section>
+      )}
       <section className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-6 shadow-[0_12px_32px_rgba(41,69,115,0.07)]">
         <span className="text-[14px] font-extrabold text-[#246BDF]">가상 주문번호</span>
         <strong data-testid="order-number" className="mt-2 block break-all text-[24px] font-black text-[#25324A]">{order.orderNumber}</strong>

@@ -7,6 +7,8 @@ import { calculateCheckoutSummary, formatWon } from "@/features/shopping/engine/
 import { createPracticeOrder, saveShoppingProgress } from "@/features/shopping/storage/shopping-storage";
 import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
+import { evaluateCommerceMission } from "@/features/shopping/engine/commerce-mission-evaluator";
 
 export default function Checkout() {
   const router = useRouter();
@@ -14,6 +16,8 @@ export default function Checkout() {
   const [confirmed, setConfirmed] = useState(false);
   const [processing, setProcessing] = useState(false);
   const summary = calculateCheckoutSummary(cart.lines);
+  const missionFeedback = evaluateCommerceMission(cart);
+  const missionValid = missionFeedback?.complete ?? true;
 
   useEffect(() => saveShoppingProgress("checkout"), []);
 
@@ -31,6 +35,7 @@ export default function Checkout() {
       <Link href="/shopping/cart" className="text-[15px] font-extrabold text-[#246BDF]">← 장바구니 수정하기</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">주문 전 확인</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <div className="mt-5"><ActiveCommerceMission showFeedback /></div>
 
       <section data-testid="checkout-address" className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-5 sm:p-6">
         <span className="text-[14px] font-extrabold text-[#246BDF]">가상 배송지</span>
@@ -61,7 +66,7 @@ export default function Checkout() {
       <button
         data-testid="mock-payment-submit"
         type="button"
-        disabled={!confirmed || processing}
+        disabled={!confirmed || processing || !missionValid}
         onClick={() => {
           setProcessing(true);
           const order = createPracticeOrder(cart.lines);

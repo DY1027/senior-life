@@ -8,6 +8,7 @@ import { calculateUnitPrice, formatWon, validateSelectedOptions } from "@/featur
 import { addProductToCart } from "@/features/shopping/storage/shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
+import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
 
 export default function ProductDetail({ product }: { product: CommerceProduct }) {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
@@ -19,10 +20,11 @@ export default function ProductDetail({ product }: { product: CommerceProduct })
   return (
     <main data-testid="product-detail" className="mx-auto w-full max-w-[1040px] px-4 py-8 sm:px-6 sm:py-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <Link href="/shopping" className="text-[15px] font-extrabold text-[#246BDF]">← 쇼핑 연습관</Link>
+        <Link href="/shopping/catalog" className="text-[15px] font-extrabold text-[#246BDF]">← 상품 검색 결과로</Link>
         <ShoppingCartLink />
       </div>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <div className="mt-5"><ActiveCommerceMission /></div>
       <section className="mt-6 grid overflow-hidden rounded-[28px] border border-[#DCE6F4] bg-white shadow-[0_14px_40px_rgba(41,69,115,0.09)] md:grid-cols-2">
         <div className="relative min-h-[320px] bg-[#F4F6F8] md:min-h-[560px]">
           <Image src={product.image.src} alt={product.image.alt} fill priority sizes="(max-width: 767px) 100vw, 50vw" className="object-cover" />

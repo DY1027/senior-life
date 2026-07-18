@@ -9,8 +9,9 @@ import { addProductToCart, setActiveBudget } from "@/features/shopping/storage/s
 import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
+import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
 
-const RAINY_IDS = ["umbrella", "dehumidifier-pack", "anti-slip-tape"];
+const RAINY_IDS = ["umbrella", "dehumidifier-pack", "anti-slip-tape", "waterproof-shoe-covers"];
 
 export default function RainyBudgetPractice() {
   const products = useMemo(() => COMMERCE_PRODUCTS.filter((product) => RAINY_IDS.includes(product.id)), []);
@@ -29,7 +30,8 @@ export default function RainyBudgetPractice() {
       <h1 className="mt-3 text-[34px] font-black leading-tight text-[#25324A] sm:text-[44px]">3만 원으로 장마철 준비하기</h1>
       <p className="mt-3 text-[17px] leading-relaxed text-[#667287]">우산·제습용품·미끄럼방지용품을 담고 배송비까지 합친 금액을 확인하세요.</p>
       <div className="mt-5"><PracticeDisclosure /></div>
-      <section className="mt-7 grid gap-4 sm:grid-cols-3" aria-label="장마철 연습 상품">
+      <div className="mt-5"><ActiveCommerceMission /></div>
+      <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="장마철 연습 상품">
         {products.map((product) => (
           <button key={product.id} data-testid={`product-card-${product.id}`} type="button" aria-pressed={selectedId === product.id} onClick={() => { setSelectedId(product.id); setMessage(""); }} className="rounded-3xl border-2 border-[#DCE6F4] bg-white p-4 text-left shadow-[0_8px_24px_rgba(41,69,115,0.06)] aria-pressed:border-[#6843BD] aria-pressed:bg-[#FAF8FF]">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#F4F6F8]"><Image src={product.image.src} alt={product.image.alt} fill sizes="(max-width: 639px) 100vw, 33vw" className="object-cover" /></div>

@@ -1,10 +1,11 @@
-import type { CartLine, CartSnapshot, CommerceProduct, OrderState, OrdersSnapshot, PracticeOrder, SelectedOptions } from "@/features/shopping/domain/types";
+import type { CartLine, CartSnapshot, CommerceMissionCompletion, CommerceProduct, OrderState, OrdersSnapshot, PracticeOrder, SelectedOptions } from "@/features/shopping/domain/types";
 import { calculateCheckoutSummary, calculateUnitPrice } from "@/features/shopping/engine/price-calculator";
 import { isOrderState, makeHistoryEntry } from "@/features/shopping/engine/order-state-machine";
 
 export const CART_STORAGE_KEY = "seniordeundun:shopping:cart:v2";
 export const ORDERS_STORAGE_KEY = "seniordeundun:shopping:orders:v2";
 export const PROGRESS_STORAGE_KEY = "seniordeundun:shopping:progress:v2";
+export const MISSION_COMPLETIONS_STORAGE_KEY = "seniordeundun:shopping:mission-completions:v1";
 export const SHOPPING_STORAGE_EVENT = "seniordeundun-shopping-storage";
 
 const EMPTY_CART: CartSnapshot = { version: 2, lines: [] };
@@ -36,7 +37,12 @@ export function saveShoppingProgress(stage: "search" | "cart" | "checkout" | "co
 export function readCart(): CartSnapshot {
   const stored = readJson<Partial<CartSnapshot>>(CART_STORAGE_KEY, EMPTY_CART);
   if (stored.version !== 2 || !Array.isArray(stored.lines)) return EMPTY_CART;
-  return { version: 2, lines: stored.lines, activeBudget: stored.activeBudget };
+  return { version: 2, lines: stored.lines, activeBudget: stored.activeBudget, activeMissionSlug: stored.activeMissionSlug };
+}
+
+export function setActiveMission(activeMissionSlug?: string) {
+  writeJson(CART_STORAGE_KEY, { version: 2, lines: [], activeMissionSlug });
+  if (activeMissionSlug) saveShoppingProgress("search", { missionSlug: activeMissionSlug });
 }
 
 export function addProductToCart(product: CommerceProduct, selectedOptions: SelectedOptions, quantity: number) {
@@ -77,6 +83,11 @@ export function removeCartLine(lineId: string) {
 
 export function setActiveBudget(activeBudget?: number) {
   writeJson(CART_STORAGE_KEY, { ...readCart(), activeBudget });
+}
+
+export function readCommerceMissionCompletions() {
+  const stored = readJson<CommerceMissionCompletion[]>(MISSION_COMPLETIONS_STORAGE_KEY, []);
+  return Array.isArray(stored) ? stored : [];
 }
 
 export function clearCart() {
@@ -158,6 +169,7 @@ export function createOrderFixture(state: Extract<OrderState, "PAID" | "SHIPPED"
 export function createPracticeOrder(lines: CartLine[]) {
   const now = new Date();
   const id = `${now.getTime()}`;
+  const activeMissionSlug = readCart().activeMissionSlug;
   const order: PracticeOrder = {
     id,
     orderNumber: `DD-${now.toISOString().slice(0, 10).replaceAll("-", "")}-${id.slice(-4)}`,
@@ -168,9 +180,20 @@ export function createPracticeOrder(lines: CartLine[]) {
     paymentMethodLabel: "연습카드 **** 1234",
     createdAt: now.toISOString(),
     history: [makeHistoryEntry("PAID", now.toISOString())],
+    missionSlug: activeMissionSlug,
   };
   const orders = readOrders().orders;
   writeJson(ORDERS_STORAGE_KEY, { version: 2, orders: [order, ...orders] });
+  if (activeMissionSlug) {
+    const previous = readCommerceMissionCompletions();
+    const completion: CommerceMissionCompletion = {
+      missionSlug: activeMissionSlug,
+      orderId: order.id,
+      completedAt: now.toISOString(),
+      paymentTotal: order.paymentSummary.paymentTotal,
+    };
+    writeJson(MISSION_COMPLETIONS_STORAGE_KEY, [completion, ...previous].slice(0, 30));
+  }
   saveShoppingProgress("complete", { orderId: order.id });
   clearCart();
   return order;

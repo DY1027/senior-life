@@ -7,11 +7,13 @@ export function PracticeProductCard({
   selected = false,
   onSelect,
   compact = false,
+  testId,
 }: {
   product: PracticeProduct;
   selected?: boolean;
   onSelect?: () => void;
   compact?: boolean;
+  testId?: string;
 }) {
   const body = (
     <>
@@ -30,11 +32,10 @@ export function PracticeProductCard({
     </>
   );
 
-  if (!onSelect) return <article className={`${styles.productCard} ${compact ? styles.productCardCompact : ""}`}>{body}</article>;
+  if (!onSelect) return <article data-testid={testId} className={`${styles.productCard} ${compact ? styles.productCardCompact : ""}`}>{body}</article>;
   return (
-    <button type="button" className={`${styles.productCard} ${styles.productButton} ${selected ? styles.productSelected : ""} ${compact ? styles.productCardCompact : ""}`} onClick={onSelect} aria-pressed={selected}>
+    <button data-testid={testId} type="button" className={`${styles.productCard} ${styles.productButton} ${selected ? styles.productSelected : ""} ${compact ? styles.productCardCompact : ""}`} onClick={onSelect} aria-pressed={selected}>
       {body}
     </button>
   );
 }
-

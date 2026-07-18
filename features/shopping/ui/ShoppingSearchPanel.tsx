@@ -16,8 +16,8 @@ export default function ShoppingSearchPanel() {
     <section data-testid="shopping-hub" aria-labelledby="shopping-common-title" className="mb-16 rounded-[28px] border border-[#D9E4F5] bg-white p-5 shadow-[0_12px_32px_rgba(48,79,128,0.07)] sm:p-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <span className="text-[14px] font-extrabold text-[#246BDF]">공용 쇼핑 연습</span>
-          <h2 id="shopping-common-title" className="mt-2 text-[28px] font-black leading-tight text-[#25324A] sm:text-[36px]">검색해서 가상 주문까지 해보세요</h2>
+          <span className="text-[14px] font-extrabold text-[#246BDF]">생활상품 찾아보기</span>
+          <h2 id="shopping-common-title" className="mt-2 text-[28px] font-black leading-tight text-[#25324A] sm:text-[36px]">어떤 물건이 필요하세요?</h2>
         </div>
         <ShoppingCartLink />
       </div>
@@ -39,13 +39,13 @@ export default function ShoppingSearchPanel() {
           data-testid="shopping-search-input"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="예: C타입 충전 케이블"
+          placeholder="상품 이름이나 필요한 상황을 입력하세요"
           className="min-h-14 min-w-0 flex-1 rounded-2xl border-2 border-[#BFD0E9] bg-white px-4 text-[18px] text-[#25324A] outline-none focus:border-[#246BDF]"
         />
         <button data-testid="shopping-search-submit" type="submit" className="min-h-14 rounded-2xl bg-[#246BDF] px-7 text-[18px] font-extrabold text-white">검색</button>
       </form>
       <div className="mt-4 flex flex-wrap gap-2" aria-label="추천 검색어">
-        {["C타입 충전 케이블", "장마철 준비물"].map((keyword) => (
+        {["C타입 충전 케이블", "장마철", "휴대폰 충전", "욕실이 미끄러울 때"].map((keyword) => (
           <button key={keyword} type="button" onClick={() => setQuery(keyword)} className="min-h-11 rounded-full bg-[#EDF4FF] px-4 text-[15px] font-bold text-[#1558C0]">{keyword}</button>
         ))}
       </div>

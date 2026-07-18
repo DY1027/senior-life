@@ -59,5 +59,10 @@ Export-Jpeg -InputPath "design-assets/shopping/originals/compact-umbrella-navy.p
 Export-Jpeg -InputPath "design-assets/shopping/originals/dehumidifier-box-eight-pack.png" -OutputPath "public/images/shopping/products/rainy-season/dehumidifier-box-eight-pack.jpg" -Width 800 -Height 800
 Export-Jpeg -InputPath "design-assets/shopping/originals/anti-slip-tape-clear.png" -OutputPath "public/images/shopping/products/rainy-season/anti-slip-tape-clear.jpg" -Width 800 -Height 800
 Export-Jpeg -InputPath "design-assets/shopping/originals/waterproof-shoe-covers-blue.png" -OutputPath "public/images/shopping/products/rainy-season/waterproof-shoe-covers-blue.jpg" -Width 800 -Height 800
+Export-Jpeg -InputPath "design-assets/shopping/originals/usb-c-charger-20w-white.png" -OutputPath "public/images/shopping/products/digital/usb-c-charger-20w-white.jpg" -Width 800 -Height 800
+Export-Jpeg -InputPath "design-assets/shopping/originals/power-bank-10000-white.png" -OutputPath "public/images/shopping/products/digital/power-bank-10000-white.jpg" -Width 800 -Height 800
+Export-Jpeg -InputPath "design-assets/shopping/originals/phone-stand-foldable-silver.png" -OutputPath "public/images/shopping/products/digital/phone-stand-foldable-silver.jpg" -Width 800 -Height 800
+Export-Jpeg -InputPath "design-assets/shopping/originals/stylus-pen-universal-black.png" -OutputPath "public/images/shopping/products/digital/stylus-pen-universal-black.jpg" -Width 800 -Height 800
+Export-Jpeg -InputPath "design-assets/shopping/originals/screen-magnifier-12inch-black.png" -OutputPath "public/images/shopping/products/digital/screen-magnifier-12inch-black.jpg" -Width 800 -Height 800
 Export-Jpeg -InputPath "design-assets/shopping/originals/rainy-season-budget.png" -OutputPath "public/images/shopping/missions/rainy-season-budget.jpg" -Width 1200 -Height 900 -Quality 86
 Copy-Item -LiteralPath "public/images/shopping/missions/rainy-season-budget.jpg" -Destination "public/images/shopping/hero/shopping-practice-hero.jpg" -Force

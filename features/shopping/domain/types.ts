@@ -25,6 +25,10 @@ export type CommerceProduct = {
   image: { src: string; alt: string; width: number; height: number };
   optionGroups: ProductOptionGroup[];
   badges: string[];
+  keywords: string[];
+  situationTags: string[];
+  synonymTags: string[];
+  learningPoints: string[];
   practiceOnly: true;
 };
 
@@ -95,15 +99,24 @@ export type PracticeOrder = {
   history: OrderHistoryEntry[];
   refundSummary?: RefundSummary;
   afterSalesRequest?: AfterSalesRequest;
+  missionSlug?: string;
 };
 
 export type CartSnapshot = {
   version: 2;
   lines: CartLine[];
   activeBudget?: number;
+  activeMissionSlug?: string;
 };
 
 export type OrdersSnapshot = {
   version: 2;
   orders: PracticeOrder[];
+};
+
+export type CommerceMissionCompletion = {
+  missionSlug: string;
+  orderId: string;
+  completedAt: string;
+  paymentTotal: Money;
 };

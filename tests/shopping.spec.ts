@@ -4,51 +4,47 @@ test.describe("쇼핑 연습관", () => {
   test("허브가 모바일에서 깨지지 않고 연습 안전 문구를 보여준다", async ({ page }) => {
     await page.goto("/shopping");
 
-    await expect(page.getByRole("heading", { level: 1, name: /사기 전에/ })).toBeVisible();
-    await expect(page.getByText("무료 · 회원가입 없음 · 실제 결제 없음")).toBeVisible();
-    await expect(page.getByRole("heading", { level: 2, name: "하고 싶은 미션을 골라보세요" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "무엇을 연습해볼까요?" })).toBeVisible();
+    await expect(page.getByTestId("practice-disclosure")).toContainText("실제 주문이나 결제");
+    for (const choice of ["처음 쇼핑 배우기", "필요한 물건 찾아보기", "예산 안에서 장보기", "주문 문제 해결하기"]) {
+      await expect(page.getByRole("heading", { level: 2, name: choice })).toBeVisible();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
   });
 
-  test("첫 쇼핑 미션을 끝내고 학습 결과를 본다", async ({ page }) => {
+  test("필요한 물건 화면에서 상황 검색이 실제 상품으로 이어진다", async ({ page }) => {
+    await page.goto("/shopping");
+    await page.getByRole("link", { name: /필요한 물건 찾아보기/ }).click();
+    await expect(page).toHaveURL(/\/shopping\/catalog$/);
+    await page.getByTestId("shopping-search-input").fill("장마철");
+    await page.getByTestId("shopping-search-submit").click();
+    await expect(page.getByTestId("product-card-umbrella")).toBeVisible();
+    await expect(page.getByTestId("product-card-dehumidifier-pack")).toBeVisible();
+    await expect(page.getByTestId("product-card-anti-slip-tape")).toBeVisible();
+  });
+
+  test("휴대폰·디지털 1차 상품은 고유 이미지와 구매 조건을 제공한다", async ({ page }) => {
+    await page.goto("/shopping/catalog");
+    for (const productId of ["usb-c-charger-20w-white", "power-bank-10000-white", "phone-stand-foldable-silver", "stylus-pen-universal-black", "screen-magnifier-12inch-black"]) {
+      await expect(page.getByTestId(`catalog-product-${productId}`)).toBeVisible();
+    }
+    await page.goto("/shopping/search?q=휴대폰%20충전");
+    await expect(page.getByTestId("product-card-usb-c-charger-20w-white")).toBeVisible();
+    await expect(page.getByTestId("product-card-power-bank-10000-white")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+    await page.screenshot({ path: "docs/audit-evidence/shopping-digital-batch-360.png", fullPage: true });
+    await page.getByTestId("product-card-power-bank-10000-white").click();
+    await expect(page.getByRole("heading", { level: 1, name: "휴대용 보조배터리 10,000mAh" })).toBeVisible();
+    await expect(page.getByTestId("option-group-capacity")).toBeVisible();
+    await expect(page.getByTestId("option-group-color")).toBeVisible();
+  });
+
+  test("첫 쇼핑 미션이 실제 상품 검색 흐름으로 시작된다", async ({ page }) => {
     await page.goto("/shopping/missions/first-usb-c-cable");
     await page.getByRole("link", { name: "연습 시작하기" }).click();
-    await expect(page.getByText("실제 결제 없음")).toBeVisible();
-
-    await page.getByRole("button", { name: "C타입 충전 케이블 2m" }).click();
-    await page.getByRole("button", { name: "검색" }).click();
-    await page.getByRole("button", { name: /C타입 고속 충전 케이블 2m/ }).click();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("checkbox", { name: "단자를 확인했어요" }).check();
-    await page.getByRole("checkbox", { name: "배송비를 확인했어요" }).check();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("button", { name: "C타입-C타입" }).click();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("button", { name: "2m" }).click();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("button", { name: "수량 1개 확인했어요" }).click();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("button", { name: "장바구니에 담아보기" }).click();
-    await page.getByRole("button", { name: "다음" }).click();
-    await expect(page.getByRole("heading", { name: "배송비 포함 총액" })).toBeVisible();
-    await expect(page.getByText("6,900원", { exact: true }).last()).toBeVisible();
-    await page.getByRole("button", { name: "다음" }).click();
-    await page.getByRole("checkbox", { name: "상품을 확인했어요" }).check();
-    await page.getByRole("checkbox", { name: "단자와 길이를 확인했어요" }).check();
-    await page.getByRole("checkbox", { name: "수량을 확인했어요" }).check();
-    await page.getByRole("checkbox", { name: "배송비 포함 총액을 확인했어요" }).check();
-    await page.getByRole("button", { name: "확인하고 완료" }).click();
-
-    await expect(page).toHaveURL(/\/shopping\/missions\/first-usb-c-cable\/result$/);
-    await expect(page.getByRole("heading", { name: /연습을 마쳤어요/ })).toBeVisible();
-    await expect(page.getByText("실제 주문이나 결제는 전혀 일어나지 않았습니다.")).toBeVisible();
-    await expect(page.getByText("완료 기록이 이 기기에 저장됐어요")).toBeVisible();
-    await expect(page.getByText(/배송비 포함 연습 총액/)).toContainText("6,900원");
-    await expect(page.getByText("연습 종료 후 선택 영역")).toBeVisible();
-    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("dd-shopping-progress-v1") ?? "null"));
-    expect(saved.current).toBeUndefined();
-    expect(saved.completed["first-usb-c-cable"].count).toBe(1);
-    expect(saved.lastResult.totalPrice).toBe(6900);
+    await expect(page).toHaveURL(/\/shopping\/catalog$/);
+    await expect(page.getByTestId("active-shopping-mission")).toContainText("C타입-C타입");
+    await expect(page.getByTestId("active-shopping-mission")).toContainText("15,000원 이하");
   });
 
   test("잘못 고른 단자·길이·수량의 이유를 보고 수정해 완료한다", async ({ page }) => {
@@ -121,4 +117,101 @@ test.describe("쇼핑 연습관", () => {
     await expect(page).toHaveURL(/\/shopping\/missions\/rainy-budget-30000\/result$/);
     await expect(page.getByText("확인 점수 100점")).toBeVisible();
   });
+
+  test("상품 비교 미션은 잘못 고른 이유를 나눠 설명하고 수정 후 기록한다", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 900 });
+    await page.goto("/shopping/catalog");
+    await page.getByTestId("start-comparison-mission").click();
+    await expect(page).toHaveURL(/\/shopping\/missions\/compare-usb-c-cables$/);
+    await page.getByRole("link", { name: "연습 시작하기" }).click();
+
+    await page.getByRole("button", { name: "다음" }).click();
+    await page.getByTestId("compare-product-cable-usbc-black-1m").click();
+    await page.getByRole("button", { name: "다음" }).click();
+    await expect(page.getByTestId("comparison-criterion-length")).toContainText("다시 확인");
+    await expect(page.getByTestId("comparison-criterion-total")).toContainText("맞음");
+    await page.getByRole("button", { name: "확인하고 완료" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "길이가 짧아요" })).toContainText("길이가 짧아요");
+    await page.screenshot({ path: "docs/audit-evidence/shopping-compare-wrong-360.png", fullPage: true });
+
+    await page.getByRole("button", { name: "이전" }).click();
+    await page.getByTestId("compare-product-cable-usbc-white-3pack").click();
+    await page.reload();
+    await expect(page.getByTestId("compare-product-cable-usbc-white-3pack")).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "다음" }).click();
+    await expect(page.getByTestId("comparison-criterion-bundle")).toContainText("3개 묶음");
+    await page.getByRole("button", { name: "확인하고 완료" }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "필요한 수량보다 많아요" })).toContainText("필요한 수량보다 많아요");
+
+    await page.getByRole("button", { name: "이전" }).click();
+    await page.getByTestId("compare-product-cable-usbc-white-2m").click();
+    await page.getByRole("button", { name: "다음" }).click();
+    for (const criterion of ["connector", "length", "bundle", "total"]) {
+      await expect(page.getByTestId(`comparison-criterion-${criterion}`)).toContainText("맞음");
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+    await page.getByRole("button", { name: "확인하고 완료" }).click();
+
+    await expect(page).toHaveURL(/\/shopping\/missions\/compare-usb-c-cables\/result$/);
+    await expect(page.getByText("연습 종료 후 선택 영역")).toBeVisible();
+    const progress = await page.evaluate(() => JSON.parse(localStorage.getItem("dd-shopping-progress-v1") ?? "null"));
+    expect(progress.completed["compare-usb-c-cables"].count).toBe(1);
+    await page.screenshot({ path: "docs/audit-evidence/shopping-compare-complete-360.png", fullPage: true });
+
+    await page.getByRole("button", { name: "글자 크게 보기" }).click();
+    await expect(page.locator("html")).toHaveAttribute("data-bigtext", "1");
+    const resultTitleWidth = await page.getByRole("heading", { level: 1, name: "상품 비교 연습을 마쳤어요!" }).evaluate((element) => element.getBoundingClientRect().width);
+    expect(resultTitleWidth).toBeGreaterThan(240);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+    await page.screenshot({ path: "docs/audit-evidence/shopping-compare-complete-bigtext-360.png", fullPage: true });
+  });
+});
+
+test("주문 실수 찾기는 네 가지 오류를 찾고 직접 고쳐야 완료된다", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 900 });
+  await page.goto("/shopping/order-help");
+  await page.getByTestId("start-order-mistake-mission").click();
+  await expect(page).toHaveURL(/\/shopping\/missions\/find-order-mistake$/);
+  await page.getByRole("link", { name: "연습 시작하기" }).click();
+
+  await page.getByRole("button", { name: "다음" }).click();
+  await expect(page.getByTestId("mistake-order-preview")).toContainText("16,800원");
+  await page.getByRole("checkbox", { name: "수량" }).check();
+  await page.getByRole("checkbox", { name: "상품 이름" }).check();
+  await page.getByRole("button", { name: "다음" }).click();
+
+  await expect(page.getByTestId("mistake-status-length")).toContainText("다시 확인");
+  await page.getByRole("button", { name: "확인하고 완료" }).click();
+  const unresolved = page.getByTestId("shopping-feedback");
+  await expect(unresolved).toContainText("길이 옵션 오류를 아직 찾지 못했어요");
+  await expect(unresolved).toContainText("정상인 상품명도 실수로 골랐어요");
+  await expect(unresolved).toContainText("배송비를 다시 확인해 주세요");
+  await page.screenshot({ path: "docs/audit-evidence/shopping-mistake-unresolved-360.png", fullPage: true });
+
+  await page.getByRole("button", { name: "이전" }).click();
+  await page.getByRole("checkbox", { name: "상품 이름" }).uncheck();
+  await page.getByRole("checkbox", { name: "길이 옵션" }).check();
+  await page.getByRole("checkbox", { name: "정기배송 선택" }).check();
+  await page.getByRole("checkbox", { name: "배송비" }).check();
+  await page.getByRole("button", { name: "다음" }).click();
+  await page.reload();
+  await expect(page.getByTestId("mistake-correction-panel")).toBeVisible();
+
+  await page.getByRole("group", { name: "길이 옵션 고치기" }).getByRole("button", { name: /2m/ }).click();
+  await page.getByRole("button", { name: "실수 주문 수량 줄이기" }).click();
+  await page.getByRole("group", { name: "구매 방식 고치기" }).getByRole("button", { name: /한 번 구매/ }).click();
+  await page.getByTestId("fix-mistake-shipping").click();
+
+  for (const id of ["length", "quantity", "purchase", "shipping"]) {
+    await expect(page.getByTestId(`mistake-status-${id}`)).toContainText("맞게 고침");
+  }
+  await expect(page.getByText("6,900원", { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+  await page.screenshot({ path: "docs/audit-evidence/shopping-mistake-corrected-360.png", fullPage: true });
+
+  await page.getByRole("button", { name: "확인하고 완료" }).click();
+  await expect(page).toHaveURL(/\/shopping\/missions\/find-order-mistake\/result$/);
+  const progress = await page.evaluate(() => JSON.parse(localStorage.getItem("dd-shopping-progress-v1") ?? "null"));
+  expect(progress.completed["find-order-mistake"].count).toBe(1);
+  await page.screenshot({ path: "docs/audit-evidence/shopping-mistake-complete-360.png", fullPage: true });
 });

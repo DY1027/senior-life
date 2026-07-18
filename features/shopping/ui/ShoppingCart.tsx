@@ -6,18 +6,22 @@ import { calculateCheckoutSummary, formatWon } from "@/features/shopping/engine/
 import { removeCartLine, updateCartLineQuantity } from "@/features/shopping/storage/shopping-storage";
 import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
+import { evaluateCommerceMission, getCommerceMissionPracticeHref } from "@/features/shopping/engine/commerce-mission-evaluator";
 
 export default function ShoppingCart() {
   const cart = useShoppingCart();
   const summary = calculateCheckoutSummary(cart.lines);
   const remaining = cart.activeBudget === undefined ? undefined : cart.activeBudget - summary.paymentTotal;
-  const canCheckout = cart.lines.length > 0 && (remaining === undefined || remaining >= 0);
+  const missionFeedback = evaluateCommerceMission(cart);
+  const canCheckout = cart.lines.length > 0 && (remaining === undefined || remaining >= 0) && (missionFeedback?.complete ?? true);
 
   return (
     <main className="mx-auto w-full max-w-[920px] px-4 py-8 sm:px-6 sm:py-12">
-      <Link href="/shopping" className="text-[15px] font-extrabold text-[#246BDF]">← 쇼핑 계속하기</Link>
+      <Link href={getCommerceMissionPracticeHref(cart.activeMissionSlug)} className="text-[15px] font-extrabold text-[#246BDF]">← 상품 다시 고르기</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">연습 장바구니</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <div className="mt-5"><ActiveCommerceMission showFeedback /></div>
 
       {cart.lines.length === 0 ? (
         <section className="mt-7 rounded-3xl border border-[#D9E4F5] bg-white p-8 text-center">
@@ -36,6 +40,7 @@ export default function ShoppingCart() {
                     <h2 className="mt-1 break-keep text-[19px] font-black leading-snug text-[#25324A]">{line.title}</h2>
                     {line.optionLabels.map((label) => <p key={label} className="mt-1 text-[14px] font-bold text-[#5B6575]">{label}</p>)}
                     <p className="mt-2 text-[18px] font-black text-[#D64038]">{formatWon(line.unitPrice)}</p>
+                    <Link data-testid={`cart-line-edit-${line.id}`} href={`/shopping/products/${line.productId}`} className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-[#C9D8F1] px-4 text-[14px] font-extrabold text-[#1558C0]">옵션 다시 선택</Link>
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#E4EAF2] pt-4">
