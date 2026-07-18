@@ -1,5 +1,6 @@
-import type { CartLine, CartSnapshot, CommerceProduct, OrdersSnapshot, PracticeOrder, SelectedOptions } from "@/features/shopping/domain/types";
+import type { CartLine, CartSnapshot, CommerceProduct, OrderState, OrdersSnapshot, PracticeOrder, SelectedOptions } from "@/features/shopping/domain/types";
 import { calculateCheckoutSummary, calculateUnitPrice } from "@/features/shopping/engine/price-calculator";
+import { isOrderState, makeHistoryEntry } from "@/features/shopping/engine/order-state-machine";
 
 export const CART_STORAGE_KEY = "seniordeundun:shopping:cart:v2";
 export const ORDERS_STORAGE_KEY = "seniordeundun:shopping:orders:v2";
@@ -85,7 +86,73 @@ export function clearCart() {
 export function readOrders(): OrdersSnapshot {
   const stored = readJson<Partial<OrdersSnapshot>>(ORDERS_STORAGE_KEY, EMPTY_ORDERS);
   if (stored.version !== 2 || !Array.isArray(stored.orders)) return EMPTY_ORDERS;
-  return { version: 2, orders: stored.orders };
+  const orders = stored.orders.flatMap((candidate) => {
+    if (!candidate || typeof candidate !== "object" || !isOrderState(candidate.state)) return [];
+    const order = candidate as PracticeOrder;
+    return [{
+      ...order,
+      history: Array.isArray(order.history) && order.history.length > 0
+        ? order.history
+        : [makeHistoryEntry(order.state, order.createdAt)],
+    }];
+  });
+  return { version: 2, orders };
+}
+
+export function readOrder(orderId: string) {
+  return readOrders().orders.find((order) => order.id === orderId);
+}
+
+export function updatePracticeOrder(orderId: string, update: (order: PracticeOrder) => PracticeOrder) {
+  let updated: PracticeOrder | undefined;
+  const orders = readOrders().orders.map((order) => {
+    if (order.id !== orderId) return order;
+    updated = update(order);
+    return updated;
+  });
+  if (!updated) return undefined;
+  writeJson(ORDERS_STORAGE_KEY, { version: 2, orders });
+  return updated;
+}
+
+const FIXTURE_LINE: CartLine = {
+  id: "fixture-cable",
+  productId: "usb-c-2m-white",
+  title: "C타입 고속 충전 케이블 2m",
+  image: {
+    src: "/images/shopping/products/digital/usb-c-cable-white-2m.jpg",
+    alt: "흰색 USB C타입 충전 케이블 연습용 예시 사진",
+    width: 800,
+    height: 800,
+  },
+  selectedOptions: { connector: "usb-c", length: "2m" },
+  optionLabels: ["단자: C타입-C타입", "길이: 2m"],
+  quantity: 1,
+  unitPrice: 6900,
+  shippingFee: 3000,
+};
+
+export function createOrderFixture(state: Extract<OrderState, "PAID" | "SHIPPED" | "DELIVERED">) {
+  const createdAt = "2026-07-18T00:10:00.000Z";
+  const stateHistory: OrderState[] = state === "PAID"
+    ? ["PAID"]
+    : state === "SHIPPED"
+      ? ["PAID", "PREPARING", "SHIPPED"]
+      : ["PAID", "PREPARING", "SHIPPED", "OUT_FOR_DELIVERY", "DELIVERED"];
+  const order: PracticeOrder = {
+    id: `fixture-${state.toLowerCase()}`,
+    orderNumber: `DD-20260718-${state === "PAID" ? "1001" : state === "SHIPPED" ? "1002" : "1003"}`,
+    lines: [FIXTURE_LINE],
+    paymentSummary: calculateCheckoutSummary([FIXTURE_LINE]),
+    state,
+    addressLabel: "김든든 · 서울시 든든구 연습로 12 · 010-0000-0000",
+    paymentMethodLabel: "연습카드 **** 1234",
+    createdAt,
+    history: stateHistory.map((historyState, index) => makeHistoryEntry(historyState, new Date(Date.parse(createdAt) + index * 3_600_000).toISOString())),
+  };
+  const orders = readOrders().orders.filter((candidate) => candidate.id !== order.id);
+  writeJson(ORDERS_STORAGE_KEY, { version: 2, orders: [order, ...orders] });
+  return order;
 }
 
 export function createPracticeOrder(lines: CartLine[]) {
@@ -100,6 +167,7 @@ export function createPracticeOrder(lines: CartLine[]) {
     addressLabel: "김든든 · 서울시 든든구 연습로 12 · 010-0000-0000",
     paymentMethodLabel: "연습카드 **** 1234",
     createdAt: now.toISOString(),
+    history: [makeHistoryEntry("PAID", now.toISOString())],
   };
   const orders = readOrders().orders;
   writeJson(ORDERS_STORAGE_KEY, { version: 2, orders: [order, ...orders] });

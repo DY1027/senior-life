@@ -26,7 +26,8 @@ export default function OrderComplete({ orderId }: { orderId: string }) {
         </div>
       </section>
       <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-        <Link href="/shopping/orders" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#246BDF] px-5 font-extrabold text-white no-underline">주문내역 보기</Link>
+        <Link href={`/shopping/orders/${order.id}`} className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#246BDF] px-5 font-extrabold text-white no-underline">주문 상세 보기</Link>
+        <Link href="/shopping/orders" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#C9D8F1] bg-white px-5 font-extrabold text-[#1558C0] no-underline">주문내역 보기</Link>
         <Link href="/shopping" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#C9D8F1] bg-white px-5 font-extrabold text-[#1558C0] no-underline">다른 연습하기</Link>
       </div>
     </main>

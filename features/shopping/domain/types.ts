@@ -49,15 +49,52 @@ export type CheckoutSummary = {
   paymentTotal: Money;
 };
 
+export type OrderState =
+  | "PAID"
+  | "PREPARING"
+  | "SHIPPED"
+  | "OUT_FOR_DELIVERY"
+  | "DELIVERED"
+  | "CANCELLED"
+  | "RETURN_REQUESTED"
+  | "EXCHANGE_REQUESTED";
+
+export type OrderHistoryEntry = {
+  state: OrderState;
+  label: string;
+  occurredAt: string;
+};
+
+export type RefundSummary = {
+  originalPayment: Money;
+  merchandiseRefund: Money;
+  shippingRefund: Money;
+  returnShippingFee: Money;
+  refundTotal: Money;
+  methodLabel: string;
+};
+
+export type ReturnReason = "changed-mind" | "damaged" | "wrong-item" | "option-mismatch";
+
+export type AfterSalesRequest = {
+  kind: "cancel" | "return" | "exchange";
+  reason?: string;
+  exchangeOption?: string;
+  requestedAt: string;
+};
+
 export type PracticeOrder = {
   id: string;
   orderNumber: string;
   lines: CartLine[];
   paymentSummary: CheckoutSummary;
-  state: "PAID";
+  state: OrderState;
   addressLabel: string;
   paymentMethodLabel: string;
   createdAt: string;
+  history: OrderHistoryEntry[];
+  refundSummary?: RefundSummary;
+  afterSalesRequest?: AfterSalesRequest;
 };
 
 export type CartSnapshot = {
