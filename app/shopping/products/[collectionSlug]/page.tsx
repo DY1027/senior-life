@@ -8,16 +8,29 @@ import { CheckIcon } from "@/components/shopping/ShoppingIcons";
 import { SHOPPING_COLLECTIONS, type ShoppingCollectionSlug } from "@/content/shopping";
 import { mergeProduct, type AffiliateProduct } from "@/content/affiliate";
 import { searchProduct } from "@/lib/coupang";
+import { COMMERCE_PRODUCTS, getCommerceProduct } from "@/features/shopping/data/products";
+import ProductDetail from "@/features/shopping/ui/ProductDetail";
 
 export const revalidate = 3600;
 type Props = { params: Promise<{ collectionSlug: string }> };
 
 export function generateStaticParams() {
-  return Object.keys(SHOPPING_COLLECTIONS).map((collectionSlug) => ({ collectionSlug }));
+  return [
+    ...Object.keys(SHOPPING_COLLECTIONS).map((collectionSlug) => ({ collectionSlug })),
+    ...COMMERCE_PRODUCTS.map((product) => ({ collectionSlug: product.id })),
+  ];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { collectionSlug } = await params;
+  const practiceProduct = getCommerceProduct(collectionSlug);
+  if (practiceProduct) {
+    return {
+      title: `${practiceProduct.title} 연습`,
+      description: practiceProduct.description,
+      robots: { index: false, follow: false },
+    };
+  }
   const collection = SHOPPING_COLLECTIONS[collectionSlug as ShoppingCollectionSlug];
   if (!collection) return {};
   return {
@@ -29,6 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ShoppingProductCollectionPage({ params }: Props) {
   const { collectionSlug } = await params;
+  const practiceProduct = getCommerceProduct(collectionSlug);
+  if (practiceProduct) {
+    return <><Header /><ProductDetail product={practiceProduct} /><Footer /></>;
+  }
   const collection = SHOPPING_COLLECTIONS[collectionSlug as ShoppingCollectionSlug];
   if (!collection) notFound();
 

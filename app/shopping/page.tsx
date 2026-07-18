@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShoppingHubProgress from "@/components/shopping/ShoppingHubProgress";
+import ShoppingSearchPanel from "@/features/shopping/ui/ShoppingSearchPanel";
 import { CartIcon, CheckIcon, CompareIcon, SearchIcon } from "@/components/shopping/ShoppingIcons";
 import { SHOPPING_MISSIONS } from "@/content/shopping";
 import styles from "@/components/shopping/shopping.module.css";
@@ -35,6 +36,7 @@ export default function ShoppingHubPage() {
         </section>
 
         <div className={styles.hubShell}>
+          <ShoppingSearchPanel />
           <ShoppingHubProgress />
 
           <section aria-labelledby="shopping-missions-title">
