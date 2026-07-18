@@ -1,6 +1,21 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("쇼핑 연습관", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route("**/api/affiliate/completion-ad?key=*", async (route) => {
+      await route.fulfill({
+        contentType: "application/json; charset=utf-8",
+        body: JSON.stringify({
+          imagePath: "/images/shopping/products/digital/usb-c-charger-20w-white.jpg",
+          title: "쇼핑 미션 추천 상품",
+          description: "실제 상품 정보는 쿠팡에서 다시 확인하세요.",
+          affiliateUrl: "https://link.coupang.com/a/test-shopping-ad",
+          buttonLabel: "쿠팡에서 실제 상품 보기 ↗",
+        }),
+      });
+    });
+  });
+
   test("허브가 모바일에서 깨지지 않고 연습 안전 문구를 보여준다", async ({ page }) => {
     await page.goto("/shopping");
 
@@ -104,6 +119,9 @@ test.describe("쇼핑 연습관", () => {
     await expect(page.getByText("완료 기록이 이 기기에 저장됐어요")).toBeVisible();
     const actualShoppingAd = page.getByTestId("actual-shopping-ad");
     await expect(actualShoppingAd).toBeVisible();
+    const actualShoppingImage = actualShoppingAd.getByRole("img", { name: "쇼핑 미션 추천 상품 광고 이미지" });
+    await expect(actualShoppingImage).toBeVisible();
+    expect(await actualShoppingImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
     await expect(actualShoppingAd.getByRole("link", { name: "쿠팡에서 실제 상품 보기 ↗" })).toHaveAttribute("target", "_blank");
     const resultActionsBottom = await page.getByTestId("shopping-result-actions").evaluate((element) => element.getBoundingClientRect().bottom);
     const adTop = await actualShoppingAd.evaluate((element) => element.getBoundingClientRect().top);

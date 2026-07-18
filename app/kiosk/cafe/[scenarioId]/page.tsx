@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import KioskRunner from "@/components/kiosk-engine/KioskRunner";
 import { cafeCatalog, cafeScenarios, getCafeScenario } from "@/content/kiosk-v2/cafe";
+import { getKioskCompletionAdKey } from "@/lib/completion-affiliate";
 
 export function generateStaticParams() {
   return cafeScenarios.map((s) => ({ scenarioId: s.id }));
@@ -23,5 +24,6 @@ export default async function CafeScenarioPage({ params }: { params: Promise<{ s
   const { scenarioId } = await params;
   const scenario = getCafeScenario(scenarioId);
   if (!scenario) notFound();
-  return <KioskRunner catalog={cafeCatalog} scenario={scenario} />;
+  const completionAdKey = getKioskCompletionAdKey("cafe", scenario.id);
+  return <KioskRunner catalog={cafeCatalog} scenario={scenario} completionAdKey={completionAdKey} />;
 }

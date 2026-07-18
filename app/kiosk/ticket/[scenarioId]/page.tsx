@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import KioskRunner from "@/components/kiosk-engine/KioskRunner";
 import { ticketCatalog, ticketScenarios, getTicketScenario } from "@/content/kiosk-v2/ticket";
+import { getKioskCompletionAdKey } from "@/lib/completion-affiliate";
 
 export function generateStaticParams() {
   return ticketScenarios.map((s) => ({ scenarioId: s.id }));
@@ -23,5 +24,6 @@ export default async function TicketScenarioPage({ params }: { params: Promise<{
   const { scenarioId } = await params;
   const scenario = getTicketScenario(scenarioId);
   if (!scenario) notFound();
-  return <KioskRunner catalog={ticketCatalog} scenario={scenario} />;
+  const completionAdKey = getKioskCompletionAdKey("ticket", scenario.id);
+  return <KioskRunner catalog={ticketCatalog} scenario={scenario} completionAdKey={completionAdKey} />;
 }

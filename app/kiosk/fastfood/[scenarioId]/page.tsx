@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import KioskRunner from "@/components/kiosk-engine/KioskRunner";
 import { burgerCatalog, burgerScenarios, getBurgerScenario } from "@/content/kiosk-v2/burger";
+import { getKioskCompletionAdKey } from "@/lib/completion-affiliate";
 
 export function generateStaticParams() {
   return burgerScenarios.map((s) => ({ scenarioId: s.id }));
@@ -23,5 +24,6 @@ export default async function BurgerScenarioPage({ params }: { params: Promise<{
   const { scenarioId } = await params;
   const scenario = getBurgerScenario(scenarioId);
   if (!scenario) notFound();
-  return <KioskRunner catalog={burgerCatalog} scenario={scenario} />;
+  const completionAdKey = getKioskCompletionAdKey("fastfood", scenario.id);
+  return <KioskRunner catalog={burgerCatalog} scenario={scenario} completionAdKey={completionAdKey} />;
 }

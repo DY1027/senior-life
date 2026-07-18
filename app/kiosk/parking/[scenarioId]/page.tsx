@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import KioskRunner from "@/components/kiosk-engine/KioskRunner";
 import { parkingCatalog, parkingScenarios, getParkingScenario } from "@/content/kiosk-v2/parking";
+import { getKioskCompletionAdKey } from "@/lib/completion-affiliate";
 
 export function generateStaticParams() {
   return parkingScenarios.map((s) => ({ scenarioId: s.id }));
@@ -23,5 +24,6 @@ export default async function ParkingScenarioPage({ params }: { params: Promise<
   const { scenarioId } = await params;
   const scenario = getParkingScenario(scenarioId);
   if (!scenario) notFound();
-  return <KioskRunner catalog={parkingCatalog} scenario={scenario} />;
+  const completionAdKey = getKioskCompletionAdKey("parking", scenario.id);
+  return <KioskRunner catalog={parkingCatalog} scenario={scenario} completionAdKey={completionAdKey} />;
 }

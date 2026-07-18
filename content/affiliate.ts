@@ -30,17 +30,6 @@ export const AFFILIATE: Record<string, AffiliateProduct> = {
   },
 };
 
-// 키오스크·쇼핑연습 완료 화면 공통 광고 설정.
-// URL이 비어 있으면 ActualShoppingAdCard가 광고 영역 전체를 숨긴다.
-// 광고 이미지를 추가하거나 교체할 때는 public 아래 경로(예: /images/affiliate/product.jpg)를 넣는다.
-export const ACTUAL_SHOPPING_AD = {
-  imagePath: undefined as string | undefined,
-  title: AFFILIATE.photoPrinter.label,
-  description: AFFILIATE.photoPrinter.desc,
-  affiliateUrl: AFFILIATE.photoPrinter.href,
-  buttonLabel: "쿠팡에서 실제 상품 보기 ↗",
-};
-
 /** API 조회 결과를 카드용 데이터로 합친다 (실패 시 폴백 링크가 있으면 그대로, 없으면 null) */
 export function mergeProduct(
   base: AffiliateProduct,

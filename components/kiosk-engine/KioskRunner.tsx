@@ -26,8 +26,7 @@ import { useVoice } from "@/components/kiosk/useVoice";
 import { trackKiosk } from "@/lib/kiosk/track";
 import { recordPracticeComplete } from "@/lib/progress";
 import { illustrations } from "@/components/dundun-design/illustration-assets";
-import ActualShoppingAdCard from "@/components/ActualShoppingAdCard";
-import { ACTUAL_SHOPPING_AD } from "@/content/affiliate";
+import CompletionActualShoppingAd from "@/components/CompletionActualShoppingAd";
 
 const PHASE_LABEL: Record<Phase, string> = {
   intro: "연습 준비",
@@ -58,7 +57,15 @@ const MODE_LABEL = { learn: "천천히 배우기", solo: "혼자 연습하기", 
 
 // 바깥 래퍼 — 상황 카드(무작위 이벤트)를 뽑으면 시나리오에 이벤트를 더해
 // 기계를 새로 켠다 (key 리마운트로 상태 초기화 — 뽑기는 시작 화면에서만 가능).
-export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; scenario: Scenario }) {
+export default function KioskRunner({
+  catalog,
+  scenario,
+  completionAdKey,
+}: {
+  catalog: Catalog;
+  scenario: Scenario;
+  completionAdKey?: string;
+}) {
   const [drawnCard, setDrawnCard] = useState<SituationCard | null>(null);
   const effScenario = useMemo<Scenario>(
     () => (drawnCard ? { ...scenario, events: [...(scenario.events ?? []), drawnCard.event] } : scenario),
@@ -72,6 +79,7 @@ export default function KioskRunner({ catalog, scenario }: { catalog: Catalog; s
       catalog={catalog}
       scenario={effScenario}
       drawnCard={drawnCard}
+      completionAdKey={completionAdKey}
       canDrawCard={cardPool.length > 0 && !drawnCard}
       onDrawCard={() => setDrawnCard(drawRandomCard(cardPool))}
     />
@@ -82,12 +90,14 @@ function KioskMachine({
   catalog,
   scenario,
   drawnCard,
+  completionAdKey,
   canDrawCard,
   onDrawCard,
 }: {
   catalog: Catalog;
   scenario: Scenario;
   drawnCard: SituationCard | null;
+  completionAdKey?: string;
   canDrawCard: boolean;
   onDrawCard: () => void;
 }) {
@@ -725,7 +735,7 @@ function KioskMachine({
             )}
 
             {state.phase === "done" && (
-              <DoneScreen state={state} scenario={scenario} catalog={catalog} total={total} onRestart={() => { doneRecorded.current = false; send({ type: "RESTART" }); }} />
+              <DoneScreen state={state} scenario={scenario} catalog={catalog} total={total} completionAdKey={completionAdKey} onRestart={() => { doneRecorded.current = false; send({ type: "RESTART" }); }} />
             )}
           </div>
 
@@ -783,12 +793,14 @@ function DoneScreen({
   scenario,
   catalog,
   total,
+  completionAdKey,
   onRestart,
 }: {
   state: ReturnType<typeof createInitialState>;
   scenario: Scenario;
   catalog: Catalog;
   total: number;
+  completionAdKey?: string;
   onRestart: () => void;
 }) {
   const checks = evaluateMission(state, scenario, catalog);
@@ -884,7 +896,7 @@ function DoneScreen({
         </Link>
       </div>
 
-      {showActualShoppingAd && <ActualShoppingAdCard {...ACTUAL_SHOPPING_AD} />}
+      {showActualShoppingAd && completionAdKey && <CompletionActualShoppingAd adKey={completionAdKey} />}
     </div>
   );
 }

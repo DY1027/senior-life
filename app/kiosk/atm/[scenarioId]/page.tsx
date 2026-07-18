@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import KioskRunner from "@/components/kiosk-engine/KioskRunner";
 import { atmCatalog, atmScenarios, getAtmScenario } from "@/content/kiosk-v2/atm";
+import { getKioskCompletionAdKey } from "@/lib/completion-affiliate";
 
 export function generateStaticParams() {
   return atmScenarios.map((s) => ({ scenarioId: s.id }));
@@ -23,5 +24,6 @@ export default async function AtmScenarioPage({ params }: { params: Promise<{ sc
   const { scenarioId } = await params;
   const scenario = getAtmScenario(scenarioId);
   if (!scenario) notFound();
-  return <KioskRunner catalog={atmCatalog} scenario={scenario} />;
+  const completionAdKey = getKioskCompletionAdKey("atm", scenario.id);
+  return <KioskRunner catalog={atmCatalog} scenario={scenario} completionAdKey={completionAdKey} />;
 }
