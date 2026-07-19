@@ -1,6 +1,7 @@
 "use client";
 
 import { track } from "@/lib/track";
+import { COUPANG_PARTNERS_DISCLOSURE } from "@/lib/affiliate-config";
 
 export type ActualShoppingAdCardProps = {
   imagePath?: string;
@@ -60,7 +61,7 @@ export default function ActualShoppingAdCard({
             {buttonLabel}
           </a>
           <p className="mt-4 break-keep text-[14px] font-semibold leading-relaxed text-[#675B4D] sm:text-[15px]">
-            이 게시물은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+            {COUPANG_PARTNERS_DISCLOSURE}
           </p>
         </div>
       </div>

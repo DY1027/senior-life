@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import ActualShoppingAdCard, { type ActualShoppingAdCardProps } from "@/components/ActualShoppingAdCard";
+import ShoppingActualShoppingSection from "@/components/shopping/ShoppingActualShoppingSection";
+import { resolveCoupangPartnersUrl } from "@/lib/affiliate-config";
 
-export default function CompletionActualShoppingAd({ adKey }: { adKey?: string }) {
+export default function CompletionActualShoppingAd({ adKey, variant = "kiosk" }: { adKey?: string; variant?: "kiosk" | "shopping" }) {
   const [ad, setAd] = useState<ActualShoppingAdCardProps | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (!adKey) return;
@@ -14,9 +17,20 @@ export default function CompletionActualShoppingAd({ adKey }: { adKey?: string }
       .then((value) => {
         if (value?.affiliateUrl) setAd(value);
       })
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => setLoaded(true));
     return () => controller.abort();
   }, [adKey]);
 
-  return ad ? <ActualShoppingAdCard {...ad} /> : null;
+  if (!loaded) return null;
+  const affiliateUrl = resolveCoupangPartnersUrl(ad?.affiliateUrl);
+  if (!affiliateUrl) return null;
+
+  return variant === "shopping" ? (
+    <ShoppingActualShoppingSection affiliateUrl={affiliateUrl} affiliateTitle={ad?.title ?? "쿠팡 실제 쇼핑"} />
+  ) : ad ? (
+    <ActualShoppingAdCard {...ad} affiliateUrl={affiliateUrl} />
+  ) : (
+    null
+  );
 }

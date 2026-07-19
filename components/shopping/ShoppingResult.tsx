@@ -35,8 +35,8 @@ export default function ShoppingResult({ mission, completionAdKey }: { mission: 
       <section className={styles.resultHero}>
         <div className={styles.resultMark}><CheckIcon /></div>
         <span>미션 완료</span>
-        <h1>{mission.shortTitle} 연습을 마쳤어요!</h1>
-        <p>실제 주문이나 결제는 전혀 일어나지 않았습니다.</p>
+        <h1>쇼핑연습을 완료했어요!</h1>
+        <p>지금까지의 과정은 실제 결제 없이 진행된 연습이었습니다.</p>
         {result && <strong className={styles.resultScore}>확인 점수 {result.score}점</strong>}
         {result && mission.mode === "guided" && (
           <div className={styles.savedResult}>
@@ -65,7 +65,7 @@ export default function ShoppingResult({ mission, completionAdKey }: { mission: 
         <Link href="/shopping">다른 미션 고르기</Link>
       </div>
 
-      {result && completionAdKey && <CompletionActualShoppingAd adKey={completionAdKey} />}
+      {result && completionAdKey && <CompletionActualShoppingAd adKey={completionAdKey} variant="shopping" />}
     </main>
   );
 }

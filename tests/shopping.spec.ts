@@ -63,6 +63,7 @@ test.describe("쇼핑 연습관", () => {
   });
 
   test("잘못 고른 단자·길이·수량의 이유를 보고 수정해 완료한다", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 900 });
     await page.goto("/shopping/missions/first-usb-c-cable/practice");
     await page.getByRole("button", { name: "C타입 충전 케이블 2m" }).click();
     await page.getByRole("button", { name: "검색" }).click();
@@ -116,16 +117,44 @@ test.describe("쇼핑 연습관", () => {
     await page.getByRole("button", { name: "확인하고 완료" }).click();
 
     await expect(page).toHaveURL(/\/shopping\/missions\/first-usb-c-cable\/result$/);
+    await expect(page.getByRole("heading", { level: 1, name: "쇼핑연습을 완료했어요!" })).toBeVisible();
+    await expect(page.getByText("지금까지의 과정은 실제 결제 없이 진행된 연습이었습니다.")).toBeVisible();
     await expect(page.getByText("완료 기록이 이 기기에 저장됐어요")).toBeVisible();
-    const actualShoppingAd = page.getByTestId("actual-shopping-ad");
-    await expect(actualShoppingAd).toBeVisible();
-    const actualShoppingImage = actualShoppingAd.getByRole("img", { name: "쇼핑 미션 추천 상품 광고 이미지" });
-    await expect(actualShoppingImage).toBeVisible();
-    expect(await actualShoppingImage.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
-    await expect(actualShoppingAd.getByRole("link", { name: "쿠팡에서 실제 상품 보기 ↗" })).toHaveAttribute("target", "_blank");
+    const actualShopping = page.getByTestId("shopping-actual-shopping");
+    await expect(actualShopping).toBeVisible();
+    await expect(actualShopping.getByRole("heading", { level: 2, name: "여기부터는 실제 쇼핑입니다" })).toBeVisible();
+    await expect(actualShopping.getByRole("note", { name: "실제 쇼핑 주의" })).toContainText("주의: 지금부터는 연습이 아닙니다.");
+    await expect(actualShopping).toContainText("이 게시물은 쿠팡 파트너스 활동의 일환으로");
+    await expect(actualShopping.getByRole("link", { name: "쇼핑연습으로 돌아가기" })).toHaveAttribute("href", "/shopping");
+
+    const actualShoppingButton = actualShopping.getByRole("button", { name: "실제 쿠팡 쇼핑몰로 이동합니다" });
+    await actualShoppingButton.click();
+    const confirmationDialog = page.getByRole("dialog", { name: "실제 쿠팡 쇼핑몰로 이동할까요?" });
+    await expect(confirmationDialog).toBeVisible();
+    await expect(confirmationDialog).toContainText("지금부터는 쇼핑연습이 아닙니다.");
+    await expect(confirmationDialog.getByRole("link", { name: "네, 실제 쿠팡으로 이동할게요" })).toHaveAttribute("target", "_blank");
+    await confirmationDialog.getByRole("button", { name: "취소하고 연습 화면에 있기" }).click();
+    await expect(confirmationDialog).toBeHidden();
+
     const resultActionsBottom = await page.getByTestId("shopping-result-actions").evaluate((element) => element.getBoundingClientRect().bottom);
-    const adTop = await actualShoppingAd.evaluate((element) => element.getBoundingClientRect().top);
-    expect(adTop).toBeGreaterThan(resultActionsBottom + 30);
+    const actualShoppingTop = await actualShopping.evaluate((element) => element.getBoundingClientRect().top);
+    expect(actualShoppingTop).toBeGreaterThan(resultActionsBottom + 30);
+    const mobileLayout = await actualShopping.evaluate((section) => {
+      const ids = ["actual-shopping-guide", "actual-shopping-warning", "actual-shopping-open", "actual-shopping-disclosure", "actual-shopping-return"];
+      const elements = ids.map((id) => section.querySelector<HTMLElement>(`[data-testid="${id}"]`));
+      return {
+        tops: elements.map((element) => element?.getBoundingClientRect().top ?? 0),
+        buttonWidth: elements[2]?.getBoundingClientRect().width ?? 0,
+        sectionWidth: section.getBoundingClientRect().width,
+      };
+    });
+    expect(mobileLayout.tops).toEqual([...mobileLayout.tops].sort((a, b) => a - b));
+    expect(mobileLayout.buttonWidth).toBeGreaterThan(mobileLayout.sectionWidth * 0.85);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(actualShopping).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
   });
 
   test("장마 예산 미션은 필요한 세 항목만 고르면 통과한다", async ({ page }) => {
