@@ -7,6 +7,8 @@ import { getAvailableOrderActions, ORDER_STATE_LABELS } from "@/features/shoppin
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import RefundSummaryView from "@/features/shopping/ui/RefundSummaryView";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 const ACTION_CLASS = "inline-flex min-h-12 items-center justify-center rounded-xl px-5 text-center text-[16px] font-extrabold no-underline";
 
@@ -19,6 +21,7 @@ export default function OrderDetail({ orderId }: { orderId: string }) {
     <main data-testid="order-detail" className="mx-auto w-full max-w-[820px] px-4 py-8 sm:px-6 sm:py-12">
       <Link href="/shopping/orders" className="text-[15px] font-extrabold text-[#246BDF]">← 가상 주문내역</Link>
       <div className="mt-4"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.orderDetail} />
       <section className="mt-5 rounded-3xl border border-[#DCE6F4] bg-white p-5 shadow-[0_12px_32px_rgba(41,69,115,0.07)] sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

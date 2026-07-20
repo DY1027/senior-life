@@ -3,8 +3,10 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShoppingHubProgress from "@/components/shopping/ShoppingHubProgress";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
 import { ArrowIcon, CartIcon, CompareIcon, ReturnIcon, SearchIcon } from "@/components/shopping/ShoppingIcons";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 import styles from "@/components/shopping/shopping.module.css";
 
 export const metadata: Metadata = {
@@ -62,6 +64,7 @@ export default function ShoppingHubPage() {
           <h1>무엇을 연습해볼까요?</h1>
           <p>한 가지만 고르면 다음 화면에서 필요한 연습을 바로 시작할 수 있어요.</p>
           <div className={styles.choiceDisclosure}><PracticeDisclosure /></div>
+          <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.hub} />
         </section>
 
         <div className={styles.choiceShell}>

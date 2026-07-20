@@ -18,6 +18,8 @@ import { completeShoppingMission, saveShoppingStep } from "@/lib/shopping/progre
 import { track } from "@/lib/track";
 import { AlertIcon, CartIcon, CheckIcon, CompareIcon, SearchIcon } from "./ShoppingIcons";
 import { PracticeProductCard } from "./PracticeProductCard";
+import ShoppingVoiceGuide from "./ShoppingVoiceGuide";
+import { getRunnerVoiceGuidance } from "@/lib/shopping-voice/guidance";
 import styles from "./shopping.module.css";
 
 type RunnerState = {
@@ -250,6 +252,8 @@ export default function ShoppingPracticeRunner({ mission }: { mission: ShoppingM
           <span>현재 단계</span>
           <h1>{mission.steps[state.step]}</h1>
         </div>
+
+        <ShoppingVoiceGuide text={getRunnerVoiceGuidance(mission.mode, state.step)} />
 
         {mission.mode === "guided" && renderGuidedStep()}
         {mission.mode === "budget" && renderBudgetStep()}

@@ -5,14 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { calculateCheckoutSummary, formatWon } from "@/features/shopping/engine/price-calculator";
 import { createPracticeOrder, saveShoppingProgress } from "@/features/shopping/storage/shopping-storage";
-import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storage";
+import { useShoppingCartState } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
 import { evaluateCommerceMission } from "@/features/shopping/engine/commerce-mission-evaluator";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function Checkout() {
   const router = useRouter();
-  const cart = useShoppingCart();
+  const { cart, hydrated } = useShoppingCartState();
   const [confirmed, setConfirmed] = useState(false);
   const [processing, setProcessing] = useState(false);
   const summary = calculateCheckoutSummary(cart.lines);
@@ -20,6 +22,10 @@ export default function Checkout() {
   const missionValid = missionFeedback?.complete ?? true;
 
   useEffect(() => saveShoppingProgress("checkout"), []);
+
+  if (!hydrated) {
+    return <main aria-busy="true" className="mx-auto w-full max-w-[760px] px-4 py-12 text-center"><p className="text-[18px] font-bold text-[#667287]">주문할 상품을 확인하는 중이에요.</p></main>;
+  }
 
   if (cart.lines.length === 0) {
     return (
@@ -35,6 +41,7 @@ export default function Checkout() {
       <Link href="/shopping/cart" className="text-[15px] font-extrabold text-[#246BDF]">← 장바구니 수정하기</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">주문 전 확인</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.checkout} />
       <div className="mt-5"><ActiveCommerceMission showFeedback /></div>
 
       <section data-testid="checkout-address" className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-5 sm:p-6">

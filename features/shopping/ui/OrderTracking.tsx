@@ -5,6 +5,8 @@ import { nextDeliveryState, ORDER_STATE_LABELS, transitionOrder } from "@/featur
 import { updatePracticeOrder } from "@/features/shopping/storage/shopping-storage";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function OrderTracking({ orderId }: { orderId: string }) {
   const order = useShoppingOrders().orders.find((candidate) => candidate.id === orderId);
@@ -22,6 +24,7 @@ export default function OrderTracking({ orderId }: { orderId: string }) {
       <Link href={`/shopping/orders/${order.id}`} className="text-[15px] font-extrabold text-[#246BDF]">← 주문 상세</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">배송조회 연습</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.tracking} />
       <section className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-5 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div><span className="text-[14px] font-extrabold text-[#667287]">든든택배 · 송장번호 1234-****-5678</span><h2 className="mt-1 text-[25px] font-black text-[#1558C0]">{ORDER_STATE_LABELS[order.state]}</h2></div>

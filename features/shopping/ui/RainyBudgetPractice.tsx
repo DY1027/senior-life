@@ -10,6 +10,8 @@ import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storag
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
 import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 const RAINY_IDS = ["umbrella", "dehumidifier-pack", "anti-slip-tape", "waterproof-shoe-covers"];
 
@@ -30,6 +32,7 @@ export default function RainyBudgetPractice() {
       <h1 className="mt-3 text-[34px] font-black leading-tight text-[#25324A] sm:text-[44px]">3만 원으로 장마철 준비하기</h1>
       <p className="mt-3 text-[17px] leading-relaxed text-[#667287]">우산·제습용품·미끄럼방지용품을 담고 배송비까지 합친 금액을 확인하세요.</p>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.rainyBudget} />
       <div className="mt-5"><ActiveCommerceMission /></div>
       <section className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label="장마철 연습 상품">
         {products.map((product) => (

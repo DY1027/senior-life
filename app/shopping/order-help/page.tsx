@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AlertIcon, DeliveryIcon, ReturnIcon } from "@/components/shopping/ShoppingIcons";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export const metadata: Metadata = { title: "주문 문제 해결하기", robots: { index: false, follow: false } };
 
@@ -31,6 +33,7 @@ export default function OrderHelpPage() {
         <h1 className="mt-2 text-[34px] font-black leading-tight text-[#25324A] sm:text-[46px]">어떤 문제를 해결해볼까요?</h1>
         <p className="mt-3 max-w-[700px] break-keep text-[17px] leading-relaxed text-[#667287]">주문 상태에 맞는 버튼만 보입니다. 실제 주문과 개인정보 없이 여러 번 연습할 수 있어요.</p>
         <div className="mt-6"><PracticeDisclosure /></div>
+        <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.orderHelp} />
 
         <section className="mt-7 rounded-3xl border border-[#F0C7BE] bg-[#FFF7F5] p-5 sm:flex sm:items-center sm:justify-between sm:gap-6 sm:p-6" aria-labelledby="mistake-mission-title">
           <div className="flex items-start gap-4">

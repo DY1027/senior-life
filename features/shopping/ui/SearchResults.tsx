@@ -5,6 +5,8 @@ import { formatWon } from "@/features/shopping/engine/price-calculator";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
 import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function SearchResults({ query, products }: { query: string; products: CommerceProduct[] }) {
   return (
@@ -17,6 +19,7 @@ export default function SearchResults({ query, products }: { query: string; prod
         <ShoppingCartLink />
       </div>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={products.length === 0 ? SHOPPING_VOICE_GUIDANCE.noSearchResults : SHOPPING_VOICE_GUIDANCE.searchResults} />
       <div className="mt-5"><ActiveCommerceMission /></div>
       {products.length === 0 ? (
         <section className="mt-8 rounded-3xl border border-[#D9E4F5] bg-white p-8 text-center">

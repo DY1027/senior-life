@@ -5,6 +5,8 @@ import { formatWon } from "@/features/shopping/engine/price-calculator";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import { getCommerceMissionLabel } from "@/features/shopping/engine/commerce-mission-evaluator";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function OrderComplete({ orderId }: { orderId: string }) {
   const order = useShoppingOrders().orders.find((candidate) => candidate.id === orderId);
@@ -19,6 +21,7 @@ export default function OrderComplete({ orderId }: { orderId: string }) {
         <p className="mt-3 text-[17px] text-[#667287]">실제 주문·결제·배송은 전혀 일어나지 않았습니다.</p>
       </div>
       <div className="mt-6"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.orderComplete} />
       {missionLabel && (
         <section data-testid="mission-complete-record" className="mt-6 rounded-2xl border-2 border-[#B8DFC8] bg-[#EFF9F3] p-5 text-center">
           <span className="text-[14px] font-extrabold text-[#286B4B]">미션 완료 기록 저장됨</span>

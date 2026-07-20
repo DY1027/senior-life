@@ -4,9 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import type { CartSnapshot, OrdersSnapshot } from "@/features/shopping/domain/types";
 import { readCart, readOrders, SHOPPING_STORAGE_EVENT } from "@/features/shopping/storage/shopping-storage";
 
-export function useShoppingCart() {
+export function useShoppingCartState() {
   const [cart, setCart] = useState<CartSnapshot>({ version: 2, lines: [] });
-  const refresh = useCallback(() => setCart(readCart()), []);
+  const [hydrated, setHydrated] = useState(false);
+  const refresh = useCallback(() => {
+    setCart(readCart());
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(refresh, 0);
@@ -19,7 +23,11 @@ export function useShoppingCart() {
     };
   }, [refresh]);
 
-  return cart;
+  return { cart, hydrated };
+}
+
+export function useShoppingCart() {
+  return useShoppingCartState().cart;
 }
 
 export function useShoppingOrders() {

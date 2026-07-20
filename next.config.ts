@@ -14,6 +14,16 @@ const retiredAccountPrefixes = ["login", "signup", "mypage", "auth"] as const;
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ads-partners.coupang.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
   async redirects() {
     return [
       { source: "/kiosk/hospital", destination: "/kiosk", permanent: true },

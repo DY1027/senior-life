@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
 import { saveShoppingProgress, setActiveBudget } from "@/features/shopping/storage/shopping-storage";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function ShoppingSearchPanel() {
   const router = useRouter();
@@ -22,6 +24,7 @@ export default function ShoppingSearchPanel() {
         <ShoppingCartLink />
       </div>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.catalog} />
       <form
         className="mt-5 flex flex-col gap-3 sm:flex-row"
         onSubmit={(event) => {

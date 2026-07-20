@@ -29,15 +29,16 @@ function authHeader(method: string, path: string, query: string): string | null 
   return `CEA algorithm=HmacSHA256, access-key=${accessKey}, signed-date=${datetime}, signature=${signature}`;
 }
 
-/** 키워드로 상품 1개를 검색한다. 키가 없거나 실패하면 null (호출부에서 폴백). */
-export async function searchProduct(keyword: string): Promise<CoupangProduct | null> {
+/** 키워드로 상품 목록을 검색한다. 키가 없거나 실패하면 빈 배열을 반환한다. */
+export async function searchProducts(keyword: string, requestedLimit = 10): Promise<CoupangProduct[]> {
   const path = "/v2/providers/affiliate_open_api/apis/openapi/v1/products/search";
-  const query = `keyword=${encodeURIComponent(keyword)}&limit=1`;
+  const limit = Math.min(10, Math.max(1, Math.trunc(requestedLimit)));
+  const query = `keyword=${encodeURIComponent(keyword)}&limit=${limit}`;
   const auth = authHeader("GET", path, query);
   if (!auth) {
     // 진단 로그(빌드/ISR 로그에서 확인) — 키 값은 절대 남기지 않는다
     console.warn(`[coupang] 키 없음 access=${Boolean(process.env.COUPANG_ACCESS_KEY)} secret=${Boolean(process.env.COUPANG_SECRET_KEY)}`);
-    return null;
+    return [];
   }
   try {
     const res = await fetch(`${HOST}${path}?${query}`, {
@@ -47,21 +48,28 @@ export async function searchProduct(keyword: string): Promise<CoupangProduct | n
     });
     if (!res.ok) {
       console.warn(`[coupang] HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
-      return null;
+      return [];
     }
     const json = await res.json();
-    const item = json?.data?.productData?.[0] ?? json?.data?.[0];
-    if (!item?.productName || !item?.productUrl) {
+    const productData = json?.data?.productData ?? json?.data;
+    if (!Array.isArray(productData)) {
       console.warn(`[coupang] 예상외 응답 형식: ${JSON.stringify(json).slice(0, 300)}`);
-      return null;
+      return [];
     }
-    return {
-      name: String(item.productName),
-      price: Number(item.productPrice) || 0,
-      image: String(item.productImage ?? ""),
-      url: String(item.productUrl),
-    };
+    return productData
+      .filter((item) => item?.productName && item?.productUrl)
+      .map((item) => ({
+        name: String(item.productName),
+        price: Number(item.productPrice) || 0,
+        image: String(item.productImage ?? ""),
+        url: String(item.productUrl),
+      }));
   } catch {
-    return null;
+    return [];
   }
+}
+
+/** 기존 상품 페이지에서 사용하는 안정적인 첫 번째 검색 결과. */
+export async function searchProduct(keyword: string): Promise<CoupangProduct | null> {
+  return (await searchProducts(keyword, 1))[0] ?? null;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { COUPANG_PARTNERS_DISCLOSURE } from "@/lib/affiliate-config";
@@ -9,9 +10,11 @@ import styles from "./shopping.module.css";
 type Props = {
   affiliateUrl: string;
   affiliateTitle: string;
+  affiliateDescription?: string;
+  imagePath?: string;
 };
 
-export default function ShoppingActualShoppingSection({ affiliateUrl, affiliateTitle }: Props) {
+export default function ShoppingActualShoppingSection({ affiliateUrl, affiliateTitle, affiliateDescription, imagePath }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const openButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -39,6 +42,26 @@ export default function ShoppingActualShoppingSection({ affiliateUrl, affiliateT
       <p data-testid="actual-shopping-warning" className={styles.actualShoppingWarning} role="note" aria-label="실제 쇼핑 주의">
         <strong>주의: 지금부터는 연습이 아닙니다.</strong>
       </p>
+
+      {imagePath && (
+        <article data-testid="actual-shopping-product" className={styles.actualShoppingProduct}>
+          <div className={styles.actualShoppingImageWrap}>
+            <Image
+              data-testid="actual-shopping-product-image"
+              src={imagePath}
+              alt={`${affiliateTitle} 실제 상품 이미지`}
+              width={360}
+              height={360}
+              sizes="(max-width: 600px) 72vw, 280px"
+            />
+          </div>
+          <div>
+            <span>이번에 살펴볼 실제 상품</span>
+            <h3>{affiliateTitle}</h3>
+            {affiliateDescription && <p>{affiliateDescription}</p>}
+          </div>
+        </article>
+      )}
 
       <button
         ref={openButtonRef}

@@ -1,6 +1,6 @@
 import type { ActualShoppingAdCardProps } from "@/components/ActualShoppingAdCard";
 import type { KioskId } from "@/lib/kiosk-config";
-import { searchProduct } from "@/lib/coupang";
+import { searchProducts } from "@/lib/coupang";
 
 const KIOSK_AD_KEYS: Record<KioskId, string[]> = {
   cafe: ["cafe-tumbler", "cafe-cup-lid"],
@@ -46,10 +46,14 @@ function pickAdKey(key: string, adKeys: string[]): string {
   return adKeys[score % adKeys.length];
 }
 
-export async function getCompletionAdByKey(adKey: string): Promise<ActualShoppingAdCardProps | null> {
+export async function getCompletionAdByKey(adKey: string, selectionIndex = 0): Promise<ActualShoppingAdCardProps | null> {
   const keyword = COMPLETION_AD_KEYWORDS[adKey];
   if (!keyword) return null;
-  const product = await searchProduct(keyword);
+  const products = await searchProducts(keyword, 10);
+  const candidatesWithImages = products.filter((product) => product.image);
+  const candidates = candidatesWithImages.length > 0 ? candidatesWithImages : products;
+  const safeIndex = Math.abs(Math.trunc(selectionIndex)) % Math.max(candidates.length, 1);
+  const product = candidates[safeIndex];
   if (product) {
     return {
       imagePath: product.image || undefined,

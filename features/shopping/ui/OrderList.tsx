@@ -5,6 +5,8 @@ import { formatWon } from "@/features/shopping/engine/price-calculator";
 import { ORDER_STATE_LABELS } from "@/features/shopping/engine/order-state-machine";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function OrderList() {
   const orders = useShoppingOrders().orders;
@@ -13,6 +15,7 @@ export default function OrderList() {
       <Link href="/shopping" className="text-[15px] font-extrabold text-[#246BDF]">← 쇼핑 연습관</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">가상 주문내역</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.orderList} />
       <div className="mt-6 grid gap-4">
         {orders.length === 0 ? <p className="rounded-3xl border border-[#DCE6F4] bg-white p-8 text-center text-[17px] font-bold text-[#667287]">아직 완료한 가상 주문이 없어요.</p> : orders.map((order) => (
           <article key={order.id} data-testid={`order-card-${order.id}`} className="rounded-3xl border border-[#DCE6F4] bg-white p-5">

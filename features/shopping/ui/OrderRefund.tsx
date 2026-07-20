@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import RefundSummaryView from "@/features/shopping/ui/RefundSummaryView";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function OrderRefund({ orderId }: { orderId: string }) {
   const order = useShoppingOrders().orders.find((candidate) => candidate.id === orderId);
@@ -13,6 +15,7 @@ export default function OrderRefund({ orderId }: { orderId: string }) {
       <Link href={`/shopping/orders/${orderId}`} className="text-[15px] font-extrabold text-[#246BDF]">← 주문 상세</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">환불 확인 연습</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.refund} />
       {order.refundSummary ? <RefundSummaryView summary={order.refundSummary} /> : <p className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-7 text-[17px] font-bold text-[#667287]">아직 계산된 환불 내역이 없습니다.</p>}
     </main>
   );

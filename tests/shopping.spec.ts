@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("쇼핑 연습관", () => {
   test.beforeEach(async ({ page }) => {
-    await page.route("**/api/affiliate/completion-ad?key=*", async (route) => {
+    await page.route("**/api/affiliate/completion-ad?key=*&variant=*", async (route) => {
       await route.fulfill({
         contentType: "application/json; charset=utf-8",
         body: JSON.stringify({
@@ -124,6 +124,8 @@ test.describe("쇼핑 연습관", () => {
     await expect(actualShopping).toBeVisible();
     await expect(actualShopping.getByRole("heading", { level: 2, name: "여기부터는 실제 쇼핑입니다" })).toBeVisible();
     await expect(actualShopping.getByRole("note", { name: "실제 쇼핑 주의" })).toContainText("주의: 지금부터는 연습이 아닙니다.");
+    await expect(actualShopping.getByTestId("actual-shopping-product-image")).toBeVisible();
+    await expect(actualShopping.getByTestId("actual-shopping-product")).toContainText("쇼핑 미션 추천 상품");
     await expect(actualShopping).toContainText("이 게시물은 쿠팡 파트너스 활동의 일환으로");
     await expect(actualShopping.getByRole("link", { name: "쇼핑연습으로 돌아가기" })).toHaveAttribute("href", "/shopping");
 
@@ -213,7 +215,7 @@ test.describe("쇼핑 연습관", () => {
 
     await page.getByRole("button", { name: "글자 크게 보기" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-bigtext", "1");
-    const resultTitleWidth = await page.getByRole("heading", { level: 1, name: "상품 비교 연습을 마쳤어요!" }).evaluate((element) => element.getBoundingClientRect().width);
+    const resultTitleWidth = await page.getByRole("heading", { level: 1, name: "쇼핑연습을 완료했어요!" }).evaluate((element) => element.getBoundingClientRect().width);
     expect(resultTitleWidth).toBeGreaterThan(240);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
     await page.screenshot({ path: "docs/audit-evidence/shopping-compare-complete-bigtext-360.png", fullPage: true });

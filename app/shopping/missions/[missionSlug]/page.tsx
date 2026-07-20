@@ -5,9 +5,11 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckIcon } from "@/components/shopping/ShoppingIcons";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
 import styles from "@/components/shopping/shopping.module.css";
 import { getShoppingMission, SHOPPING_MISSIONS } from "@/content/shopping";
 import CommerceMissionStartLink from "@/features/shopping/ui/CommerceMissionStartLink";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 type Props = { params: Promise<{ missionSlug: string }> };
 
@@ -46,6 +48,7 @@ export default async function ShoppingMissionPage({ params }: Props) {
             <h1>{mission.title}</h1>
             <p>{mission.summary}</p>
             <div className={styles.noPaymentCallout}><CheckIcon /><div><strong>안심하세요</strong><span>실제 주문, 결제 또는 개인정보 입력은 없습니다.</span></div></div>
+            <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.missionIntro} />
             {["first-usb-c-cable", "rainy-budget-30000"].includes(mission.slug)
               ? <CommerceMissionStartLink missionSlug={mission.slug} />
               : <Link href={`/shopping/missions/${mission.slug}/practice`}>연습 시작하기</Link>}

@@ -8,6 +8,8 @@ import { calculateCancellationRefund, calculateReturnRefund, transitionOrder } f
 import { updatePracticeOrder } from "@/features/shopping/storage/shopping-storage";
 import { useShoppingOrders } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 type ActionKind = "cancel" | "return" | "exchange";
 
@@ -66,6 +68,7 @@ export default function OrderActionForm({ orderId, kind }: { orderId: string; ki
       <Link href={`/shopping/orders/${orderId}`} className="text-[15px] font-extrabold text-[#246BDF]">← 주문 상세</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">{copy.title}</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE[kind]} />
       <form onSubmit={submit} className="mt-6 rounded-3xl border border-[#DCE6F4] bg-white p-5 sm:p-7">
         <label htmlFor="action-value" className="block text-[18px] font-black text-[#25324A]">{copy.label}</label>
         <select id="action-value" value={value} onChange={(event) => { setValue(event.target.value); setError(""); }} className="mt-3 min-h-12 w-full rounded-xl border-2 border-[#B8C8DE] bg-white px-4 text-[17px] font-bold text-[#25324A]">

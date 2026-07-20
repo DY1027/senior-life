@@ -9,6 +9,8 @@ import { addProductToCart } from "@/features/shopping/storage/shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ShoppingCartLink from "@/features/shopping/ui/ShoppingCartLink";
 import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function ProductDetail({ product }: { product: CommerceProduct }) {
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
@@ -24,6 +26,7 @@ export default function ProductDetail({ product }: { product: CommerceProduct })
         <ShoppingCartLink />
       </div>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.productDetail} />
       <div className="mt-5"><ActiveCommerceMission /></div>
       <section className="mt-6 grid overflow-hidden rounded-[28px] border border-[#DCE6F4] bg-white shadow-[0_14px_40px_rgba(41,69,115,0.09)] md:grid-cols-2">
         <div className="relative min-h-[320px] bg-[#F4F6F8] md:min-h-[560px]">

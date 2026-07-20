@@ -4,13 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { calculateCheckoutSummary, formatWon } from "@/features/shopping/engine/price-calculator";
 import { removeCartLine, updateCartLineQuantity } from "@/features/shopping/storage/shopping-storage";
-import { useShoppingCart } from "@/features/shopping/storage/use-shopping-storage";
+import { useShoppingCartState } from "@/features/shopping/storage/use-shopping-storage";
 import PracticeDisclosure from "@/features/shopping/ui/PracticeDisclosure";
 import ActiveCommerceMission from "@/features/shopping/ui/ActiveCommerceMission";
 import { evaluateCommerceMission, getCommerceMissionPracticeHref } from "@/features/shopping/engine/commerce-mission-evaluator";
+import ShoppingVoiceGuide from "@/components/shopping/ShoppingVoiceGuide";
+import { SHOPPING_VOICE_GUIDANCE } from "@/lib/shopping-voice/guidance";
 
 export default function ShoppingCart() {
-  const cart = useShoppingCart();
+  const { cart, hydrated } = useShoppingCartState();
   const summary = calculateCheckoutSummary(cart.lines);
   const remaining = cart.activeBudget === undefined ? undefined : cart.activeBudget - summary.paymentTotal;
   const missionFeedback = evaluateCommerceMission(cart);
@@ -21,9 +23,14 @@ export default function ShoppingCart() {
       <Link href={getCommerceMissionPracticeHref(cart.activeMissionSlug)} className="text-[15px] font-extrabold text-[#246BDF]">← 상품 다시 고르기</Link>
       <h1 className="mt-3 text-[34px] font-black text-[#25324A] sm:text-[44px]">연습 장바구니</h1>
       <div className="mt-5"><PracticeDisclosure /></div>
+      <ShoppingVoiceGuide text={SHOPPING_VOICE_GUIDANCE.cart} />
       <div className="mt-5"><ActiveCommerceMission showFeedback /></div>
 
-      {cart.lines.length === 0 ? (
+      {!hydrated ? (
+        <section aria-busy="true" className="mt-7 rounded-3xl border border-[#D9E4F5] bg-white p-8 text-center">
+          <p className="text-[17px] font-bold text-[#667287]">장바구니를 불러오는 중이에요.</p>
+        </section>
+      ) : cart.lines.length === 0 ? (
         <section className="mt-7 rounded-3xl border border-[#D9E4F5] bg-white p-8 text-center">
           <h2 className="text-[24px] font-black text-[#25324A]">장바구니가 비어 있어요</h2>
           <Link href="/shopping" className="mt-5 inline-flex min-h-12 items-center rounded-xl bg-[#246BDF] px-5 font-extrabold text-white no-underline">상품 검색하기</Link>
