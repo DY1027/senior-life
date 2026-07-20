@@ -1,4 +1,5 @@
 import type { CommerceProduct } from "@/features/shopping/domain/types";
+import { CATALOG_EXPANSION_PRODUCTS } from "@/features/shopping/data/catalog-expansion";
 
 const cableImage = {
   src: "/images/shopping/products/digital/usb-c-cable-white-2m.jpg",
@@ -239,6 +240,7 @@ export const COMMERCE_PRODUCTS: CommerceProduct[] = [
       },
     ],
   },
+  ...CATALOG_EXPANSION_PRODUCTS,
 ];
 
 export function getCommerceProduct(productId: string) {
