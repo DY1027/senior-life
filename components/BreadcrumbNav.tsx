@@ -1,3 +1,4 @@
+import { safeJsonLd } from "@/lib/jsonld";
 import Link from "next/link";
 
 export interface BreadcrumbItem {
@@ -21,7 +22,7 @@ export default function BreadcrumbNav({ items }: { items: BreadcrumbItem[] }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       <nav aria-label="breadcrumb" style={{ marginBottom: 20 }}>
         <ol style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center", listStyle: "none", padding: 0, margin: 0, fontSize: 11, color: "#9B9890" }}>

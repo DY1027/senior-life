@@ -1,3 +1,4 @@
+import { safeJsonLd } from "@/lib/jsonld";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -82,7 +83,7 @@ const websiteJsonLd = {
 export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(websiteJsonLd) }} />
       <Header />
       <main>
         <PlaygroundHero />

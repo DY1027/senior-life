@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { safeJsonLd } from "@/lib/jsonld";
 import { DungDungGuide } from "@/components/dundun-design/DungDungGuide";
 import { illustrations } from "@/components/dundun-design/illustration-assets";
 
@@ -27,7 +28,7 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="dd-faq-section" aria-labelledby="faq-title">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <div className="dd-faq-shell">
         <aside className="dd-faq-trust" aria-label="안심하고 이용하세요">
           <DungDungGuide
